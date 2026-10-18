@@ -1,0 +1,82 @@
+# SayGuard site configuration.
+# Paths starting with "@work/" resolve under the work directory (SAYGUARD_WORK,
+# default D:/ugen-work); other relative paths are relative to the repo.
+
+site_name: "Demo Plant (Stage I prototype)"
+
+detector:
+  backend: ultralytics          # ultralytics (PC prototype) | hailo (Stage II, UGen300)
+  weights: "@work/models/helmet_yolov8s.pt"
+  hef: "@work/models/helmet_yolov8s.hef"   # used by the hailo backend
+  imgsz: 640
+  conf: 0.25                    # tracker: >=0.35 starts a track, 0.25-0.35 only extends one
+  half: true
+
+# Open-vocabulary detector for objects introduced by spoken rules (forklift, ladder, ...).
+open_vocab:
+  enabled: true
+  weights: "yolov8s-worldv2.pt"
+  conf: 0.20
+  every_n_frames: 3             # run on a camera every N processed frames
+
+llm:                            # any Ollama-compatible server: Ollama on PC, hailo-ollama on UGen300
+  base_url: "http://127.0.0.1:11434"
+  model: "qwen2.5:1.5b"
+  timeout_s: 60
+
+asr:
+  model: "@work/models/hf/whisper-small"        # openai/whisper-small (Hailo GenAI zoo: Whisper-Small)
+  language: "zh"                # zh | en | null (auto)
+
+vlm:                            # second-opinion check before an alert is confirmed
+  enabled: true
+  model: "@work/models/hf/Qwen2-VL-2B-Instruct"  # Qwen/Qwen2-VL-2B-Instruct (Hailo GenAI zoo)
+
+streams:
+  fps: 10                       # processed frames per second per camera
+  tile_width: 640               # dashboard tile resolution
+
+privacy:
+  blur_faces: true
+
+# Hailo-10H reference throughput for YOLOv8s (Hailo Model Zoo, HAILO10H object detection,
+# measured over PCIe Gen3 x4). Used only for the "estimated UGen300 load" readout.
+hailo_reference:
+  model: "yolov8s"
+  fps_batch1: 166
+  fps_batch8: 252
+
+cameras:
+  - {id: cam01, name: "Site Gate",         zone: "entrance",  source: "@work/videos/streams/cam01.mp4"}
+  - {id: cam02, name: "Site Office",       zone: "office",    source: "@work/videos/streams/cam02.mp4"}
+  - {id: cam03, name: "Excavation Pit",    zone: "zone_a",    source: "@work/videos/streams/cam03.mp4"}
+  - {id: cam04, name: "Scaffold",          zone: "zone_a",    source: "@work/videos/streams/cam04.mp4"}
+  - {id: cam05, name: "House Frame",       zone: "zone_b",    source: "@work/videos/streams/cam05.mp4"}
+  - {id: cam06, name: "Welding Bay",       zone: "zone_b",    source: "@work/videos/streams/cam06.mp4"}
+  - {id: cam07, name: "Warehouse Aisle",   zone: "warehouse", source: "@work/videos/streams/cam07.mp4"}
+  - {id: cam08, name: "Loading Dock",      zone: "warehouse", source: "@work/videos/streams/cam08.mp4"}
+  - {id: cam09, name: "Maintenance Shop",  zone: "workshop",  source: "@work/videos/streams/cam09.mp4"}
+  - {id: cam10, name: "Site Walk",         zone: "zone_a",    source: "@work/videos/streams/cam10.mp4"}
+
+zones:                          # display names; spoken rules may use either form
+  entrance:  {en: "Entrance",  zh: "入口"}
+  zone_a:    {en: "Zone A",    zh: "A區"}
+  zone_b:    {en: "Zone B",    zh: "B區"}
+  warehouse: {en: "Warehouse", zh: "倉庫"}
+  workshop:  {en: "Workshop",  zh: "工作坊"}
+  office:    {en: "Office",    zh: "辦公室"}
+
+rules_file: "@work/state/rules.json"
+events_db: "@work/state/events.db"
+snapshots_dir: "@work/state/snapshots"
+retention_days: 14              # alerts + snapshots older than this are deleted hourly; 0 / null keeps all
+
+# Rules loaded on first start (when rules_file does not exist yet).
+default_rules:
+  - name: "Hard hat required on site"
+    type: no_helmet
+    cameras: ["*"]
+    zones_exclude: ["office"]
+    min_duration_s: 2.0
+    severity: high
+    message: "Person without a hard hat"

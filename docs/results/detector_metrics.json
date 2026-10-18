@@ -1,0 +1,97 @@
+{
+ "generated": "2026-10-18T13:13:22",
+ "model": {
+  "weights": "D:\\ugen-work\\models\\helmet_yolov8s.pt",
+  "architecture": "YOLOv8s (fine-tuned, 2 classes)",
+  "size_mb": 22.52,
+  "params": 11136374,
+  "params_m": 11.14,
+  "gflops": 28.6
+ },
+ "dataset": {
+  "source": "keremberke/hard-hat-detection (Roboflow Hard Hats v2, CC BY 4.0), classes helmet/head",
+  "data_yaml": "D:\\ugen-work\\datasets\\helmet\\data.yaml",
+  "split": "test",
+  "images": 2001,
+  "instances": {
+   "helmet": 4479,
+   "head": 1038
+  },
+  "image_dir": "D:\\ugen-work\\datasets\\helmet\\images\\test"
+ },
+ "settings": {
+  "imgsz": 640,
+  "batch": 16,
+  "workers": 2,
+  "precision": "fp16",
+  "conf": 0.001,
+  "iou": 0.7,
+  "note": "Ultralytics val defaults; P/R are at the max-F1 confidence"
+ },
+ "hardware": {
+  "device": "NVIDIA GeForce RTX 5060 Ti",
+  "torch": "2.11.0+cu128",
+  "ultralytics": "8.4.182"
+ },
+ "metrics": {
+  "mAP50": 0.9393,
+  "mAP50-95": 0.5945,
+  "mAP75": 0.6572,
+  "precision": 0.9132,
+  "recall": 0.8986,
+  "per_class": {
+   "helmet": {
+    "precision": 0.9194,
+    "recall": 0.8964,
+    "mAP50": 0.9447,
+    "mAP50-95": 0.5464,
+    "images": 1626,
+    "instances": 4479
+   },
+   "head": {
+    "precision": 0.9069,
+    "recall": 0.9008,
+    "mAP50": 0.9338,
+    "mAP50-95": 0.6425,
+    "images": 413,
+    "instances": 1038
+   }
+  },
+  "images_evaluated": 2001,
+  "instances": 5517,
+  "speed_ms_per_image": {
+   "preprocess": 0.68,
+   "inference": 2.098,
+   "loss": 0.0,
+   "postprocess": 0.974
+  },
+  "confusion_matrix": {
+   "labels": [
+    "helmet",
+    "head",
+    "background"
+   ],
+   "rows": "predicted",
+   "cols": "true",
+   "matrix": [
+    [
+     4095,
+     225,
+     14808
+    ],
+    [
+     334,
+     795,
+     4220
+    ],
+    [
+     50,
+     18,
+     0
+    ]
+   ]
+  },
+  "save_dir": "D:\\ugen-work\\runs\\helmet_eval_test"
+ },
+ "wall_time_s": 24.8
+}

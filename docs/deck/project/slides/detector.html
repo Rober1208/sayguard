@@ -1,0 +1,28 @@
+<section id="detector" data-transition="fade" style="background:#F3F0E8;color:#171B21;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8A5A00;letter-spacing:2px">EVIDENCE · DETECTOR</p>
+<h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">Hard-hat detector: 0.94 mAP50 on unseen images</h2>
+</div>
+<div style="display:flex;gap:64px;flex:1">
+<div style="flex:0.9;display:flex;flex-direction:column;gap:20px">
+<ul style="font-size:30px;line-height:1.45;color:#4A5260">
+<li>19,745 images, Roboflow Hard Hats v2 (CC BY 4.0): 13,782 train · 3,962 val · 2,001 test</li>
+<li>YOLOv8s fine-tuned, 39 epochs, 1.25 h on one RTX 5060 Ti</li>
+<li>11.1 M parameters · 28.6 GFLOPs · 22.5 MB</li>
+<li>Exported to ONNX (opset 11) for the Hailo Dataflow Compiler — the same architecture the Hailo Model Zoo ships for Hailo-10H</li>
+</ul>
+</div>
+<div style="flex:1.1;display:flex;flex-direction:column;gap:20px">
+<h3 style="font-family:Rubik, Arial, sans-serif;font-size:36px;font-weight:600">Held-out test split · 2,001 images</h3>
+<table style="font-size:30px;color:#171B21;background:#FBFAF6;border:1px solid #DDD7CB;border-radius:16px">
+<tr><th style="width:28%;text-align:left">Class</th><th style="width:18%;text-align:right">Precision</th><th style="width:18%;text-align:right">Recall</th><th style="width:18%;text-align:right">mAP50</th><th style="width:18%;text-align:right">mAP50-95</th></tr>
+<tr style="background:#F6EBD0"><td>All</td><td style="text-align:right">0.913</td><td style="text-align:right">0.899</td><td style="text-align:right">0.939</td><td style="text-align:right">0.595</td></tr>
+<tr><td>Hard hat</td><td style="text-align:right">0.919</td><td style="text-align:right">0.896</td><td style="text-align:right">0.945</td><td style="text-align:right">0.546</td></tr>
+<tr><td>Bare head</td><td style="text-align:right">0.907</td><td style="text-align:right">0.901</td><td style="text-align:right">0.934</td><td style="text-align:right">0.643</td></tr>
+</table>
+<p style="font-size:26px;line-height:1.4;color:#4A5260">Bare heads (the violations) are found 90 % of the time; persistence and the VLM check then remove most remaining false alarms.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">SayGuard · Stage I proposal · 11 · scripts/eval_detector.py, docs/results/detector_metrics.json</p>
+<aside>The detector is a standard YOLOv8s fine-tuned on a public, permissively licensed dataset, evaluated on a test split it never saw. We chose YOLOv8s precisely because Hailo already ships it for Hailo-10H, so Stage II is a recompile.</aside>
+</section>

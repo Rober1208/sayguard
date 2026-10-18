@@ -1,0 +1,932 @@
+{
+ "llm": "qwen2.5:1.5b",
+ "fields_compared": [
+  "type",
+  "object",
+  "threshold",
+  "time_window",
+  "min_duration_s when stated",
+  "scope (cameras the rule applies to)"
+ ],
+ "sets": {
+  "dev (used to build the extractor)": {
+   "sentences": 32,
+   "correct": {
+    "llm_only": 8,
+    "rules": 32,
+    "llm+check": 31
+   },
+   "accuracy": {
+    "llm_only": 0.25,
+    "rules": 1.0,
+    "llm+check": 0.969
+   },
+   "llm+check_latency_ms": {
+    "mean": 328,
+    "max": 518
+   },
+   "rows": [
+    {
+     "text": "B區超過3個人就提醒我",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "threshold",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "倉庫裡有人靠近堆高機3公尺內要立刻警告",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "晚上10點後入口不能有人",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "time_window"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "A區沒戴安全帽超過5秒就警告",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "min_duration_s",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Alert me if anyone in Zone A has no hard hat for more than 3 seconds",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "min_duration_s",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Warn immediately if a person is within 2 meters of a forklift in the warehouse",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "如果3號攝影機看到梯子就通知我",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "辦公室超過五個人要提醒",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "22點到6點倉庫禁止進入",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "type"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "仓库里叉车3米内有人要立刻警告",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "早上8點到晚上6點A區要戴安全帽",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Alert if anyone enters the warehouse from 8am to 5pm",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "下午1點到5點工作坊禁止進入",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "type"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "晚上12點後辦公室不能有人",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "time_window"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "camera 8 sees more than 4 people",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Loading Dock 有人進入就記錄",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "倉庫裡有人靠近堆高機一點五公尺內要立刻警告",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "堆高機1點5米內有人要警告",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": false,
+      "wrong_fields": [
+       "scope"
+      ]
+     }
+    },
+    {
+     "text": "堆高機兩公尺半內有人",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "threshold"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "仓库叉车2米半内有人要立刻警告",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "threshold",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "晚上10點半後入口不能有人",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "type",
+       "time_window",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Alert if anyone enters the warehouse between 10pm and 6am",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Alert if anyone enters the warehouse between 22:00 and 06:00",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Alert if anyone enters the warehouse from 10 p.m. to 6 a.m.",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Log anyone in the office after 9 p.m.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "time_window"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Warn me if there are more than three people in Zone B",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Warn immediately if anyone is within two metres of a forklift",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Alert if anyone in Zone A has no hard hat for five seconds",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "min_duration_s",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "A區沒戴安全帽超過1分鐘就警告",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "min_duration_s",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "A區沒戴安全帽超過一分鐘就警告",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "min_duration_s",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Alert if anyone in Zone A has no hard hat for 2 minutes",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "min_duration_s",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Alert if anyone stays in the workshop for two minutes",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "type"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    }
+   ]
+  },
+  "held-out (never used for tuning)": {
+   "sentences": 20,
+   "correct": {
+    "llm_only": 8,
+    "rules": 18,
+    "llm+check": 19
+   },
+   "accuracy": {
+    "llm_only": 0.4,
+    "rules": 0.9,
+    "llm+check": 0.95
+   },
+   "llm+check_latency_ms": {
+    "mean": 340,
+    "max": 486
+   },
+   "rows": [
+    {
+     "text": "倉庫同時超過四個人就通知我",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "工作坊裡沒戴安全帽的人要馬上提醒",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "下班後辦公室不能有人",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "time_window"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "如果有人離挖土機兩公尺以內就警告",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "threshold"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "B區看到梯子要通知",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "入口晚上十一點到早上五點不准有人進入",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "5號攝影機有人沒戴安全帽超過十秒就警告",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "threshold",
+       "min_duration_s"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Notify me when anyone enters the office after 7 pm",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "time_window"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Warn me if there is a forklift in Zone B",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Alert if more than six workers are on the scaffold",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "If someone stands within one metre of the excavator, alert immediately",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Tell me when people at the loading dock are not wearing hard hats",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "在焊接區看到有人沒戴安全帽就通知",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": false,
+      "wrong_fields": [
+       "scope"
+      ]
+     },
+     "llm+check": {
+      "ok": false,
+      "wrong_fields": [
+       "scope"
+      ]
+     }
+    },
+    {
+     "text": "Zone A: alert me if a truck is within 5 metres of a worker",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "大門口超過兩個人逗留就提醒",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": false,
+      "wrong_fields": [
+       "scope"
+      ]
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Alert me if anyone is in the warehouse between 10 pm and 6 am",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "A區有人超過三十秒沒戴安全帽就警告",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "min_duration_s",
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Let me know if smoke appears in the workshop",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "如果B區人數多於5人請提醒",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "scope"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Raise an alarm when a ladder shows up at the site gate",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    }
+   ]
+  }
+ }
+}

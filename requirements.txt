@@ -1,0 +1,20 @@
+# PC prototype (Stage I). Install PyTorch with CUDA first, e.g.
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+ultralytics>=8.4
+opencv-python
+numpy
+pyyaml
+pydantic>=2
+fastapi
+uvicorn[standard]
+python-multipart
+httpx
+transformers>=5.0
+accelerate
+psutil
+opencc-python-reimplemented
+ftfy
+regex
+git+https://github.com/ultralytics/CLIP.git   # text encoder for YOLO-World
+pytest
+# Stage II (UGen300): HailoRT 5.x Python wheel (hailo_platform) from the Hailo Developer Zone

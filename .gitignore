@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+# heavy artifacts live in the work dir (D:/ugen-work), never in git
+*.pt
+*.onnx
+*.hef
+*.mp4
+*.webm
+*.db
+runs/
+datasets/
+state/
+# stills of third-party stock footage (Mixkit licence: no standalone redistribution); the deck lives in its artifact
+docs/deck/img/
+# personal hand-off notes
+docs/交件清單.md

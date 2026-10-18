@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>SayGuard</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23f6b40e'/%3E%3Cpath d='M7 20a9 9 0 0 1 18 0z' fill='%23111'/%3E%3Crect x='5' y='20' width='22' height='3.5' rx='1.75' fill='%23111'/%3E%3Crect x='14.25' y='8.5' width='3.5' height='6' rx='1.2' fill='%23f6b40e'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="app" id="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="var(--brand)"/>
+        <path d="M7 20a9 9 0 0 1 18 0z" fill="#111"/>
+        <rect x="5" y="20" width="22" height="3.5" rx="1.75" fill="#111"/>
+        <rect x="14.25" y="8.5" width="3.5" height="6" rx="1.2" fill="var(--brand)"/>
+      </svg>
+      <div class="brand-text">
+        <div class="brand-name">SayGuard</div>
+        <div class="brand-tag" data-i18n="tagline">One UGen300 · 10 cameras · rules you can say</div>
+      </div>
+    </div>
+
+    <div class="site">
+      <span class="site-label" data-i18n="site">Site</span>
+      <span class="site-name" id="siteName">—</span>
+    </div>
+
+    <div class="top-right">
+      <span class="conn" id="conn" role="status" hidden>
+        <span class="conn-dot" aria-hidden="true"></span>
+        <span data-i18n="reconnecting">Reconnecting…</span>
+      </span>
+      <div class="seg" role="group" aria-label="Language" data-i18n-aria="lang_group">
+        <button type="button" class="seg-btn" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" class="seg-btn" data-lang="zh" aria-pressed="false">中文</button>
+      </div>
+      <div class="clock" aria-live="off">
+        <time class="clock-time" id="clockTime">--:--:--</time>
+        <span class="clock-date" id="clockDate"></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main" id="main">
+    <section class="kpis" aria-label="Key figures" data-i18n-aria="kpis_label">
+      <div class="kpi">
+        <div class="kpi-label" data-i18n="kpi_cams">Cameras online</div>
+        <div class="kpi-value"><span id="kCams">–</span><span class="kpi-unit" id="kCamsTotal"></span></div>
+        <div class="kpi-sub" data-i18n="kpi_cams_sub">live streams</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label" data-i18n="kpi_fps">Frames analysed / s</div>
+        <div class="kpi-value"><span id="kFps">–</span></div>
+        <div class="kpi-sub" id="kFpsSub"></div>
+      </div>
+      <div class="kpi kpi-load">
+        <div class="kpi-label" data-i18n="kpi_load">Est. UGen300 load</div>
+        <div class="load-row">
+          <div class="kpi-value"><span id="kLoad">–</span></div>
+          <div class="load-pct" id="kLoadPct"></div>
+        </div>
+        <div class="meter" id="kLoadMeter" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Estimated UGen300 load" data-i18n-aria="kpi_load">
+          <div class="meter-fill" id="kLoadFill"></div>
+          <div class="meter-tick" id="kLoadTick"></div>
+        </div>
+        <div class="kpi-caption" id="kLoadCaption">Estimate from Hailo Model Zoo YOLOv8s</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label" data-i18n="kpi_rules">Active rules</div>
+        <div class="kpi-value"><span id="kRules">–</span></div>
+        <div class="kpi-sub" id="kRulesSub"></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label" data-i18n="kpi_confirmed">Alerts confirmed · 24 h</div>
+        <div class="kpi-value"><span id="kConfirmed">–</span></div>
+        <div class="kpi-sub" id="kConfirmedSub"></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label" data-i18n="kpi_filtered">False alarms filtered by VLM</div>
+        <div class="kpi-value"><span id="kFiltered">–</span></div>
+        <div class="kpi-sub" id="kFilteredSub"></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label" data-i18n="kpi_llm">On-device LLM</div>
+        <div class="kpi-value kpi-status"><span class="dot" id="kLlmDot" aria-hidden="true"></span><span id="kLlm">–</span></div>
+        <div class="kpi-sub" id="kLlmSub"></div>
+      </div>
+    </section>
+
+    <section class="panel wall-panel" aria-labelledby="wallTitle">
+      <div class="panel-head">
+        <h2 id="wallTitle"><span class="live-dot" aria-hidden="true"></span><span data-i18n="wall_title">Live cameras</span></h2>
+        <span class="panel-meta" id="wallMeta"></span>
+      </div>
+      <div class="wall" id="wall"></div>
+    </section>
+
+    <section class="panel alerts-panel" aria-labelledby="alertsTitle">
+      <div class="panel-head">
+        <h2 id="alertsTitle" data-i18n="alerts_title">Live alerts</h2>
+        <span class="panel-meta" data-i18n="alerts_meta">Newest first · click a card for details</span>
+      </div>
+      <div class="alert-list" id="alerts" aria-live="polite"></div>
+    </section>
+
+    <footer class="sysbar">
+      <dl class="sys" id="sys"></dl>
+      <button type="button" class="btn btn-primary" id="reportBtn">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg>
+        <span data-i18n="report_btn">Daily safety report</span>
+      </button>
+    </footer>
+  </main>
+
+  <aside class="sidebar" aria-label="Rules">
+    <section class="card say" aria-labelledby="sayTitle">
+      <div class="card-head">
+        <h2 id="sayTitle" data-i18n="say_title">Say a rule</h2>
+        <span class="card-meta" data-i18n="say_pipeline">Whisper → LLM → checker</span>
+      </div>
+
+      <div class="mic-row">
+        <button type="button" class="mic" id="micBtn" aria-pressed="false"
+                aria-label="Record a spoken rule: hold to talk, or click to start and stop" data-i18n-aria="mic_label">
+          <span class="mic-level" aria-hidden="true"></span>
+          <svg class="mic-ico" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="9" y="3" width="6" height="11" rx="3"/>
+            <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6"/>
+          </svg>
+        </button>
+        <div class="mic-text">
+          <div class="mic-state" id="micState" data-i18n="mic_idle">Hold to talk</div>
+          <div class="mic-sub" id="micSub" data-i18n="mic_idle_sub">or click to start and stop · Mandarin or English</div>
+        </div>
+        <span class="mic-timer" id="micTimer" aria-hidden="true">0:00</span>
+      </div>
+
+      <form class="rule-form" id="ruleForm" autocomplete="off">
+        <input type="text" id="ruleText" maxlength="300" spellcheck="false"
+               placeholder="Type or say a safety rule…" data-i18n-placeholder="input_ph"
+               aria-label="Safety rule in plain language" data-i18n-aria="input_label">
+        <button type="submit" class="btn btn-secondary" id="parseBtn" data-i18n="check">Check</button>
+      </form>
+
+      <div class="say-status" id="sayStatus" role="status" aria-live="polite"></div>
+
+      <div class="examples" id="examples">
+        <div class="examples-label" data-i18n="examples">Try an example</div>
+        <div class="chips">
+          <button type="button" class="chip">B區超過3個人就提醒我</button>
+          <button type="button" class="chip">A區有人靠近挖土機3公尺內要立刻警告</button>
+          <button type="button" class="chip">晚上10點後入口不能有人</button>
+          <button type="button" class="chip">Alert me if anyone in Zone A has no hard hat for more than 3 seconds</button>
+        </div>
+      </div>
+
+      <div class="proposal" id="proposal" hidden></div>
+    </section>
+
+    <section class="card rules" aria-labelledby="rulesTitle">
+      <div class="card-head">
+        <h2 id="rulesTitle" data-i18n="rules_title">Active rules</h2>
+        <span class="card-meta" id="rulesMeta"></span>
+      </div>
+      <ul class="rule-list" id="rules"></ul>
+    </section>
+  </aside>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <header class="modal-head">
+      <h2 id="modalTitle"></h2>
+      <div class="modal-actions" id="modalActions"></div>
+      <button type="button" class="icon-btn" id="modalClose" aria-label="Close" data-i18n-aria="close" data-close>
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </header>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="/static/app.js" defer></script>
+</body>
+</html>

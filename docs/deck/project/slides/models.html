@@ -1,0 +1,17 @@
+<section id="models" data-transition="fade" style="background:#F3F0E8;color:#171B21;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8A5A00;letter-spacing:2px">ARCHITECTURE · SOFTWARE</p>
+<h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">Every model is already in the Hailo Model Zoo</h2>
+</div>
+<table style="font-size:27px;color:#171B21;background:#FBFAF6;border:1px solid #DDD7CB;border-radius:16px">
+<tr><th style="width:24%;text-align:left">Job</th><th style="width:24%;text-align:left">Model</th><th style="width:26%;text-align:left">PC prototype (measured)</th><th style="width:26%;text-align:left">Hailo-10H (Hailo reference)</th></tr>
+<tr><td>Hard hats, all cameras</td><td>YOLOv8s, fine-tuned</td><td>31–40 ms per 10-frame batch</td><td>252 FPS at batch 8</td></tr>
+<tr><td>Objects named in rules</td><td>YOLO-World v2-S</td><td>12 ms per frame</td><td>46.6 FPS</td></tr>
+<tr><td>Speech to text</td><td>Whisper-Small</td><td>0.4–0.8 s per rule</td><td>10.6 tokens/s</td></tr>
+<tr><td>Rule drafts, report actions</td><td>Qwen2.5-1.5B-Instruct</td><td>0.34 s per rule</td><td>7.35 tokens/s · 0.37 s first token</td></tr>
+<tr><td>Alert double-check</td><td>Qwen2-VL-2B-Instruct</td><td>0.16–0.3 s per alert</td><td>7.04 tokens/s · 1.02 s first token</td></tr>
+</table>
+<p style="font-size:28px;line-height:1.4;color:#4A5260">LLM calls use the Ollama API, which hailo-ollama serves on the UGen300: switching is a URL change. The detector goes ONNX → HEF with the Hailo Dataflow Compiler; the HailoRT backend is written and is validated in Stage II.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">SayGuard · Stage I proposal · 13 · Hailo Model Zoo and Hailo GenAI Model Zoo, Hailo-10H</p>
+<aside>This table is the feasibility argument. Each job already has a Hailo-10H build in Hailo’s model zoos, with published throughput. Language models are called only on demand: a spoken rule, an alert to check, a report. Only the detector runs on every frame.</aside>
+</section>

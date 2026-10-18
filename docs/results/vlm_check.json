@@ -1,0 +1,28 @@
+{
+ "model": "@work/models/hf/Qwen2-VL-2B-Instruct",
+ "split": "test (held out)",
+ "crops": {
+  "helmet": 94,
+  "head": 99
+ },
+ "tally": {
+  "helmet": {
+   "yes": 84,
+   "no": 10,
+   "unclear": 0
+  },
+  "head": {
+   "yes": 6,
+   "no": 93,
+   "unclear": 0
+  }
+ },
+ "false_alarm_filter_rate": 0.894,
+ "violation_confirm_rate": 0.939,
+ "accuracy": 0.917,
+ "latency_ms": {
+  "mean": 160,
+  "p95": 189
+ },
+ "device": "cuda"
+}
