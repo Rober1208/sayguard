@@ -1,7 +1,7 @@
 """Daily safety report built from the alert store.
 
 Every number is computed here, deterministically, from the SQLite events; the
-small on-device LLM (Qwen2.5-1.5B on Ollama / hailo-ollama) only turns those
+small local LLM (Qwen2.5-1.5B on Ollama / hailo-ollama) only turns those
 numbers into prose for the safety officer.  Its draft is accepted only if it keeps
 the three report sections and uses no number that is missing from the stats it was
 given; otherwise, or when the LLM is offline, a template writes the same report, so
@@ -67,10 +67,10 @@ TEXT: dict[str, dict[str, str]] = {
         "act_keep": "維持現行規則，並在每週工具箱會議上檢討本報告。",
         "act_coverage": "抽查各攝影機畫面是否仍涵蓋所有出入口與作業區。",
         "act_voice": "如有新的危險作業，直接用語音新增規則，例如「倉庫堆高機三公尺內不能有人」。",
-        "footer": "報告期間 {start} – {end}（{h} 小時）· {gen} · 由 SayGuard 於裝置端（on-device）產生，資料不上傳雲端。",
-        "gen_llm": "敘述由裝置端 LLM（{model}）撰寫，數字由系統統計",
+        "footer": "報告期間 {start} – {end}（{h} 小時）· {gen} · 由 SayGuard 在現場產生，資料不上傳雲端。",
+        "gen_llm": "敘述由本地 LLM（{model}）撰寫，數字由系統統計",
         "gen_template": "以範本產生",
-        "gen_hybrid": "數字與表格由系統統計，建議措施由裝置端 LLM（{model}）撰寫",
+        "gen_hybrid": "數字與表格由系統統計，建議措施由本地 LLM（{model}）撰寫",
         "ask_actions": "根據以下統計，用繁體中文寫出明天的 3 項具體安全改善措施。",
         "issue_fa": "誤報偏多（已由複核過濾）",
         "menu": {
@@ -132,10 +132,10 @@ TEXT: dict[str, dict[str, str]] = {
         "act_keep": "Keep the current rules and review this report at the weekly toolbox talk.",
         "act_coverage": "Spot-check that the cameras still cover every entrance and work area.",
         "act_voice": "Add rules for new hazards by voice, e.g. “Warn me if anyone is within 3 m of a forklift”.",
-        "footer": "Period {start} – {end} ({h} h) · {gen} · generated on-device by SayGuard; no data leaves the site.",
-        "gen_llm": "narrative by on-device LLM ({model}), numbers computed by SayGuard",
+        "footer": "Period {start} – {end} ({h} h) · {gen} · generated on site by SayGuard; no data leaves the site.",
+        "gen_llm": "narrative by the local LLM ({model}), numbers computed by SayGuard",
         "gen_template": "template report",
-        "gen_hybrid": "numbers and tables computed by SayGuard, actions drafted by on-device LLM ({model})",
+        "gen_hybrid": "numbers and tables computed by SayGuard, actions drafted by the local LLM ({model})",
         "ask_actions": "Based on the stats below, write 3 concrete safety actions for tomorrow in English.",
         "issue_fa": "many false alarms (filtered by the double-check)",
         "menu": {
@@ -674,6 +674,6 @@ def build_report(store: EventStore, llm: LLMClient | None, cameras: list[dict], 
     gen = {"llm": t["gen_llm"].format(model=model), "llm+template": t["gen_hybrid"].format(model=model)}.get(
         generator, t["gen_template"])
     footer = t["footer"].format(start=stats["period_start"], end=stats["period_end"], h=h, gen=gen)
-    markdown = f"# {title}\n\n{body}\n\n---\n_{footer}_\n"
+    markdown = f"# {title}\n\n{body}\n\n---\n*{footer}*\n"
     return {"markdown": markdown, "stats": stats, "generator": generator,
             "ms": int((time.perf_counter() - t_start) * 1000), "note": note}

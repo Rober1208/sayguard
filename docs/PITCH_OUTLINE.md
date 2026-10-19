@@ -299,7 +299,7 @@ says it instead of opening a project with a vendor.
 device, a real site test at the ASUS HQ test space, and the finals package. A closing line lists
 what Stage I already delivered on the PC GPU: both detectors trained, the hard-hat HEF compiled,
 the full pipeline and dashboard, warehouse mode tested on six buildings the detector never trained
-on, 291 unit tests and every evaluation script in the repo.
+on, 295 unit tests and every evaluation script in the repo.
 
 Stage II moves a system that works on a PC today onto the UGen300. The hard-hat detector is
 already compiled for Hailo-10H and its INT8 accuracy checked in Hailo's emulator, but nothing has

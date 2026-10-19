@@ -160,7 +160,7 @@ Roles: test = W010, W013, W015, W018, W019, W022 (never trained or tuned on, dis
 - The rule-parsing sets are typed sentences; speech-to-text accuracy on recorded speech is not measured. Open-vocabulary detection and head-size distance in hard-hat mode are not measured.
 - Hailo-10H references (Hailo Model Zoo / GenAI Model Zoo, from the existing deck): YOLOv8s 166 FPS batch 1, 252 FPS batch 8; YOLO-World v2-S 46.6 FPS; Whisper-Small 10.6 tokens/s; Qwen2.5-1.5B-Instruct 7.35 tokens/s, 0.37 s to first token; CLIP ViT-B/32 image encoder 81.5 FPS (batch 1).
 - UGen300: Hailo-10H, 8 GB LPDDR4, USB-C 10 Gbps or M.2, 40 TOPS INT4 / 20 TOPS INT8, 2.5 W typical; Taiwan retail NT$6,380 (Oct 2026).
-- Unit tests: 291 passing (pytest).
+- Unit tests: 295 passing (pytest).
 - Rule-parsing examples from the live server: "Alert me if more than two people are at the site gate after 10 pm" -> LLM said time window 22:00-00:00, the checker used the stated convention 22:00-06:00; "A區有人靠近挖土機三公尺內要立刻警告" -> LLM said object "excavation pit", the checker used "excavator". Rule parse 0.2-0.5 s.
 - NOT in any result file (older notes only, do not quote as measured): YOLO-World 12 ms per frame, Whisper-Small 0.4-0.8 s per rule. Tables show '-' for these.
 - CLIP yes/no check latency: 15.2 ms mean per crop (p95 24.7 ms), probe_train.json — use this, not the older 13.6/14 ms.

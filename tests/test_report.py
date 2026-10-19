@@ -87,7 +87,8 @@ def test_template_stats_and_markdown(store, lang):
     assert 1 <= len(s["examples"]) <= 3
     md = r["markdown"]
     assert "Gate A" in md
-    assert "on-device" in md
+    assert ("在現場產生" if lang == "zh" else "generated on site") in md
+    assert md.rstrip().endswith("*") and "\n_" not in md      # *italic* footer: the dashboard renders it
     heads = ["摘要", "重點發現", "建議措施"] if lang == "zh" else ["Summary", "Key findings", "Recommended actions"]
     assert all(f"## {h}" in md for h in heads)
     actions = md.split(f"## {heads[2]}")[1].split("---")[0]
