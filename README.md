@@ -96,7 +96,7 @@ The full numbers, how each was measured and the known limits are in
 - **A port, not a rebuild.** The networks were chosen because Hailo-10H builds already exist.
   Stage II moves the detectors, the yes/no check, Whisper and Qwen2.5 onto the UGen300; the host
   keeps decoding and the dashboard.
-- **A clear business model.** One box per site area plus a subscription per site, sold through
+- **A clear business model.** One box per site area, sold and installed through
   CCTV installers to contractors, factories and warehouses that already own cameras.
 
 ## What it cannot do yet

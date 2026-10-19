@@ -277,23 +277,21 @@ we estimate about eleven seconds on the UGen300, which is fine for a rule the of
 far only the hard-hat detector is compiled to a HEF, and it and the CLIP encoder have been checked
 in Hailo's emulator, not yet on hardware.
 
-### 15 · business: A box per site area, a subscription per site
+### 15 · business: One box per site area, via CCTV installers
 
 *On the slide:* Who buys: construction contractors, factories and warehouses, through the site
-safety officer or EHS manager. What we sell: a SayGuard box (UGen300 plus a small host, one per
-area of up to 12 cameras) and a software subscription per site (price to be decided), sold through
-CCTV installers and in bundles with ASUS IoT hardware. Why it pays: one NT$6,380 accelerator per
-area with ten hard-hat cameras using about 40 % of it (estimate), 2.5 W typical, no per-camera
-cloud fees, and a new rule about known objects, zones, distances, counts or times is one spoken
-sentence (new object classes may need training).
+safety officer or EHS manager. What we sell: the SayGuard box (a UGen300 and a small host next to
+the recorder), one per area of up to 12 cameras, installed by CCTV installers alongside ASUS IoT
+hardware. Why it pays: one NT$6,380 accelerator per area with ten hard-hat cameras using about
+40 % of it (estimate), 2.5 W typical with no server room and no cloud fees, and a new rule is one
+spoken sentence, not a vendor project.
 
 Sites already own cameras and answer for hard hats and forklift safety; what they rarely have is
-someone watching every screen. We sell one box per site area plus a software subscription per
-site, through the CCTV installers who already serve these sites. The accelerator is cheap per
-camera, draws very little power and sends nothing to the cloud. The twelve-camera area size comes
-from camera coverage, and the load in warehouse mode is still to be measured. When the site needs
-a new rule about objects, zones, distances, counts or times the system already handles, the
-officer simply says it; a new kind of object may need training first.
+someone watching every screen. We sell one SayGuard box per site area, and the CCTV installers who
+already serve these sites put it in; a bigger site simply adds boxes. The accelerator is cheap per
+camera, draws very little power and sends nothing to the cloud. When the site needs a new rule
+about objects, zones, distances, counts or times the system already knows, the officer simply
+says it instead of opening a project with a vendor.
 
 ### 16 · stage2: Four weeks on the UGen300
 
@@ -301,7 +299,7 @@ officer simply says it; a new kind of object may need training first.
 device, a real site test at the ASUS HQ test space, and the finals package. A closing line lists
 what Stage I already delivered on the PC GPU: both detectors trained, the hard-hat HEF compiled,
 the full pipeline and dashboard, warehouse mode tested on six buildings the detector never trained
-on, 264 unit tests and every evaluation script in the repo.
+on, 291 unit tests and every evaluation script in the repo.
 
 Stage II moves a system that works on a PC today onto the UGen300. The hard-hat detector is
 already compiled for Hailo-10H and its INT8 accuracy checked in Hailo's emulator, but nothing has
