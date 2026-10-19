@@ -69,7 +69,7 @@ with the 0.939 in the README (a different evaluation).
 ## Load on one UGen300
 
 - **Hard-hat mode, 10 cameras.** Ten cameras at 10 frames/s each make 100 frames/s. On the PC, one
-  batched YOLOv8s analyses about 105 frames/s live. Against Hailo's reference of 252 FPS at batch
+  batched YOLOv8s analyses every one of them live. Against Hailo's reference of 252 FPS at batch
   8, that is about **40 % of one UGen300** (estimate). The rest is left for YOLO-World on cameras
   with object rules and for the double-check, which runs once per alert, not per frame. The
   dashboard shows this estimate live ("Est. UGen300 load").

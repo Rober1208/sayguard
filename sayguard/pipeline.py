@@ -334,9 +334,11 @@ class Pipeline:
         self._win.append((now, n))
         while self._win and now - self._win[0][0] > 2.0:
             self._win.popleft()
-        span = max(0.5, now - self._win[0][0]) if self._win else 1.0
         s = self.stats
-        s["frames_per_s"] = sum(k for _, k in self._win) / span
+        # frames per second over the window: the batches after the oldest one, over the time since it
+        # (counting the oldest batch too divided N batches by N-1 intervals: 105 for 10 x 10 fps)
+        span = now - self._win[0][0] if len(self._win) > 1 else 0.0
+        s["frames_per_s"] = sum(k for _, k in list(self._win)[1:]) / span if span > 0 else 0.0
         s["det_batch_ms"] = 0.9 * s["det_batch_ms"] + 0.1 * t_det * 1000
         s["batch_size"] = 0.9 * s["batch_size"] + 0.1 * n
         s["det_capacity_fps"] = s["batch_size"] / max(1e-4, s["det_batch_ms"] / 1000)
@@ -438,13 +440,19 @@ class Pipeline:
         return now - st.last_proc > self.stale_s
 
     def hailo_estimate(self) -> dict:
+        """Demand against Hailo's published YOLOv8s speeds.  Those are for a 640 px input; a detector
+        run at another size (warehouse mode: 960 px) has no reference, so its load is not estimated."""
         ref = self.cfg.get("hailo_reference", {})
         now = time.time()
         demand = sum(st.fps for st in self.states.values() if not self._stale(st, now))
         b1, b8 = float(ref.get("fps_batch1", 166)), float(ref.get("fps_batch8", 252))
+        imgsz, ref_imgsz = int(self.cfg.get("detector", {}).get("imgsz", 640)), int(ref.get("imgsz", 640))
+        comparable = imgsz == ref_imgsz
         return {"model": ref.get("model", "yolov8s"), "demand_fps": round(demand, 1),
-                "capacity_batch1": b1, "capacity_batch8": b8,
-                "load_batch8_pct": round(100 * demand / b8, 1), "load_batch1_pct": round(100 * demand / b1, 1)}
+                "capacity_batch1": b1, "capacity_batch8": b8, "comparable": comparable,
+                "imgsz": imgsz, "reference_imgsz": ref_imgsz,
+                "load_batch8_pct": round(100 * demand / b8, 1) if comparable else None,
+                "load_batch1_pct": round(100 * demand / b1, 1) if comparable else None}
 
     def _camera_status(self, st: CamState, now: float) -> dict:
         if self._stale(st, now):    # frozen numbers from an offline camera would look live

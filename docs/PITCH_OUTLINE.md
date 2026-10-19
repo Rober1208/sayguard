@@ -247,14 +247,14 @@ and they are deleted after fourteen days unless the site sets a different period
 *On the slide:* A flow from IP cameras / NVR (the RTSP streams the site already records) to a mini
 PC (decoding, tracking, floor plan, rules, dashboard) to the ASUS UGen300 (every neural network,
 USB-C, 2.5 W) to the safety officer. Two figures: about 40 % of one UGen300 for ten hard-hat
-cameras, from about 105 frames/s through one batched detector (estimate), and zero cameras
+cameras, all 100 frames/s through one batched detector (estimate), and zero cameras
 replaced, with one box per area of up to 12 cameras.
 
 Integration is deliberately simple. SayGuard reads the RTSP streams a site already records, so no
 camera or recorder is replaced. A mini PC decodes the video, tracks workers, places them on the
 floor plan, applies the rules and serves the dashboard, and a UGen300 on USB runs every neural
 network. In today's prototype the same software runs on a PC GPU: ten hard-hat cameras go through
-one batched detector at about 105 frames per second, which we estimate at about 40 % of one
+one batched detector, all 100 frames per second, which we estimate at about 40 % of one
 UGen300. A site adds one box per area of up to twelve cameras, with no server room and no cloud.
 
 ### 14 · models: Every job runs on a Hailo-supported model

@@ -13,7 +13,7 @@ published number, and [SETUP.md](../SETUP.md) shows how to re-run them.
 | | Result |
 |---|---|
 | [Hard-hat detector](#hard-hat-detector) | **0.939 mAP50** on 2,001 test images it never saw |
-| [Ten cameras, one detector](#ten-cameras-one-detector) | about **105 frames/s** analysed; about **40 %** of one UGen300 (estimate) |
+| [Ten cameras, one detector](#ten-cameras-one-detector) | every frame analysed, **100 frames/s**; about **40 %** of one UGen300 (estimate) |
 | [Spoken rules](#spoken-rules) | exactly right rule: **95 %** in hard-hat mode, **84 %** and **88 %** on two held-out warehouse sets, against 16–40 % for the LLM alone; mean 347–395 ms per rule on the PC |
 | [Alert double-check](#alert-double-check) | **95.3 %** correct on 193 held-out crops in **15.2 ms**; a generative VLM: 91.7 % in 283 ms |
 | [Daily report actions](#daily-report-actions) | actions aimed at the wrong problem: **20 % → 0 %** (free text vs menu, two blind AI judges) |
@@ -43,7 +43,7 @@ batched YOLOv8s.
 
 | | |
 |---|---|
-| Frames analysed | about **105 per second** |
+| Frames analysed | **100 per second**: every frame of 10 cameras at 10 fps |
 | One batch of 10 frames | 31–40 ms on the PC |
 | Load on one UGen300 | about **40 %** (estimate: 100 frames/s against Hailo's reference of 252 FPS for YOLOv8s at batch 8) |
 | Warehouse mode, 11 cameras | one 11-frame batch at 960 px in about 63–95 ms on the PC |

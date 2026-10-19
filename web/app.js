@@ -50,6 +50,8 @@
       kpi_fps_sub0: "batched across all cameras",
       kpi_load: "Est. UGen300 load",
       kpi_load_caption: "Estimate from Hailo Model Zoo {model} (Hailo-10H, batch 8)",
+      kpi_load_na: "Not measured",
+      kpi_load_na_caption: "No Hailo reference for the {px} px detector; measured in Stage II",
       kpi_load_b1: "Batch 1 capacity: {n} FPS",
       kpi_rules: "Active rules",
       kpi_rules_sub: "of {n} total",
@@ -230,6 +232,8 @@
       kpi_fps_sub0: "所有攝影機批次推論",
       kpi_load: "UGen300 預估負載",
       kpi_load_caption: "依 Hailo Model Zoo {model} 數據估算（Hailo-10H，batch 8）",
+      kpi_load_na: "尚未量測",
+      kpi_load_na_caption: "{px} px 偵測模型沒有 Hailo 參考數據，Stage II 實測",
       kpi_load_b1: "Batch 1 容量：{n} FPS",
       kpi_rules: "啟用中規則",
       kpi_rules_sub: "共 {n} 條",
@@ -731,9 +735,12 @@
     const cap8 = numOr(hl.capacity_batch8, numOr(ref.fps_batch8));
     const cap1 = numOr(hl.capacity_batch1, numOr(ref.fps_batch1));
     const demand = numOr(hl.demand_fps);
-    let pct = numOr(hl.load_batch8_pct);
-    if (pct == null && demand != null && cap8) pct = (100 * demand) / cap8;
-    setText("kLoad", demand != null && cap8 ? `${Math.round(demand)} / ${Math.round(cap8)} FPS` : "–");
+    // warehouse mode runs a 960 px detector: Hailo's 640 px figures do not apply, so no estimate
+    const comparable = hl.comparable !== false;
+    let pct = comparable ? numOr(hl.load_batch8_pct) : null;
+    if (comparable && pct == null && demand != null && cap8) pct = (100 * demand) / cap8;
+    setText("kLoad", !comparable ? t("kpi_load_na")
+      : demand != null && cap8 ? `${Math.round(demand)} / ${Math.round(cap8)} FPS` : "–");
     setText("kLoadPct", pct != null ? `${Math.round(pct)}%` : "");
     const meter = $("kLoadMeter");
     const fill = Math.max(0, Math.min(100, pct || 0));
@@ -742,7 +749,7 @@
     meter.classList.toggle("is-crit", pct != null && pct >= 90);
     meter.setAttribute("aria-valuenow", String(Math.round(fill)));
     const tick = $("kLoadTick");
-    if (cap1 && cap8 && cap1 < cap8) {
+    if (comparable && cap1 && cap8 && cap1 < cap8) {
       tick.style.display = "block";
       tick.style.left = `${(100 * cap1) / cap8}%`;
       tick.title = t("kpi_load_b1", { n: Math.round(cap1) });
@@ -750,7 +757,7 @@
       tick.style.display = "none";
     }
     const model = String(hl.model || ref.model || "yolov8s").replace(/^yolo/i, "YOLO");
-    setText("kLoadCaption", t("kpi_load_caption", { model }));
+    setText("kLoadCaption", comparable ? t("kpi_load_caption", { model }) : t("kpi_load_na_caption", { px: hl.imgsz || "?" }));
 
     const enabled = S.rules.filter((r) => r.enabled !== false).length;
     setText("kRules", S.rulesLoaded ? String(enabled) : "–");

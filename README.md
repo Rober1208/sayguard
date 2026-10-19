@@ -79,7 +79,7 @@ Measured on a PC GPU with the same networks that will run on the Hailo-10H.
 | | |
 |---|---|
 | Hard-hat detector | **0.939 mAP50** on 2,001 images it never saw |
-| Ten cameras, one detector | about **105 frames/s** analysed; about 40 % of one UGen300 (estimate) |
+| Ten cameras, one detector | every frame analysed, **100 frames/s** (10 cameras × 10 fps); about 40 % of one UGen300 (estimate) |
 | Spoken rule → exactly right rule | **95 %** (construction site) and **84–88 %** (warehouse), against 16–40 % for the LLM alone |
 | Alert double-check (Jev-style yes/no model) | **95.3 %** correct on held-out crops in **15 ms**; a generative VLM: 91.7 % in 283 ms |
 | Warehouse mode, six synthetic test warehouses the detector never trained on | head count off by **0.05–1.7 people** (summing cameras: up to 60); door and dock zones covered **100 %** of entries with **no false alerts**; forklift 3 m rule covered **92 %** of events |
