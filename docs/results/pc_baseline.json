@@ -1,0 +1,25 @@
+{
+ "weights": "helmet_yolov8s.pt (PyTorch, fp32)",
+ "images": 2001,
+ "instances": 5517,
+ "deploy": {
+  "mAP50-95": 0.5663,
+  "mAP50": 0.8927,
+  "helmet_mAP50": 0.9035,
+  "head_mAP50": 0.8819,
+  "conf": 0.2,
+  "iou": 0.7,
+  "max_det": 200,
+  "seconds": 137.2
+ },
+ "full": {
+  "mAP50-95": 0.585,
+  "mAP50": 0.9245,
+  "helmet_mAP50": 0.9326,
+  "head_mAP50": 0.9164,
+  "conf": 0.001,
+  "iou": 0.7,
+  "max_det": 300,
+  "seconds": 67.1
+ }
+}

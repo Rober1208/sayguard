@@ -172,3 +172,112 @@ class VideoSource:
             elif got == 0:
                 self.online = False
                 self._wait(FILE_EMPTY_RETRY_S)
+
+
+class SyncedFileGroup:
+    """Video files recorded at the same moment by calibrated cameras, played frame-locked.
+
+    Independent readers drift apart by a frame or more within minutes, and floor-plan fusion
+    needs every camera at the same instant: a worker walking at 1.5 m/s moves 0.15 m per frame
+    at 10 fps.  So one thread reads frame k of every file and publishes them together; at the
+    end of the shortest file all of them rewind together (loop + 1).  Each camera is exposed as
+    a view with the VideoSource interface, so the pipeline batches them like any camera."""
+
+    def __init__(self, files: dict[str, str], fps: float | None = None):
+        self.files = files
+        self.fps = fps
+        self.native_fps = 0.0
+        self.online = False
+        self._latest: dict[str, FramePacket] = {}
+        self._lock = threading.Lock()
+        self._stop = threading.Event()
+        self._thread = threading.Thread(target=self._run, name="src-synced-group", daemon=True)
+        self._started = False
+        self.views = {cam: _GroupView(self, cam) for cam in files}
+
+    def start(self) -> "SyncedFileGroup":
+        if not self._started:
+            self._started = True
+            self._thread.start()
+        return self
+
+    def stop(self) -> None:
+        self._stop.set()
+
+    def latest(self, cam_id: str) -> FramePacket | None:
+        with self._lock:
+            return self._latest.get(cam_id)
+
+    def _run(self) -> None:
+        while not self._stop.is_set():
+            caps = {cam: cv2.VideoCapture(str(path)) for cam, path in self.files.items()}
+            bad = [cam for cam, c in caps.items() if not c.isOpened()]
+            if bad:
+                for c in caps.values():
+                    c.release()
+                self.online = False
+                log.warning("synced group: cannot open %s", ", ".join(bad))
+                self._stop.wait(FILE_RETRY_S)
+                continue
+            rates = [c.get(cv2.CAP_PROP_FPS) or 10.0 for c in caps.values()]
+            self.native_fps = min(r for r in rates if 1 <= r <= 120) if any(1 <= r <= 120 for r in rates) else 10.0
+            period = 1.0 / (self.fps or self.native_fps)
+            idx = pos = loop = 0
+            nxt = time.perf_counter()
+            self.online = True
+            while not self._stop.is_set():
+                frames = {}
+                for cam, c in caps.items():
+                    ok, frame = c.read()
+                    if not ok:
+                        break
+                    frames[cam] = frame
+                if len(frames) < len(caps):          # end of the shortest file: rewind every file
+                    if pos == 0 or not all(c.set(cv2.CAP_PROP_POS_FRAMES, 0) for c in caps.values()):
+                        break                         # nothing readable, or cannot rewind: reopen
+                    pos, loop = 0, loop + 1
+                    continue
+                idx += 1
+                ts = time.time()
+                with self._lock:
+                    self._latest = {cam: FramePacket(cam, idx, ts, f, pos=pos, loop=loop) for cam, f in frames.items()}
+                pos += 1
+                nxt += period
+                delay = nxt - time.perf_counter()
+                if delay > 0:
+                    time.sleep(delay)
+                else:
+                    nxt = time.perf_counter()
+            for c in caps.values():
+                c.release()
+            self.online = False
+            if not self._stop.is_set():
+                self._stop.wait(FILE_EMPTY_RETRY_S)
+
+
+class _GroupView:
+    """One camera of a SyncedFileGroup, with the VideoSource interface."""
+    kind = "file"
+    live = False
+
+    def __init__(self, group: SyncedFileGroup, cam_id: str):
+        self.group, self.cam_id = group, cam_id
+        self.source = group.files[cam_id]
+
+    @property
+    def online(self) -> bool:
+        return self.group.online
+
+    @property
+    def native_fps(self) -> float:
+        return self.group.native_fps
+
+    def start(self) -> "_GroupView":
+        self.group.start()
+        return self
+
+    def stop(self) -> None:
+        self.group.stop()
+
+    def latest(self) -> FramePacket | None:
+        return self.group.latest(self.cam_id)

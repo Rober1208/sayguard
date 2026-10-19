@@ -1,0 +1,29 @@
+<section id="site" data-transition="fade" style="background:#12161C;color:#F3F0E8;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F2B233;letter-spacing:2px">WAREHOUSE MODE</p>
+<h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">Every camera on one floor plan</h2>
+</div>
+<div style="display:flex;gap:48px;flex:1">
+<img src="/_blob/9aea022c424b0b303e36cef36865de7b" alt="SayGuard warehouse mode dashboard: a floor plan tile where each worker is counted once, eleven camera tiles, and alerts such as Worker within 3 m of a forklift and Worker in aisle 7" style="width:1080px;height:608px;object-fit:contain;border-radius:12px;border:1px solid #2C3440">
+<div style="flex:1;display:flex;flex-direction:column;gap:22px">
+<div style="display:flex;flex-direction:column;gap:4px;padding-left:24px;border-left:6px solid #F2B233">
+<h3 style="font-family:Rubik, Arial, sans-serif;font-size:32px;font-weight:600">Each worker counted once, not once per camera</h3>
+<p style="font-size:26px;line-height:1.35;color:#A7B0BC">Warehouse_010, people on average: 24.97 present, 26.56 counted, 51.64 if cameras are summed</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px;padding-left:24px;border-left:6px solid #5AA2E6">
+<h3 style="font-family:Rubik, Arial, sans-serif;font-size:32px;font-weight:600">Zones drawn on the plan</h3>
+<p style="font-size:26px;line-height:1.35;color:#A7B0BC">Distances to forklifts in metres; median error 0.2 m on Warehouse_010</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px;padding-left:24px;border-left:6px solid #5AA2E6">
+<h3 style="font-family:Rubik, Arial, sans-serif;font-size:32px;font-weight:600">One alert per worker per entry, not one per camera</h3>
+<p style="font-size:26px;line-height:1.35;color:#A7B0BC">Lit in every camera that sees them</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px;padding-left:24px;border-left:6px solid #5AA2E6">
+<h3 style="font-family:Rubik, Arial, sans-serif;font-size:32px;font-weight:600">Rules use zone names</h3>
+<p style="font-size:26px;line-height:1.35;color:#A7B0BC">Say “aisle 7” or “七號走道”: the rule lands on that zone</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7D8794">SayGuard · Stage I proposal · 10 · docs/results/site_eval.json · synthetic warehouses: NVIDIA PhysicalAI-SmartSpaces (CC BY 4.0)</p>
+<aside>This is warehouse mode, running on Warehouse_010, the synthetic warehouse we use as our demo scene. Instead of judging each camera on its own, SayGuard places every detection on one floor plan, so a worker seen by several cameras is one dot and one count, not one per camera, and each entry into a zone raises one alert, not one per camera. Summing cameras counts many workers twice or more; the floor plan stays close to the truth. Zones are drawn once on the plan, forklift distances are measured in metres, and the officer can speak a rule using the zone names the site already uses.</aside>
+</section>

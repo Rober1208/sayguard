@@ -1,0 +1,41 @@
+{
+ "test_crops": {
+  "helmet": 94,
+  "head": 99
+ },
+ "train_crops": 2950,
+ "results": [
+  {
+   "method": "clip_zeroshot",
+   "accuracy": 0.886,
+   "false_alarm_filter_rate": 0.862,
+   "violation_confirm_rate": 0.909,
+   "ms_per_crop_pc": 3.49
+  },
+  {
+   "method": "clip_probe",
+   "accuracy": 0.953,
+   "false_alarm_filter_rate": 0.968,
+   "violation_confirm_rate": 0.939,
+   "ms_per_crop_pc": 3.49,
+   "val_accuracy": 0.95,
+   "weight_decay": 0.0001
+  },
+  {
+   "method": "resnet18",
+   "accuracy": 0.953,
+   "false_alarm_filter_rate": 0.979,
+   "violation_confirm_rate": 0.929,
+   "ms_per_crop_pc": 1.7,
+   "val_accuracy": 0.976
+  },
+  {
+   "method": "qwen2_vl_2b (generative)",
+   "accuracy": 0.917,
+   "false_alarm_filter_rate": 0.894,
+   "violation_confirm_rate": 0.939,
+   "ms_per_crop_pc": 160
+  }
+ ],
+ "note": "PC timings: CLIP/ResNet batched, VLM one crop at a time. Same held-out crops as eval_vlm.py."
+}

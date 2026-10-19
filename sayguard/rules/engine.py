@@ -28,7 +28,7 @@ from pathlib import Path
 from pydantic import ValidationError
 
 from ..types import Detection, Person
-from .model import Rule
+from .model import Rule, canon_label
 
 log = logging.getLogger("sayguard.rules")
 
@@ -80,6 +80,38 @@ class CameraInfo:
     id: str
     name: str
     zone: str
+    zones: list[str] = field(default_factory=list)   # site mode: floor-plan zones this camera sees
+
+    @property
+    def all_zones(self) -> list[str]:
+        return [self.zone, *self.zones]
+
+
+SITE = "site"   # the pseudo camera that site-mode rules are evaluated on (one subject per worker)
+
+
+@dataclass
+class SiteSubject:
+    """A worker on the floor plan: one global id, whichever cameras see them."""
+    gid: int
+    xy: tuple[float, float]
+    zones: list[str]
+    cams: list[str]
+    box: tuple | None = None         # pixel box, only for per-camera evaluation (cam_id != SITE)
+
+
+@dataclass
+class SiteObject:
+    label: str
+    xy: tuple[float, float]
+    zones: list[str]
+    cams: list[str]
+    distance_to: object = None       # callable(xy) -> metres to the nearest ground contact, else centre distance
+
+    def dist(self, xy) -> float:
+        if callable(self.distance_to):
+            return float(self.distance_to(xy))
+        return float(((self.xy[0] - xy[0]) ** 2 + (self.xy[1] - xy[1]) ** 2) ** 0.5)
 
 
 @dataclass
@@ -87,6 +119,7 @@ class _Hit:
     first: float
     last: float
     box: tuple[int, int, int, int] | None = None
+    reentry: bool = False          # site presence: started after the worker was out for SITE_REENTRY_S
 
 
 @dataclass
@@ -106,6 +139,10 @@ class EvalResult:
     active: dict[str, list[tuple[str, float, str]]] = field(default_factory=dict)
     # object boxes that take part in an active proximity rule, with the person box they are near
     links: list[tuple[tuple, tuple, float]] = field(default_factory=list)
+    # site mode: (worker gid, object floor xy, metres) for active proximity rules, drawn on the plan
+    site_links: list[tuple[int, tuple[float, float], float]] = field(default_factory=list)
+    # site mode, site-wide rules (count, object present): rule id -> cameras that see what triggered it
+    site_scope: dict[str, list[str]] = field(default_factory=dict)
 
 
 def rect_gap(a: tuple, b: tuple) -> float:
@@ -116,6 +153,15 @@ def rect_gap(a: tuple, b: tuple) -> float:
 
 
 SAME_PLACE_IOU = 0.4    # a new track this close to a person alerted within the cooldown is that person
+SITE_SAME_PLACE_M = 1.5 # site mode: a new worker id is a worker alerted within the cooldown if it is this
+                        # close to them while they are still tracked (a second id on one person), or, once
+                        # their id is gone (hidden, re-detected), this close to where they were alerted ...
+SITE_REAPPEAR_S = 10.0  # ... within this long of losing them (the tracker itself forgets after 6 s), or
+SITE_HANDOVER_S = 3.0   # near where they were last seen within this long, the radius growing at walking
+SITE_WALK_MPS = 1.0     # pace.  Anyone else, e.g. the next worker down the same aisle, is someone else
+SITE_REENTRY_S = 10.0   # site presence rules: back in the zone after this long outside is a new entry and
+                        # alerts again, cooldown or not (the cooldown spaces reminders while someone stays;
+                        # it must not carry over to whoever an id is on next)
 CAMERA_MIN_GAP_S = 15.0 # per-person alerts on one camera: at most one per rule per 15 s unless more people violate
 
 
@@ -139,6 +185,10 @@ class RuleEngine:
         # (rule, camera) -> [(ts, box)] of recent per-person alerts, to catch track-id switches
         self._fired_boxes: dict[tuple[str, str], list[tuple[float, tuple]]] = {}
         self._cam_fire: dict[tuple[str, str], tuple[float, int]] = {}   # (rule, camera) -> (ts, people) of last alert
+        # site alerts: rule -> worker key -> [alert ts, last seen ts, last seen xy, alert xy]
+        self._site_fired: dict[str, dict[str, list]] = {}
+        self._site_present: set[str] = set()                              # worker keys in the current tick
+        self._site_seen: dict[tuple[str, str, str], float] = {}           # presence hit -> last tick it held
         self._lock = threading.RLock()
         self.version = 0
 
@@ -161,6 +211,7 @@ class RuleEngine:
                     del self._fired_boxes[k]
                 for k in [k for k in self._cam_fire if k[0] == rule_id]:
                     del self._cam_fire[k]
+                self._site_fired.pop(rule_id, None)
                 self._changed()
             return ok
 
@@ -248,7 +299,15 @@ class RuleEngine:
 
         Empty means the rule can never fire anywhere, whatever the time.
         """
-        return [c.id for c in self.cameras.values() if rule.covers(c.id, c.zone)]
+        return [c.id for c in self.cameras.values() if rule.covers_any(c.id, c.all_zones)]
+
+    def objects_for_site(self) -> set[str]:
+        """Object classes that enabled site-mode rules need now.  Every camera looks for them: a
+        zone is a region of the floor plan, not a camera."""
+        with self._lock:
+            now = time.localtime()
+            return {canon_label(r.object) for r in self.rules.values() if r.object and r.enabled
+                    and r.type.startswith("object") and (not r.time_window or r.time_window.contains(now))}
 
     def objects_for_camera(self, cam_id: str) -> set[str]:
         cam = self.cameras[cam_id]
@@ -304,6 +363,72 @@ class RuleEngine:
             self._expire(cam_id, ts, grace)
         return res
 
+    def evaluate_site(self, ts: float, workers: list[SiteSubject], objects: list[SiteObject],
+                      frame_dt: float | None = None, cam_id: str = SITE) -> EvalResult:
+        """Site mode: rules over workers on the floor plan.  A worker is one subject however many
+        cameras see them (key "g<gid>"), so a rule fires once per person, not once per camera;
+        zones are floor-plan regions; distances are metres on the floor.  Hard-hat rules need the
+        PPE detector's head boxes and are not evaluated here.
+
+        cam_id = a real camera id instead evaluates one camera's own tracks the way the
+        per-camera pipeline does (keys "t<track>", one "cam" subject for presence rules, and the
+        per-camera duplicate guards): scripts/eval_site.py uses it as the baseline."""
+        res = EvalResult()
+        grace = grace_for(frame_dt)
+        per_cam = cam_id != SITE
+        key_of = (lambda w: f"t{w.gid}") if per_cam else (lambda w: f"g{w.gid}")
+        place_of = (lambda w: w.box) if per_cam else (lambda w: tuple(w.xy))
+        whole = "cam" if per_cam else SITE
+
+        def in_scope(rule: Rule, cams: list[str], zones: list[str]) -> bool:
+            if "*" not in rule.cameras and not any(c in rule.cameras for c in cams):
+                return False
+            if rule.zones and not any(z in rule.zones for z in zones):
+                return False
+            return not any(z in rule.zones_exclude for z in zones)
+
+        with self._lock:
+            now = time.localtime(ts)
+            rules = [r for r in self.rules.values()
+                     if r.enabled and (not r.time_window or r.time_window.contains(now))]
+            if not per_cam:
+                # follow every alerted worker wherever they are, in a rule's scope or not
+                present = {key_of(w): tuple(w.xy) for w in workers}
+                self._site_present = set(present)
+                for entries in self._site_fired.values():
+                    for k, e in entries.items():
+                        if k in present:
+                            e[1:3] = [ts, present[k]]
+            for rule in rules:
+                active: dict[str, tuple[int | None, tuple | None, str]] = {}
+                subs = [w for w in workers if in_scope(rule, w.cams, w.zones)]
+                obj = canon_label(rule.object)
+                if rule.type == "person_present":
+                    if per_cam and subs:
+                        active[whole] = (None, None, f"{len(subs)} person(s)")
+                    elif not per_cam:
+                        for w in subs:
+                            active[key_of(w)] = (w.gid, place_of(w), f"in {w.zones[0]}" if w.zones else "")
+                elif rule.type == "person_count_over":
+                    if len(subs) > (rule.threshold or 0):
+                        active[whole] = (None, None, f"{len(subs)} people > {int(rule.threshold or 0)}")
+                        res.site_scope[rule.id] = sorted({c for w in subs for c in w.cams})
+                elif rule.type == "object_present":
+                    hits = [o for o in objects if o.label == obj and in_scope(rule, o.cams, o.zones)]
+                    if hits:
+                        active[whole] = (None, None, f"{rule.object} x{len(hits)}")
+                        res.site_scope[rule.id] = sorted({c for o in hits for c in o.cams})
+                elif rule.type == "object_near_person":
+                    objs = [o for o in objects if o.label == obj]
+                    for w in subs:
+                        best = min(((o.dist(w.xy), o) for o in objs), default=None, key=lambda t: t[0])
+                        if best and best[0] <= (rule.threshold or 0):
+                            active[key_of(w)] = (w.gid, place_of(w), f"{rule.object} {best[0]:.1f} m")
+                            res.site_links.append((w.gid, tuple(best[1].xy), best[0]))
+                self._update(rule, cam_id, ts, active, res, grace)
+            self._expire(cam_id, ts, grace)
+        return res
+
     def _update(self, rule: Rule, cam_id: str, ts: float, active: dict, res: EvalResult,
                 grace: float = GRACE_S) -> None:
         n_people = sum(1 for k in active if k != "cam")
@@ -311,13 +436,50 @@ class RuleEngine:
             hk = (rule.id, cam_id, key)
             hit = self._hits.get(hk)
             if hit is None or ts - hit.last > grace:
-                hit = self._hits[hk] = _Hit(first=ts, last=ts, box=box)
+                first = ts
+                if cam_id == SITE and key != SITE and box is not None:
+                    # a worker whose global id just changed carries on the condition it was already
+                    # in: its duration counts from when the previous id at this spot started
+                    prev = [h for (r, c, k), h in self._hits.items()
+                            if r == rule.id and c == SITE and k != key and k != SITE and h.box is not None
+                            and ts - h.last <= max(grace, 2.0)
+                            and ((h.box[0] - box[0]) ** 2 + (h.box[1] - box[1]) ** 2) ** 0.5 < SITE_SAME_PLACE_M]
+                    if prev:
+                        first = min(h.first for h in prev)
+                reentry = (cam_id == SITE and rule.type == "person_present" and key != SITE
+                           and ts - self._site_seen.get(hk, -1e9) >= SITE_REENTRY_S)
+                hit = self._hits[hk] = _Hit(first=first, last=ts, box=box, reentry=reentry)
             hit.last, hit.box = ts, box
+            if cam_id == SITE and rule.type == "person_present":
+                self._site_seen[hk] = ts
             dur = ts - hit.first
             res.active.setdefault(key, []).append((rule.name, dur, rule.severity))
-            if dur >= rule.min_duration_s and ts - self._last_fire.get(hk, -1e9) >= rule.cooldown_s:
+            last_fire = self._last_fire.get(hk, -1e9)
+            new_entry = hit.reentry and last_fire < hit.first
+            if dur >= rule.min_duration_s and (ts - last_fire >= rule.cooldown_s or new_entry):
                 self._last_fire[hk] = ts
-                if key != "cam":
+                if cam_id == SITE and key != SITE and box is not None:
+                    # a worker whose global id changed (hidden behind a rack, re-detected, or a
+                    # second id on the same person) is still the worker alerted moments ago
+                    def near(p, slack=0.0):
+                        return ((box[0] - p[0]) ** 2 + (box[1] - p[1]) ** 2) ** 0.5 < SITE_SAME_PLACE_M + slack
+
+                    def same_worker(k, e):
+                        if k in self._site_present:              # still tracked: only a second id on them
+                            return near(e[2])
+                        gone = ts - e[1]
+                        return ((gone <= SITE_REAPPEAR_S and near(e[3]))
+                                or (gone <= SITE_HANDOVER_S and near(e[2], SITE_WALK_MPS * gone)))
+                    recent = self._site_fired.setdefault(rule.id, {})
+                    same = [e for k, e in recent.items()
+                            if k != key and ts - e[0] < rule.cooldown_s and same_worker(k, e)]
+                    if same:
+                        first = max(same, key=lambda e: e[0])
+                        self._last_fire[hk] = first[0]     # their cooldown runs from that alert, not from now
+                        recent[key] = [first[0], ts, box, first[3]]
+                        continue
+                    recent[key] = [ts, ts, box, box]
+                if key not in ("cam", SITE) and cam_id != SITE:   # site keys are global ids already
                     if box is not None and self._same_place(rule, cam_id, ts, box):
                         continue   # same person under a new track id (occlusion, id switch, looped clip)
                     last_t, last_n = self._cam_fire.get((rule.id, cam_id), (-1e9, 0))
@@ -335,6 +497,9 @@ class RuleEngine:
     def _expire(self, cam_id: str, ts: float, grace: float = GRACE_S) -> None:
         for hk in [k for k, h in self._hits.items() if k[1] == cam_id and ts - h.last > grace]:
             del self._hits[hk]
+        if cam_id == SITE:
+            for hk in [k for k, t in self._site_seen.items() if ts - t > SITE_REENTRY_S]:
+                del self._site_seen[hk]
         # fire history only matters within a rule's cooldown; drop it afterwards (long-running service)
         for hk in [k for k, t in self._last_fire.items() if k[1] == cam_id and
                    ts - t > (self.rules[k[0]].cooldown_s if k[0] in self.rules else 0)]:
@@ -348,3 +513,11 @@ class RuleEngine:
                 del self._fired_boxes[fk]
         for ck in [k for k, (t, _) in self._cam_fire.items() if k[1] == cam_id and ts - t > CAMERA_MIN_GAP_S]:
             del self._cam_fire[ck]
+        if cam_id == SITE:
+            for rid in list(self._site_fired):
+                cd = self.rules[rid].cooldown_s if rid in self.rules else 0
+                kept = {k: e for k, e in self._site_fired[rid].items() if ts - e[0] < cd}
+                if kept:
+                    self._site_fired[rid] = kept
+                else:
+                    del self._site_fired[rid]

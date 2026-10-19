@@ -1,10 +1,14 @@
 """UGen300 backend (Stage II): the same YOLOv8s compiled to a HEF for Hailo-10H,
-run through HailoRT's InferModel API with on-chip NMS.
+run through HailoRT's InferModel API.
 
-STATUS: written against the HailoRT 5.x Python API but NOT yet run on hardware
-(the accelerator is shipped to Stage II teams).  The HEF is produced from
-models/helmet_yolov8s.onnx with the Hailo Dataflow Compiler using the Hailo
-Model Zoo yolov8s recipe (2 classes, NMS on chip).
+The HEF comes from hailo/build_helmet.py (Hailo Dataflow Compiler 5.4, the Hailo Model Zoo
+yolov8s recipe with 2 classes): the network runs on the chip in INT8; the box decoding and
+per-class NMS (score >= 0.2, IoU 0.7, <= 100 boxes per class) are embedded in the HEF and run
+by HailoRT on the host CPU (`nms_postprocess(..., engine=cpu)`), as in the Model Zoo build.
+
+STATUS: the HEF is built and its INT8 accuracy checked in the DFC emulator, but this
+module is written against the HailoRT 5.x Python API and NOT yet run on hardware (the
+accelerator is shipped to Stage II teams).
 """
 from __future__ import annotations
 
@@ -30,7 +34,7 @@ def _iou(a: tuple[float, float, float, float], b: tuple[float, float, float, flo
 def merge_cross_class(dets: list[Detection], iou_thr: float = CROSS_CLASS_IOU) -> list[Detection]:
     """Keep only the higher-scoring box where a helmet and a head box cover the same head.
 
-    The on-chip NMS is per class, so an ambiguous head can come out as both 'helmet' and
+    The HEF's NMS is per class, so an ambiguous head can come out as both 'helmet' and
     'head'; the tracker would make two people of it (the PC backend uses agnostic NMS for
     the same reason)."""
     kept: list[Detection] = []
@@ -41,7 +45,8 @@ def merge_cross_class(dets: list[Detection], iou_thr: float = CROSS_CLASS_IOU) -
 
 
 class HailoDetector:
-    def __init__(self, hef_path: str, conf: float = 0.35, batch_size: int = 8):
+    def __init__(self, hef_path: str, conf: float = 0.35, batch_size: int = 8, labels: list[str] | None = None):
+        """labels: the HEF's class names in order (default: the hard-hat model's helmet/head)."""
         from hailo_platform import FormatType, HailoSchedulingAlgorithm, VDevice
 
         params = VDevice.create_params()
@@ -54,7 +59,9 @@ class HailoDetector:
         self.h, self.w = self.model.input().shape[:2]
         self.conf = conf
         self.batch_size = batch_size
-        self.name = f"YOLOv8s-helmet (HailoRT, Hailo-10H, batch {batch_size})"
+        self.labels = list(labels) if labels else list(LABELS)
+        self.ppe = self.labels == LABELS
+        self.name = f"YOLOv8s-{'helmet' if self.ppe else 'site'} (HailoRT, Hailo-10H, batch {batch_size})"
 
     def _letterbox(self, img: np.ndarray) -> tuple[np.ndarray, float, int, int]:
         H, W = img.shape[:2]
@@ -91,5 +98,7 @@ class HailoDetector:
                     continue
                 X1, Y1 = (x1 * self.w - dx) / s, (y1 * self.h - dy) / s
                 X2, Y2 = (x2 * self.w - dx) / s, (y2 * self.h - dy) / s
-                dets.append(Detection((float(X1), float(Y1), float(X2), float(Y2)), LABELS[cls], float(score)))
-        return merge_cross_class(dets)
+                if cls < len(self.labels):
+                    dets.append(Detection((float(X1), float(Y1), float(X2), float(Y2)), self.labels[cls], float(score)))
+        # helmet and head are two states of one head; other classes are different objects
+        return merge_cross_class(dets) if self.ppe else dets

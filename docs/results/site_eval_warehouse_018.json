@@ -1,0 +1,238 @@
+{
+ "scene": "train/Warehouse_018",
+ "frames": 3000,
+ "fps": 10.0,
+ "cameras": 3,
+ "detector": "@work/models/site_yolov8s.pt",
+ "identity": {
+  "mota": 0.953,
+  "motp": 0.231,
+  "idf1": 0.977,
+  "idp": 0.955,
+  "idr": 1.0,
+  "num_switches": 0,
+  "num_fragmentations": 0,
+  "precision": 0.955,
+  "recall": 1.0,
+  "num_unique_objects": 1,
+  "mostly_tracked": 1,
+  "sequential_ids_per_person": {
+   "mean": 1.0,
+   "median": 1.0
+  },
+  "ids_ever_on_a_person": {
+   "mean": 1.0,
+   "median": 1.0
+  },
+  "duplicate_person_frames_pct": 0.0
+ },
+ "counting": {
+  "true_mean": 1.0,
+  "unique_workers_mean": 1.05,
+  "camera_sum_mean": 2.76,
+  "unique_abs_error_mean": 0.05,
+  "camera_sum_abs_error_mean": 1.76
+ },
+ "alerts": {
+  "site": {
+   "Keep 3 m from forklifts": {
+    "events": 8,
+    "events_alerted": 4,
+    "recall": 0.5,
+    "events_in_cooldown": 4,
+    "recall_with_cooldown": 1.0,
+    "alerts": 5,
+    "alerts_on_events": 4,
+    "false_alerts": 1,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: staging_west_walkway": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   },
+   "Zone check: loading_dock_staging": {
+    "events": 10,
+    "events_alerted": 10,
+    "recall": 1.0,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 1.0,
+    "alerts": 10,
+    "alerts_on_events": 10,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: north_open_floor": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   }
+  },
+  "camera": {
+   "Keep 3 m from forklifts": {
+    "events": 8,
+    "events_alerted": 4,
+    "recall": 0.5,
+    "events_in_cooldown": 4,
+    "recall_with_cooldown": 1.0,
+    "alerts": 7,
+    "alerts_on_events": 6,
+    "false_alerts": 1,
+    "alerts_per_alerted_event": 1.5
+   },
+   "Zone check: staging_west_walkway": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 3,
+    "alerts_on_events": 0,
+    "false_alerts": 3,
+    "alerts_per_alerted_event": null
+   },
+   "Zone check: loading_dock_staging": {
+    "events": 10,
+    "events_alerted": 5,
+    "recall": 0.5,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.5,
+    "alerts": 15,
+    "alerts_on_events": 15,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 3.0
+   },
+   "Zone check: north_open_floor": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   }
+  }
+ },
+ "alerts_in_view": {
+  "site": {
+   "Keep 3 m from forklifts": {
+    "events": 8,
+    "events_alerted": 4,
+    "recall": 0.5,
+    "events_in_cooldown": 4,
+    "recall_with_cooldown": 1.0,
+    "alerts": 5,
+    "alerts_on_events": 4,
+    "false_alerts": 1,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: staging_west_walkway": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   },
+   "Zone check: loading_dock_staging": {
+    "events": 10,
+    "events_alerted": 10,
+    "recall": 1.0,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 1.0,
+    "alerts": 10,
+    "alerts_on_events": 10,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: north_open_floor": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   }
+  },
+  "camera": {
+   "Keep 3 m from forklifts": {
+    "events": 8,
+    "events_alerted": 4,
+    "recall": 0.5,
+    "events_in_cooldown": 4,
+    "recall_with_cooldown": 1.0,
+    "alerts": 7,
+    "alerts_on_events": 6,
+    "false_alerts": 1,
+    "alerts_per_alerted_event": 1.5
+   },
+   "Zone check: staging_west_walkway": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 3,
+    "alerts_on_events": 0,
+    "false_alerts": 3,
+    "alerts_per_alerted_event": null
+   },
+   "Zone check: loading_dock_staging": {
+    "events": 10,
+    "events_alerted": 5,
+    "recall": 0.5,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.5,
+    "alerts": 15,
+    "alerts_on_events": 15,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 3.0
+   },
+   "Zone check: north_open_floor": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   }
+  }
+ },
+ "in_view_px": 40.0,
+ "forklift_detection": {
+  "forklift_frames_visible": 5956,
+  "detected": 1004,
+  "rate": 0.169
+ },
+ "forklift_distance": {
+  "pairs": 358,
+  "pairs_forklift_not_detected": 2642,
+  "mae_m": 0.65,
+  "median_abs_error_m": 0.45,
+  "mean_signed_error_m": -0.02
+ },
+ "note": "Ground truth never enters the pipeline. Per-camera mode = same detections and floor distances, but each camera track alerts on its own (no cross-camera identity)."
+}

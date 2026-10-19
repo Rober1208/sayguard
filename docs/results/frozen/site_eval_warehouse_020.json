@@ -1,0 +1,282 @@
+{
+ "scene": "val/Warehouse_020",
+ "frames": 3000,
+ "fps": 10.0,
+ "cameras": 16,
+ "detector": "@work/models/site_yolov8s.pt",
+ "identity": {
+  "mota": 0.168,
+  "motp": 0.348,
+  "idf1": 0.158,
+  "idp": 0.171,
+  "idr": 0.147,
+  "num_switches": 1700,
+  "num_fragmentations": 2178,
+  "precision": 0.605,
+  "recall": 0.519,
+  "num_unique_objects": 60,
+  "mostly_tracked": 4,
+  "sequential_ids_per_person": {
+   "mean": 22.32,
+   "median": 21.0
+  },
+  "ids_ever_on_a_person": {
+   "mean": 27.86,
+   "median": 25.0
+  },
+  "duplicate_person_frames_pct": 2.63
+ },
+ "counting": {
+  "true_mean": 49.02,
+  "unique_workers_mean": 42.1,
+  "camera_sum_mean": 97.13,
+  "unique_abs_error_mean": 7.19,
+  "camera_sum_abs_error_mean": 48.11
+ },
+ "alerts": {
+  "site": {
+   "Keep 3 m from forklifts": {
+    "events": 95,
+    "events_alerted": 29,
+    "recall": 0.305,
+    "events_in_cooldown": 23,
+    "recall_with_cooldown": 0.547,
+    "alerts": 47,
+    "alerts_on_events": 32,
+    "false_alerts": 15,
+    "alerts_per_alerted_event": 1.1
+   },
+   "Zone check: pallet_row_aisle": {
+    "events": 18,
+    "events_alerted": 9,
+    "recall": 0.5,
+    "events_in_cooldown": 3,
+    "recall_with_cooldown": 0.667,
+    "alerts": 10,
+    "alerts_on_events": 9,
+    "false_alerts": 1,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: pallet_staging_bays": {
+    "events": 28,
+    "events_alerted": 16,
+    "recall": 0.571,
+    "events_in_cooldown": 2,
+    "recall_with_cooldown": 0.643,
+    "alerts": 24,
+    "alerts_on_events": 18,
+    "false_alerts": 6,
+    "alerts_per_alerted_event": 1.12
+   },
+   "Zone check: conveyor_work_cell": {
+    "events": 13,
+    "events_alerted": 8,
+    "recall": 0.615,
+    "events_in_cooldown": 1,
+    "recall_with_cooldown": 0.692,
+    "alerts": 17,
+    "alerts_on_events": 12,
+    "false_alerts": 5,
+    "alerts_per_alerted_event": 1.5
+   },
+   "Zone check: conveyor_side_walkway": {
+    "events": 3,
+    "events_alerted": 3,
+    "recall": 1.0,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 1.0,
+    "alerts": 3,
+    "alerts_on_events": 3,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   }
+  },
+  "camera": {
+   "Keep 3 m from forklifts": {
+    "events": 95,
+    "events_alerted": 30,
+    "recall": 0.316,
+    "events_in_cooldown": 9,
+    "recall_with_cooldown": 0.411,
+    "alerts": 73,
+    "alerts_on_events": 54,
+    "false_alerts": 19,
+    "alerts_per_alerted_event": 1.8
+   },
+   "Zone check: pallet_row_aisle": {
+    "events": 18,
+    "events_alerted": 4,
+    "recall": 0.222,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.222,
+    "alerts": 22,
+    "alerts_on_events": 20,
+    "false_alerts": 2,
+    "alerts_per_alerted_event": 5.0
+   },
+   "Zone check: pallet_staging_bays": {
+    "events": 28,
+    "events_alerted": 14,
+    "recall": 0.5,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.5,
+    "alerts": 32,
+    "alerts_on_events": 31,
+    "false_alerts": 1,
+    "alerts_per_alerted_event": 2.21
+   },
+   "Zone check: conveyor_work_cell": {
+    "events": 13,
+    "events_alerted": 9,
+    "recall": 0.692,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.692,
+    "alerts": 18,
+    "alerts_on_events": 18,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 2.0
+   },
+   "Zone check: conveyor_side_walkway": {
+    "events": 3,
+    "events_alerted": 3,
+    "recall": 1.0,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 1.0,
+    "alerts": 8,
+    "alerts_on_events": 8,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 2.67
+   }
+  }
+ },
+ "alerts_in_view": {
+  "site": {
+   "Keep 3 m from forklifts": {
+    "events": 53,
+    "events_alerted": 25,
+    "recall": 0.472,
+    "events_in_cooldown": 10,
+    "recall_with_cooldown": 0.66,
+    "alerts": 43,
+    "alerts_on_events": 28,
+    "false_alerts": 15,
+    "alerts_per_alerted_event": 1.12
+   },
+   "Zone check: pallet_row_aisle": {
+    "events": 18,
+    "events_alerted": 9,
+    "recall": 0.5,
+    "events_in_cooldown": 3,
+    "recall_with_cooldown": 0.667,
+    "alerts": 10,
+    "alerts_on_events": 9,
+    "false_alerts": 1,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: pallet_staging_bays": {
+    "events": 16,
+    "events_alerted": 9,
+    "recall": 0.562,
+    "events_in_cooldown": 3,
+    "recall_with_cooldown": 0.75,
+    "alerts": 15,
+    "alerts_on_events": 9,
+    "false_alerts": 6,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: conveyor_work_cell": {
+    "events": 14,
+    "events_alerted": 8,
+    "recall": 0.571,
+    "events_in_cooldown": 2,
+    "recall_with_cooldown": 0.714,
+    "alerts": 17,
+    "alerts_on_events": 12,
+    "false_alerts": 5,
+    "alerts_per_alerted_event": 1.5
+   },
+   "Zone check: conveyor_side_walkway": {
+    "events": 3,
+    "events_alerted": 3,
+    "recall": 1.0,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 1.0,
+    "alerts": 3,
+    "alerts_on_events": 3,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   }
+  },
+  "camera": {
+   "Keep 3 m from forklifts": {
+    "events": 53,
+    "events_alerted": 25,
+    "recall": 0.472,
+    "events_in_cooldown": 4,
+    "recall_with_cooldown": 0.547,
+    "alerts": 68,
+    "alerts_on_events": 49,
+    "false_alerts": 19,
+    "alerts_per_alerted_event": 1.96
+   },
+   "Zone check: pallet_row_aisle": {
+    "events": 18,
+    "events_alerted": 4,
+    "recall": 0.222,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.222,
+    "alerts": 22,
+    "alerts_on_events": 20,
+    "false_alerts": 2,
+    "alerts_per_alerted_event": 5.0
+   },
+   "Zone check: pallet_staging_bays": {
+    "events": 16,
+    "events_alerted": 14,
+    "recall": 0.875,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.875,
+    "alerts": 21,
+    "alerts_on_events": 20,
+    "false_alerts": 1,
+    "alerts_per_alerted_event": 1.43
+   },
+   "Zone check: conveyor_work_cell": {
+    "events": 14,
+    "events_alerted": 9,
+    "recall": 0.643,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.643,
+    "alerts": 18,
+    "alerts_on_events": 18,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 2.0
+   },
+   "Zone check: conveyor_side_walkway": {
+    "events": 3,
+    "events_alerted": 3,
+    "recall": 1.0,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 1.0,
+    "alerts": 8,
+    "alerts_on_events": 8,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 2.67
+   }
+  }
+ },
+ "in_view_px": 40.0,
+ "forklift_detection": {
+  "forklift_frames_visible": 26517,
+  "detected": 21272,
+  "rate": 0.802
+ },
+ "forklift_distance": {
+  "pairs": 6431,
+  "pairs_forklift_not_detected": 860,
+  "mae_m": 0.52,
+  "median_abs_error_m": 0.32,
+  "mean_signed_error_m": 0.01
+ },
+ "note": "Ground truth never enters the pipeline. Per-camera mode = same detections and floor distances, but each camera track alerts on its own (no cross-camera identity)."
+}

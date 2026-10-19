@@ -69,6 +69,8 @@ class FramePacket:
     index: int
     ts: float
     frame: np.ndarray
+    pos: int = -1                  # frame number within a looping clip (synchronized groups), else -1
+    loop: int = 0                  # how many times that clip has wrapped around
 
 
 @dataclass

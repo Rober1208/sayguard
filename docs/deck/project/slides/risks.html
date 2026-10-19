@@ -4,13 +4,14 @@
 <h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">What could go wrong, and the plan</h2>
 </div>
 <table style="font-size:28px;color:#171B21;background:#FBFAF6;border:1px solid #DDD7CB;border-radius:16px">
-<tr><th style="width:42%;text-align:left">Risk</th><th style="width:58%;text-align:left">Mitigation</th></tr>
-<tr><td>USB throughput below the PCIe reference</td><td>Measure in week 1; batch 8; drop to 5 fps per camera if needed (still 2× headroom)</td></tr>
-<tr><td>The small LLM misreads a rule</td><td>Deterministic checker, human confirmation, extractor fallback when the LLM is offline</td></tr>
-<tr><td>The VLM filters a real violation (6 % in test)</td><td>Filtered alerts are kept and shown dimmed; the rate is reported daily</td></tr>
-<tr><td>Small or occluded heads, poor light</td><td>Persistence across frames, track voting, camera placement guide</td></tr>
-<tr><td>Detector and GenAI share one accelerator</td><td>GenAI runs only on demand; HailoRT scheduler load measured in week 3</td></tr>
+<tr><th style="width:40%;text-align:left">Risk</th><th style="width:60%;text-align:left">Mitigation</th></tr>
+<tr><td>USB throughput below the PCIe reference; warehouse-mode load not measured yet</td><td>Measure both in week 1; batch 8; 5 fps per camera if needed</td></tr>
+<tr><td>The small LLM misreads a rule, or is offline</td><td>Rule extractor overrides the numbers, times and objects it finds; officer confirms; extractor alone: 90 % hard-hat mode, 68 % fresh warehouse set</td></tr>
+<tr><td>The yes/no check filters a real violation (5 % in the PC test)</td><td>Filtered alerts are kept and shown dimmed</td></tr>
+<tr><td>Forklifts missed in some buildings (12–17 % found in two test scenes)</td><td>Fine-tune on the customer’s vehicles (amount of data to be measured in Stage&nbsp;II)</td></tr>
+<tr><td>Large halls, far cameras</td><td>Coverage spec: ≤ 12 cameras per box, zones seen by 2+ cameras</td></tr>
+<tr><td>Detector and GenAI share one accelerator</td><td>GenAI only on demand; HailoRT scheduler load measured in week 3</td></tr>
 </table>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">SayGuard · Stage I proposal · 16</p>
-<aside>We have tested what we could on the PC. The open risks are about the device itself, and each has a measurement scheduled in Stage II and a fallback.</aside>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">SayGuard · Stage I proposal · 19 · test rates: docs/results/probe_train.json, rule_parsing*.json, site_eval_warehouse_018/019.json</p>
+<aside>We tested what we could on the PC and in Hailo’s emulator. The open risks are about the device itself, including the load of warehouse mode, and about sites that look different from our test scenes. Each one has a measurement planned in Stage II and a fallback that keeps the officer in control; for unfamiliar forklifts the plan is fine-tuning on the customer’s vehicles, and we have not yet measured how much data that needs.</aside>
 </section>

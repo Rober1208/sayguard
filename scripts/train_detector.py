@@ -1,4 +1,6 @@
-"""Fine-tune YOLOv8s (COCO-pretrained) on the two-class hard-hat dataset.
+"""Fine-tune YOLOv8s (COCO-pretrained) on the two-class hard-hat dataset (default) or, with
+--data/--out, on another YOLO dataset such as the site-mode warehouse set
+(scripts/prepare_site_dataset.py).
 
 YOLOv8s is chosen because the same architecture is in the Hailo Model Zoo for
 Hailo-10H (166 FPS @ batch 1, 252 FPS @ batch 8), so the Stage II port is a
@@ -10,6 +12,8 @@ so the old default of 8 meant 24 processes (~29 GB) on a box near its commit lim
 
     python scripts/train_detector.py --epochs 40
     python scripts/train_detector.py --resume      # continue an interrupted run
+    python scripts/train_detector.py --data @work/datasets/site/data.yaml --name site_v8s \
+        --out site_yolov8s.pt --imgsz 960 --epochs 30
 """
 from __future__ import annotations
 
@@ -20,7 +24,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from sayguard.config import work_dir  # noqa: E402
+from sayguard.config import resolve, work_dir  # noqa: E402
 
 
 def resumable(ckpt: dict | None) -> bool:
@@ -36,8 +40,14 @@ def main() -> None:
     ap.add_argument("--imgsz", type=int, default=640)
     ap.add_argument("--workers", type=int, default=2, help="train workers; val uses twice as many")
     ap.add_argument("--name", default="helmet_v8s")
+    ap.add_argument("--data", default="@work/datasets/helmet/data.yaml")
+    ap.add_argument("--out", default=None,
+                    help="file name under @work/models (default: helmet_yolov8s.pt for the default --name, "
+                         "else <name>.pt), so another run never overwrites the hard-hat weights")
     ap.add_argument("--resume", action="store_true", help="continue from runs/<name>/weights/last.pt")
     a = ap.parse_args()
+    if a.out is None:
+        a.out = "helmet_yolov8s.pt" if a.name == "helmet_v8s" else f"{a.name}.pt"
 
     from ultralytics import YOLO
 
@@ -47,6 +57,7 @@ def main() -> None:
         if not last.is_file():
             sys.exit(f"nothing to resume: no checkpoint at {last}")
         m = YOLO(str(last))
+        a.imgsz = int((m.ckpt or {}).get("train_args", {}).get("imgsz", a.imgsz))   # export at the trained size
         if resumable(m.ckpt):
             m.train(resume=True, workers=a.workers)
         else:
@@ -58,13 +69,13 @@ def main() -> None:
     else:
         model = YOLO(str(wd / "models" / a.model) if (wd / "models" / a.model).exists() else a.model)
         model.train(
-            data=str(wd / "datasets" / "helmet" / "data.yaml"),
+            data=str(resolve(a.data)),
             epochs=a.epochs, imgsz=a.imgsz, batch=a.batch, workers=a.workers,
             device=0, amp=True, cos_lr=True, close_mosaic=5, patience=12,
             project=str(wd / "runs"), name=a.name, exist_ok=True, plots=True, seed=0,
         )
     best = wd / "runs" / a.name / "weights" / "best.pt"
-    dst = wd / "models" / "helmet_yolov8s.pt"
+    dst = wd / "models" / a.out
     shutil.copy2(best, dst)
     print("best weights ->", dst)
 

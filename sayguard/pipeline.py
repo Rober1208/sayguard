@@ -56,6 +56,14 @@ def source_arg(src: str | int) -> str | int:
     return str(resolve(s))
 
 
+def make_pipeline(cfg: dict) -> Pipeline:
+    """Site mode (calibrated cameras on a floor plan) when the config has a `site:` block."""
+    if cfg.get("site"):
+        from .site_pipeline import SitePipeline
+        return SitePipeline(cfg)
+    return Pipeline(cfg)
+
+
 def _release_partial() -> None:
     """Return memory a failed model load left behind (never imports torch just for this)."""
     torch = sys.modules.get("torch")
@@ -101,7 +109,12 @@ class Pipeline:
         self.engine.load(cfg.get("default_rules"))
         self.store = EventStore(resolve(cfg["events_db"]), resolve(cfg["snapshots_dir"]))
         self.detector = make_detector(cfg)
-        if cfg.get("vlm", {}).get("enabled", True) or cfg.get("asr"):
+        from .verify import Verifier, VlmBackend, make_backend
+        vcfg = cfg.get("verifier") or cfg.get("vlm", {})
+        v_enabled = vcfg.get("enabled", True)
+        v_backend = make_backend(vcfg, resolve)         # cheap: nothing is loaded until the first alert
+        # transformers is only needed by Whisper and the VLM backend (the CLIP probe uses torch + clip)
+        if (v_enabled and isinstance(v_backend, VlmBackend)) or cfg.get("asr"):
             from .resources import preload_model_libs
             err = preload_model_libs()   # main thread, before the VLM worker or an ASR request can race
             if err:
@@ -117,12 +130,9 @@ class Pipeline:
         self.states: dict[str, CamState] = {}
         for c, info in zip(self.cam_cfg, self.cam_infos):
             zname = self.zones.get(info.zone, {}).get("en", info.zone)
-            self.states[info.id] = CamState(info=info, source=VideoSource(info.id, source_arg(c["source"])),
-                                            tracker=CameraTracker(self.fps_target),
+            self.states[info.id] = CamState(info=info, source=self._make_source(c), tracker=self._make_tracker(),
                                             title=f"{info.id.upper()}  {info.name} | {zname}")
-        from .verify import Verifier
-        vcfg = cfg.get("vlm", {})
-        self.verifier = Verifier(str(resolve(vcfg.get("model", ""))), self.store, enabled=vcfg.get("enabled", True))
+        self.verifier = Verifier(v_backend, self.store, enabled=v_enabled)
         self.stats = {"frames_per_s": 0.0, "det_batch_ms": 0.0, "det_capacity_fps": 0.0,
                       "batch_size": 0.0, "ov_ms": 0.0, "started": time.time()}
         self._stop = threading.Event()
@@ -132,6 +142,12 @@ class Pipeline:
         self._purge_thread: threading.Thread | None = None
         self._last_log: dict[str, float] = {}
         self.cond = threading.Condition()
+
+    def _make_source(self, cam_cfg: dict):
+        return VideoSource(cam_cfg["id"], source_arg(cam_cfg["source"]))
+
+    def _make_tracker(self) -> CameraTracker:
+        return CameraTracker(self.fps_target)
 
     # ------------------------------------------------------------- lifecycle
     def start(self) -> None:
@@ -276,20 +292,7 @@ class Pipeline:
         t0 = time.perf_counter()
         dets = self.detector.infer([p.frame for _, p in batch])
         t_det = time.perf_counter() - t0
-
-        # schedule bookkeeping first, so no later failure can freeze a camera's counters
-        ov_due: list[tuple[CamState, FramePacket]] = []
-        for st, pkt in batch:
-            gap = tick - st.last_proc
-            if st.last_proc and gap <= self.stale_s:
-                inst = 1.0 / max(1e-3, gap)
-                st.fps = inst if st.fps <= 0 else 0.85 * st.fps + 0.15 * inst
-            else:
-                st.fps = 0.0           # first frame, or back from an outage: measure afresh
-            st.last_idx, st.last_proc = pkt.index, tick
-            if st.n_proc % every_n == 0:
-                ov_due.append((st, pkt))
-            st.n_proc += 1
+        ov_due = self._schedule(batch, tick, every_n)
 
         # open-vocabulary objects only where a rule needs them, every Nth frame
         try:
@@ -305,9 +308,28 @@ class Pipeline:
                 self._log_failure(f"cam-{st.info.id}", "camera %s: frame failed", st.info.id)
         with self.cond:
             self.cond.notify_all()
+        self._record_throughput(len(batch), t_det)
 
+    def _schedule(self, batch: list[tuple[CamState, FramePacket]], tick: float,
+                  every_n: int) -> list[tuple[CamState, FramePacket]]:
+        """Per-camera rate and frame bookkeeping, done before anything that can fail so no error
+        can freeze a camera's counters; returns the cameras due for open-vocabulary detection."""
+        ov_due: list[tuple[CamState, FramePacket]] = []
+        for st, pkt in batch:
+            gap = tick - st.last_proc
+            if st.last_proc and gap <= self.stale_s:
+                inst = 1.0 / max(1e-3, gap)
+                st.fps = inst if st.fps <= 0 else 0.85 * st.fps + 0.15 * inst
+            else:
+                st.fps = 0.0           # first frame, or back from an outage: measure afresh
+            st.last_idx, st.last_proc = pkt.index, tick
+            if st.n_proc % every_n == 0:
+                ov_due.append((st, pkt))
+            st.n_proc += 1
+        return ov_due
+
+    def _record_throughput(self, n: int, t_det: float) -> None:
         now = time.time()
-        n = len(batch)
         self._win.append((now, n))
         while self._win and now - self._win[0][0] > 2.0:
             self._win.popleft()
@@ -349,7 +371,7 @@ class Pipeline:
                    box=f.box, extra={"detail": f.detail, "source_text": rule.source_text})
         frame = pkt.frame
         H, W = frame.shape[:2]
-        # raw crop for the VLM second opinion (kept in memory only, never written to disk)
+        # raw crop for the double-check (kept in memory only, never written to disk)
         crop = None
         if rule.type == "no_helmet" and f.track_id is not None:
             head = next((h for h in heads if h.track_id == f.track_id), None)
@@ -451,8 +473,8 @@ class Pipeline:
             "hailo": self.hailo_estimate(),
             "rules_version": self.engine.version,
             "events_version": self.store.version,
-            # unchecked = hard-hat alerts still waiting for the VLM; other rule types are
-            # never VLM-checked and are counted separately, not as "pending"
+            # unchecked = hard-hat alerts still waiting for the double-check; other rule types are
+            # never double-checked and are counted separately, not as "pending"
             "alerts_24h": {"total": c["total"], "confirmed": c["confirmed"], "false_alarms": c["false_alarms"],
                            "unchecked": c["pending"], "not_applicable": c["not_applicable"]},
             "open_vocab": self._ov_status(now),

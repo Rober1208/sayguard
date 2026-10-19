@@ -1,0 +1,812 @@
+{
+ "about": "Spoken site-mode rules for configs/warehouse.yaml (floor zones aisle_7, dock, racks, open_floor, warehouse; site detector objects). Written and labelled by a writer and a reviewer who never saw the parser code. 'dev' may be used to fix the parser; 'heldout' is measured once and never used for tuning. 'heldout' was measured once (llm+check 84 %) before four phrasing gaps it exposed were fixed, so it is no longer clean; 'heldout2' was written afterwards by a new blind writer and reviewer and is measured once with the fixed parser.",
+ "dev": [
+  {
+   "text": "Alert me if anyone enters aisle seven.",
+   "lang": "en",
+   "type": "person_present",
+   "zones": [
+    "aisle_7"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "晚上十點到早上六點，碼頭區有人就通知我",
+   "lang": "zh",
+   "type": "person_present",
+   "zones": [
+    "dock"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": {
+    "start": "22:00",
+    "end": "06:00"
+   },
+   "min_duration_s": null
+  },
+  {
+   "text": "Flag anyone who stays in the rack area for more than 20 seconds.",
+   "lang": "en",
+   "type": "person_present",
+   "zones": [
+    "racks"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": 20
+  },
+  {
+   "text": "開放作業區超過三個人就警告",
+   "lang": "zh",
+   "type": "person_count_over",
+   "zones": [
+    "open_floor"
+   ],
+   "object": null,
+   "threshold": 3,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Warn me when more than 6 people are in the warehouse.",
+   "lang": "en",
+   "type": "person_count_over",
+   "zones": [
+    "warehouse"
+   ],
+   "object": null,
+   "threshold": 6,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "堆高機開進七號走道要通報",
+   "lang": "zh",
+   "type": "object_present",
+   "zones": [
+    "aisle_7"
+   ],
+   "object": "forklift",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Tell me whenever an AMR shows up on the loading dock.",
+   "lang": "en",
+   "type": "object_present",
+   "zones": [
+    "dock"
+   ],
+   "object": "mobile_robot",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "貨架區出現人形機器人就提醒我",
+   "lang": "zh",
+   "type": "object_present",
+   "zones": [
+    "racks"
+   ],
+   "object": "humanoid_robot",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Alert if a person gets within 2 metres of a pallet truck in the rack area.",
+   "lang": "en",
+   "type": "object_near_person",
+   "zones": [
+    "racks"
+   ],
+   "object": "pallet_truck",
+   "threshold": 2,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "有人靠近搬運車三公尺以內就警報",
+   "lang": "zh",
+   "type": "object_near_person",
+   "zones": [],
+   "object": "transporter",
+   "threshold": 3,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "碼頭區有人離叉車不到五公尺，馬上警告",
+   "lang": "zh",
+   "type": "object_near_person",
+   "zones": [
+    "dock"
+   ],
+   "object": "forklift",
+   "threshold": 5,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "After 11 pm, report anyone on the open floor.",
+   "lang": "en",
+   "type": "person_present",
+   "zones": [
+    "open_floor"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": {
+    "start": "23:00",
+    "end": "06:00"
+   },
+   "min_duration_s": null
+  },
+  {
+   "text": "倉庫裡有人待超過十五秒就通知",
+   "lang": "zh",
+   "type": "person_present",
+   "zones": [
+    "warehouse"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": 15
+  },
+  {
+   "text": "Let me know if a transporter enters the open floor.",
+   "lang": "en",
+   "type": "object_present",
+   "zones": [
+    "open_floor"
+   ],
+   "object": "transporter",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "碼頭超過五個人要通知我",
+   "lang": "zh",
+   "type": "person_count_over",
+   "zones": [
+    "dock"
+   ],
+   "object": null,
+   "threshold": 5,
+   "time_window": null,
+   "min_duration_s": null
+  }
+ ],
+ "heldout": [
+  {
+   "text": "Anybody on the loading dock between 1 pm and 3 pm should trigger an alert.",
+   "lang": "en",
+   "type": "person_present",
+   "zones": [
+    "dock"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": {
+    "start": "13:00",
+    "end": "15:00"
+   },
+   "min_duration_s": null
+  },
+  {
+   "text": "有人在7號走道停留超過八秒就跟我說",
+   "lang": "zh",
+   "type": "person_present",
+   "zones": [
+    "aisle_7"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": 8
+  },
+  {
+   "text": "Between 22:00 and 05:30, flag anyone anywhere in the warehouse.",
+   "lang": "en",
+   "type": "person_present",
+   "zones": [
+    "warehouse"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": {
+    "start": "22:00",
+    "end": "05:30"
+   },
+   "min_duration_s": null
+  },
+  {
+   "text": "凌晨一點以後貨架區不准有人",
+   "lang": "zh",
+   "type": "person_present",
+   "zones": [
+    "racks"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": {
+    "start": "01:00",
+    "end": "06:00"
+   },
+   "min_duration_s": null
+  },
+  {
+   "text": "Raise an alarm if a worker remains on the open floor longer than one minute.",
+   "lang": "en",
+   "type": "person_present",
+   "zones": [
+    "open_floor"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": 60
+  },
+  {
+   "text": "碼頭區如果有人逗留兩分鐘以上，通報一下",
+   "lang": "zh",
+   "type": "person_present",
+   "zones": [
+    "dock"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": 120
+  },
+  {
+   "text": "開放作業區從14:00到16:00之間有人進入就提醒",
+   "lang": "zh",
+   "type": "person_present",
+   "zones": [
+    "open_floor"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": {
+    "start": "14:00",
+    "end": "16:00"
+   },
+   "min_duration_s": null
+  },
+  {
+   "text": "Alert when there are more than 4 people in aisle 7.",
+   "lang": "en",
+   "type": "person_count_over",
+   "zones": [
+    "aisle_7"
+   ],
+   "object": null,
+   "threshold": 4,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "If 5 or more people gather on the loading dock, warn me.",
+   "lang": "en",
+   "type": "person_count_over",
+   "zones": [
+    "dock"
+   ],
+   "object": null,
+   "threshold": 4,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "貨架區裡如果同時有超過兩個人，就發警告",
+   "lang": "zh",
+   "type": "person_count_over",
+   "zones": [
+    "racks"
+   ],
+   "object": null,
+   "threshold": 2,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "整個倉庫人數一旦超過二十，立刻通知我",
+   "lang": "zh",
+   "type": "person_count_over",
+   "zones": [
+    "warehouse"
+   ],
+   "object": null,
+   "threshold": 20,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "If there are over 3 people in the rack area or aisle seven, sound the alarm.",
+   "lang": "en",
+   "type": "person_count_over",
+   "zones": [
+    "racks",
+    "aisle_7"
+   ],
+   "object": null,
+   "threshold": 3,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Notify me when the open floor has more than 8 people at once.",
+   "lang": "en",
+   "type": "person_count_over",
+   "zones": [
+    "open_floor"
+   ],
+   "object": null,
+   "threshold": 8,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "貨架區要是有叉車進去，跟我回報一聲",
+   "lang": "zh",
+   "type": "object_present",
+   "zones": [
+    "racks"
+   ],
+   "object": "forklift",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Notify me if a pallet truck is in aisle seven.",
+   "lang": "en",
+   "type": "object_present",
+   "zones": [
+    "aisle_7"
+   ],
+   "object": "pallet_truck",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "搬運機器人跑到開放作業區要提醒",
+   "lang": "zh",
+   "type": "object_present",
+   "zones": [
+    "open_floor"
+   ],
+   "object": "mobile_robot",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Alert me when a humanoid robot enters the dock.",
+   "lang": "en",
+   "type": "object_present",
+   "zones": [
+    "dock"
+   ],
+   "object": "humanoid_robot",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "倉庫裡任何地方出現搬運車都要通知",
+   "lang": "zh",
+   "type": "object_present",
+   "zones": [
+    "warehouse"
+   ],
+   "object": "transporter",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "碼頭區有油壓車就跟我講",
+   "lang": "zh",
+   "type": "object_present",
+   "zones": [
+    "dock"
+   ],
+   "object": "pallet_truck",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Warn if anyone comes within 4 metres of a forklift in aisle seven.",
+   "lang": "en",
+   "type": "object_near_person",
+   "zones": [
+    "aisle_7"
+   ],
+   "object": "forklift",
+   "threshold": 4,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "AMR旁邊兩公尺內有人就警報",
+   "lang": "zh",
+   "type": "object_near_person",
+   "zones": [],
+   "object": "mobile_robot",
+   "threshold": 2,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Alert when a person is closer than 1 metre to the humanoid robot on the open floor.",
+   "lang": "en",
+   "type": "object_near_person",
+   "zones": [
+    "open_floor"
+   ],
+   "object": "humanoid_robot",
+   "threshold": 1,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "七號走道有人跟托板車距離小於三公尺就警告",
+   "lang": "zh",
+   "type": "object_near_person",
+   "zones": [
+    "aisle_7"
+   ],
+   "object": "pallet_truck",
+   "threshold": 3,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Sound the alarm if someone is within 2.5 metres of a transporter at the dock.",
+   "lang": "en",
+   "type": "object_near_person",
+   "zones": [
+    "dock"
+   ],
+   "object": "transporter",
+   "threshold": 2.5,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "倉庫任何地方，堆高機周圍六公尺內有人都要警報",
+   "lang": "zh",
+   "type": "object_near_person",
+   "zones": [
+    "warehouse"
+   ],
+   "object": "forklift",
+   "threshold": 6,
+   "time_window": null,
+   "min_duration_s": null
+  }
+ ],
+ "heldout2": [
+  {
+   "text": "Ping me if anyone walks into the rack area between 06:00 and 08:00.",
+   "lang": "en",
+   "type": "person_present",
+   "zones": [
+    "racks"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": {
+    "start": "06:00",
+    "end": "08:00"
+   },
+   "min_duration_s": null
+  },
+  {
+   "text": "開放作業區有人待了半分鐘都還沒離開的話，就跟我說",
+   "lang": "zh",
+   "type": "person_present",
+   "zones": [
+    "open_floor"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": 30
+  },
+  {
+   "text": "From 7 pm to 11 pm, alert me if someone lingers at the dock for more than 10 seconds.",
+   "lang": "en",
+   "type": "person_present",
+   "zones": [
+    "dock"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": {
+    "start": "19:00",
+    "end": "23:00"
+   },
+   "min_duration_s": 10
+  },
+  {
+   "text": "晚上八點以後，倉庫裡只要看到人就通報我",
+   "lang": "zh",
+   "type": "person_present",
+   "zones": [
+    "warehouse"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": {
+    "start": "20:00",
+    "end": "06:00"
+   },
+   "min_duration_s": null
+  },
+  {
+   "text": "If someone has been in aisle 7 for 45 seconds or longer, flag it.",
+   "lang": "en",
+   "type": "person_present",
+   "zones": [
+    "aisle_7"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": 45
+  },
+  {
+   "text": "七號走道早上七點半到九點要管制，這段時間裡看到有人就跟我講",
+   "lang": "zh",
+   "type": "person_present",
+   "zones": [
+    "aisle_7"
+   ],
+   "object": null,
+   "threshold": null,
+   "time_window": {
+    "start": "07:30",
+    "end": "09:00"
+   },
+   "min_duration_s": null
+  },
+  {
+   "text": "碼頭區的人數只要大於十，就發警報",
+   "lang": "zh",
+   "type": "person_count_over",
+   "zones": [
+    "dock"
+   ],
+   "object": null,
+   "threshold": 10,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Warn me if the headcount on the open floor goes above 12.",
+   "lang": "en",
+   "type": "person_count_over",
+   "zones": [
+    "open_floor"
+   ],
+   "object": null,
+   "threshold": 12,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Aisle seven shouldn't have six or more people at once; alert me if it does.",
+   "lang": "en",
+   "type": "person_count_over",
+   "zones": [
+    "aisle_7"
+   ],
+   "object": null,
+   "threshold": 5,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "貨架區那邊人太多不安全，多於四個人就警告我",
+   "lang": "zh",
+   "type": "person_count_over",
+   "zones": [
+    "racks"
+   ],
+   "object": null,
+   "threshold": 4,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Let me know if total occupancy in the warehouse exceeds 40.",
+   "lang": "en",
+   "type": "person_count_over",
+   "zones": [
+    "warehouse"
+   ],
+   "object": null,
+   "threshold": 40,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "七號走道很窄，同時超過一個人就要提醒",
+   "lang": "zh",
+   "type": "person_count_over",
+   "zones": [
+    "aisle_7"
+   ],
+   "object": null,
+   "threshold": 1,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Forklifts are banned from the open floor; report it if one shows up there.",
+   "lang": "en",
+   "type": "object_present",
+   "zones": [
+    "open_floor"
+   ],
+   "object": "forklift",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "人形機器人如果跑進七號走道，馬上回報",
+   "lang": "zh",
+   "type": "object_present",
+   "zones": [
+    "aisle_7"
+   ],
+   "object": "humanoid_robot",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Flag it if a pallet jack shows up in the rack area.",
+   "lang": "en",
+   "type": "object_present",
+   "zones": [
+    "racks"
+   ],
+   "object": "pallet_truck",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "碼頭那邊有搬運車進來的話提醒我一下",
+   "lang": "zh",
+   "type": "object_present",
+   "zones": [
+    "dock"
+   ],
+   "object": "transporter",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Report any mobile robot seen anywhere in the warehouse.",
+   "lang": "en",
+   "type": "object_present",
+   "zones": [
+    "warehouse"
+   ],
+   "object": "mobile_robot",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "開放作業區出現托板車，跟我說一聲",
+   "lang": "zh",
+   "type": "object_present",
+   "zones": [
+    "open_floor"
+   ],
+   "object": "pallet_truck",
+   "threshold": null,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Sound an alert when a worker is less than 3 m from an AMR in the rack area.",
+   "lang": "en",
+   "type": "object_near_person",
+   "zones": [
+    "racks"
+   ],
+   "object": "mobile_robot",
+   "threshold": 3,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "開放作業區有人走到堆高機一點五公尺以內就警報",
+   "lang": "zh",
+   "type": "object_near_person",
+   "zones": [
+    "open_floor"
+   ],
+   "object": "forklift",
+   "threshold": 1.5,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "If a person comes within 5 metres of a humanoid robot anywhere in the warehouse, alert me.",
+   "lang": "en",
+   "type": "object_near_person",
+   "zones": [
+    "warehouse"
+   ],
+   "object": "humanoid_robot",
+   "threshold": 5,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "搬運機器人在碼頭區的時候，有人進到它四公尺內就警告",
+   "lang": "zh",
+   "type": "object_near_person",
+   "zones": [
+    "dock"
+   ],
+   "object": "mobile_robot",
+   "threshold": 4,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "In aisle 7, any worker closer than two metres to a transporter needs an alert.",
+   "lang": "en",
+   "type": "object_near_person",
+   "zones": [
+    "aisle_7"
+   ],
+   "object": "transporter",
+   "threshold": 2,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "油壓車一公尺之內不准有人，一有人就警報",
+   "lang": "zh",
+   "type": "object_near_person",
+   "zones": [],
+   "object": "pallet_truck",
+   "threshold": 1,
+   "time_window": null,
+   "min_duration_s": null
+  },
+  {
+   "text": "Nobody should be within ten metres of a forklift; warn me if someone is.",
+   "lang": "en",
+   "type": "object_near_person",
+   "zones": [],
+   "object": "forklift",
+   "threshold": 10,
+   "time_window": null,
+   "min_duration_s": null
+  }
+ ]
+}

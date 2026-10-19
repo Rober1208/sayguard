@@ -47,11 +47,16 @@
   </header>
 
   <main class="main" id="main">
-    <section class="kpis" aria-label="Key figures" data-i18n-aria="kpis_label">
+    <section class="kpis" id="kpis" aria-label="Key figures" data-i18n-aria="kpis_label">
       <div class="kpi">
         <div class="kpi-label" data-i18n="kpi_cams">Cameras online</div>
         <div class="kpi-value"><span id="kCams">–</span><span class="kpi-unit" id="kCamsTotal"></span></div>
         <div class="kpi-sub" data-i18n="kpi_cams_sub">live streams</div>
+      </div>
+      <div class="kpi kpi-site" id="kSiteBox" hidden>
+        <div class="kpi-label" data-i18n="kpi_site">Workers on site</div>
+        <div class="kpi-value"><span id="kSite">–</span><span class="kpi-unit" id="kSiteUnit"></span></div>
+        <div class="kpi-sub" id="kSiteSub"></div>
       </div>
       <div class="kpi">
         <div class="kpi-label" data-i18n="kpi_fps">Frames analysed / s</div>
@@ -80,8 +85,8 @@
         <div class="kpi-value"><span id="kConfirmed">–</span></div>
         <div class="kpi-sub" id="kConfirmedSub"></div>
       </div>
-      <div class="kpi">
-        <div class="kpi-label" data-i18n="kpi_filtered">False alarms filtered by VLM</div>
+      <div class="kpi kpi-filtered">
+        <div class="kpi-label" data-i18n="kpi_filtered">False alarms filtered by double-check</div>
         <div class="kpi-value"><span id="kFiltered">–</span></div>
         <div class="kpi-sub" id="kFilteredSub"></div>
       </div>

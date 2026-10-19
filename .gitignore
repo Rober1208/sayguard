@@ -17,3 +17,7 @@ state/
 docs/deck/img/
 # personal hand-off notes
 docs/交件清單.md
+
+# Hailo build artefacts and the Dataflow Compiler wheel (Hailo Developer Zone licence, not redistributable)
+*.har
+*.whl

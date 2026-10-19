@@ -18,7 +18,13 @@ from .model import RULE_TYPES, Rule
 
 # zh/simplified/en object words -> English class name for YOLO-World
 OBJECTS: list[tuple[str, str, str]] = [
-    # (regex, english class, zh display)
+    # (regex, english class, zh display); first match wins, so longer names come first
+    # site-detector classes (site mode); before "pallet" and "truck"
+    (r"托板車|托板车|拖板車|拖板车|油壓車|油压车|pallet ?(truck|jack)s?", "pallet_truck", "托板車"),
+    (r"人形機器人|人形机器人|humanoid( ?robot)?s?", "humanoid_robot", "人形機器人"),
+    (r"移動機器人|移动机器人|自主移動機器人|搬運機器人|搬运机器人|自走車|自走车|(?<![a-z])amrs?(?![a-z])|mobile ?robots?",
+     "mobile_robot", "移動機器人"),
+    (r"搬運車|搬运车|無人搬運車|无人搬运车|(?<![a-z])agvs?(?![a-z])|transporters?", "transporter", "搬運車"),
     (r"堆高機|堆高机|叉車|叉车|forklift", "forklift", "堆高機"),
     (r"手推車|手推车|推車|推车|hand ?cart|trolley", "hand cart", "推車"),
     (r"梯子|爬梯|ladder", "ladder", "梯子"),
@@ -49,10 +55,15 @@ CN_NUM = {"零": 0, "〇": 0, "一": 1, "二": 2, "兩": 2, "两": 2, "三": 3, 
 
 HELMET = r"安全帽|工程帽|工地帽|頭盔|头盔|帽子|hard ?hats?|helmets?"
 PERSON_COUNT = r"(?:超過|超过|多於|多于|大於|大于|more than|over|exceeds?)\s*(\d+(?:\.\d+)?)\s*(?:個人|个人|位|名|人|people|persons?|workers?)"
+# "N or more" / "at least N" / N人以上 -> more than N-1
+PERSON_ATLEAST = (r"(?:(\d+)\s*(?:or more|and more|\+)\s*(?:people|persons?|workers?)|at least\s*(\d+)\s*(?:people|persons?|workers?)|"
+                  r"(\d+)\s*(?:個人|个人|位|名|人)\s*(?:以上|或以上))")
 DISTANCE = r"(\d+(?:\.\d+)?)\s*(?:公尺|米|m\b|meters?|metres?)"
-NEAR = r"內|内|以內|以内|之內|之内|範圍|范围|靠近|接近|附近|within|near|close to"
+NEAR = (r"內|内|以內|以内|之內|之内|範圍|范围|靠近|接近|附近|距離|距离|保持|不到|小於|小于|少於|少于|"
+        r"within|near|close to|closer than|less than|away from|distance")
 PRESENT_PERSON = r"有人|人員|人员|任何人|閒雜人等|闲杂人等|anyone|someone|any ?body|people|persons?|workers?"
-ENTER = r"進入|进入|闖入|闯入|出現|出现|逗留|停留|不能有人|不准有人|禁止進入|禁止进入|禁止|不得進入|enter|inside|present|in the"
+ENTER = (r"進入|进入|闖入|闯入|出現|出现|逗留|停留|待|留在|不能有人|不准有人|禁止進入|禁止进入|禁止|不得進入|"
+         r"有人(?=就|便|時|时|的話|的话)|enter|inside|present|in the|on the|at the|stays?|remains?|linger|loiter")
 # prohibitions that imply people even when the sentence names nobody ("22點到6點倉庫禁止進入")
 NO_ENTRY = r"禁止進入|禁止进入|不得進入|不得进入|不准進入|不准进入|禁止闖入|禁止闯入|no entry|keep out"
 APPEAR = r"出現|出现|看到|偵測到|侦测到|發現|发现|有|appears?|detected|seen|visible|present"
@@ -167,6 +178,30 @@ def _fold(s: str) -> str:
     return cc.convert(s) if cc else s
 
 
+EN_WORD = {i: w for w, i in EN_NUM.items()}
+CN_DIGIT = "零一二三四五六七八九十"
+
+
+def _name_pattern(name: str) -> str:
+    """Regex for a zone or camera display name as people say it: the name normalised like the
+    sentence (七號走道 -> 7號走道), a number as digits, a Chinese numeral or an English word
+    ("aisle seven"), and a trailing 區 optional when at least two characters remain (碼頭區 -> 碼頭)."""
+    n = _fold(_norm(name))
+    optional_qu = len(n) >= 3 and n[-1] in "區区"
+    if optional_qu:
+        n = n[:-1]
+    out, i = "", 0
+    for m in re.finditer(r"\d+", n):
+        out += re.escape(n[i:m.start()])
+        v = int(m.group())
+        alts = [m.group()] + ([CN_DIGIT[v]] if v <= 10 else []) + ([EN_WORD[v]] if v in EN_WORD else [])
+        out += "(?:" + "|".join(alts) + ")"
+        i = m.end()
+    out += re.escape(n[i:])
+    out = out.replace(r"\ ", r"[\s-]*").replace("區", "[區区]")
+    return out + ("(?:[區区])?" if optional_qu else "")
+
+
 def _match_scope(text: str, cameras: list[dict], zones: dict[str, dict]) -> tuple[list[str], list[str]]:
     zs: list[str] = []
     ftext = _fold(text)
@@ -175,14 +210,18 @@ def _match_scope(text: str, cameras: list[dict], zones: dict[str, dict]) -> tupl
         for c in cands:
             if not c:
                 continue
-            pat = re.escape(_fold(c)).replace(r"\ ", r"\s*").replace("區", "[區区]")
-            if re.search(pat, ftext, re.I):
+            if re.search(_name_pattern(c), ftext, re.I):
                 zs.append(zid)
                 break
+    # camera numbers are read with the zone names blanked out: 7號走道 names aisle 7, not camera 7
+    for zid in zs:
+        for c in (zones[zid].get("en", ""), zones[zid].get("zh", "")):
+            if c:
+                ftext = re.sub(_name_pattern(c), " ", ftext, flags=re.I)
     cams: list[str] = []
     ids = {c["id"] for c in cameras}
     for m in re.finditer(r"(?:cam(?:era)?\s*0?(\d{1,2}))|(?:(\d{1,2})\s*[號号]\s*(?:攝影機|摄影机|鏡頭|镜头|相機|相机)?)|"
-                         r"(?:第\s*(\d{1,2})\s*(?:支|台|個|个)?\s*(?:攝影機|摄影机|鏡頭|镜头))", text, re.I):
+                         r"(?:第\s*(\d{1,2})\s*(?:支|台|個|个)?\s*(?:攝影機|摄影机|鏡頭|镜头))", ftext, re.I):
         n = next(g for g in m.groups() if g)
         cid = f"cam{int(n):02d}"
         if cid in ids:
@@ -248,17 +287,31 @@ def _time_window(text: str) -> dict | None:
     return None
 
 
+def _without_scope_names(text: str, cameras: list[dict], zones: dict[str, dict]) -> str:
+    """The text with zone and camera display names blanked out: "the forklift aisle" names a
+    place, not an object, so it must not make the rule a forklift rule."""
+    out = _fold(text)
+    names = [n for z in zones.values() for n in (z.get("en", ""), z.get("zh", ""))] + [c.get("name", "") for c in cameras]
+    for n in sorted((n for n in names if n), key=len, reverse=True):
+        out = re.sub(_name_pattern(n), " ", out, flags=re.I)
+    return out
+
+
 def extract(text: str, cameras: list[dict], zones: dict[str, dict]) -> Evidence:
     t = _norm(text)
     ev = Evidence()
     ev.cameras, ev.zones = _match_scope(t, cameras, zones)
-    obj = next(((en, pat) for pat, en, _ in OBJECTS if _has(pat, t)), None)
+    t_obj = _without_scope_names(t, cameras, zones)
+    obj = next(((en, pat) for pat, en, _ in OBJECTS if _has(pat, t_obj)), None)
     dist = re.search(DISTANCE, t, re.I)
     count = re.search(PERSON_COUNT, t, re.I)
+    atleast = None if count else re.search(PERSON_ATLEAST, t, re.I)
     if obj and dist and _has(NEAR, t):
         ev.type, ev.object, ev.threshold = "object_near_person", obj[0], float(dist.group(1))
     elif count:
         ev.type, ev.threshold = "person_count_over", float(count.group(1))
+    elif atleast:
+        ev.type, ev.threshold = "person_count_over", float(next(g for g in atleast.groups() if g)) - 1
     elif _has(HELMET, t):
         ev.type = "no_helmet"
     elif obj and _has(APPEAR, t):
@@ -272,6 +325,9 @@ def extract(text: str, cameras: list[dict], zones: dict[str, dict]) -> Evidence:
     ev.time_window = _time_window(t)
     d = re.search(r"(?:超過|超过|持續|持续|連續|连续|for|over|more than|longer than)\s*(\d+(?:\.\d+)?)\s*"
                   r"(?:(?P<min>分鐘|分钟|minutes?|mins?\b)|秒|s\b|sec|seconds?)", t, re.I)
+    if d is None:
+        d = re.search(r"(?:at least\s*)?(\d+(?:\.\d+)?)\s*(?:(?P<min>分鐘|分钟|minutes?|mins?\b)|秒|seconds?)\s*(?:以上|或以上|or (?:more|longer))",
+                      t, re.I) or re.search(r"at least\s*(\d+(?:\.\d+)?)\s*(?:(?P<min>minutes?|mins?\b)|seconds?|secs?\b)", t, re.I)
     if d:
         ev.min_duration_s = float(d.group(1)) * (60 if d["min"] else 1)
     if _has(HIGH, t):
@@ -425,6 +481,10 @@ def parse(text: str, cameras: list[dict], zones: dict[str, dict], llm=None) -> P
                 data[key] = v
         if ev.cameras:
             data["cameras"] = ev.cameras
+        elif ev.zones and data.get("cameras") not in (None, [], ["*"]):
+            # a zone was named and no camera: the zone is the scope, not a camera the LLM guessed
+            notes.append(f"cameras: sentence names a zone and no camera, LLM said {data['cameras']!r} -> using every camera")
+            data["cameras"] = ["*"]
         if ev.zones:
             data["zones"] = ev.zones
         for key in ("name", "message"):
@@ -483,6 +543,6 @@ def _sanitise(data: dict, ev: Evidence, text: str, zones: dict[str, dict], notes
 def scope_problems(rule: Rule, cameras: list[dict]) -> list[str]:
     """A draft whose camera/zone filters select no configured camera could be activated but never fire
     ("cam01 B區..." when cam01 is at the entrance), so it is reported like any other problem."""
-    if cameras and not any(rule.covers(c["id"], c.get("zone", "")) for c in cameras):
+    if cameras and not any(rule.covers_any(c["id"], c.get("zones") or [c.get("zone", "")]) for c in cameras):
         return ["no camera matches this scope"]
     return []

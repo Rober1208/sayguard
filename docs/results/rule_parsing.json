@@ -22,8 +22,8 @@
     "llm+check": 0.969
    },
    "llm+check_latency_ms": {
-    "mean": 328,
-    "max": 518
+    "mean": 352,
+    "max": 502
    },
    "rows": [
     {
@@ -67,7 +67,9 @@
      "llm_only": {
       "ok": false,
       "wrong_fields": [
-       "time_window"
+       "type",
+       "time_window",
+       "scope"
       ]
      },
      "rules": {
@@ -100,11 +102,8 @@
     {
      "text": "Alert me if anyone in Zone A has no hard hat for more than 3 seconds",
      "llm_only": {
-      "ok": false,
-      "wrong_fields": [
-       "min_duration_s",
-       "scope"
-      ]
+      "ok": true,
+      "wrong_fields": []
      },
      "rules": {
       "ok": true,
@@ -138,8 +137,7 @@
      "llm_only": {
       "ok": false,
       "wrong_fields": [
-       "object",
-       "scope"
+       "object"
       ]
      },
      "rules": {
@@ -376,9 +374,7 @@
      "llm_only": {
       "ok": false,
       "wrong_fields": [
-       "type",
-       "time_window",
-       "scope"
+       "time_window"
       ]
      },
      "rules": {
@@ -440,7 +436,8 @@
      "llm_only": {
       "ok": false,
       "wrong_fields": [
-       "time_window"
+       "time_window",
+       "scope"
       ]
      },
      "rules": {
@@ -455,8 +452,10 @@
     {
      "text": "Warn me if there are more than three people in Zone B",
      "llm_only": {
-      "ok": true,
-      "wrong_fields": []
+      "ok": false,
+      "wrong_fields": [
+       "scope"
+      ]
      },
      "rules": {
       "ok": true,
@@ -588,8 +587,8 @@
     "llm+check": 0.95
    },
    "llm+check_latency_ms": {
-    "mean": 340,
-    "max": 486
+    "mean": 347,
+    "max": 469
    },
    "rows": [
     {
@@ -629,7 +628,8 @@
      "llm_only": {
       "ok": false,
       "wrong_fields": [
-       "time_window"
+       "time_window",
+       "scope"
       ]
      },
      "rules": {

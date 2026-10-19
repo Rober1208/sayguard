@@ -1,0 +1,1574 @@
+{
+ "llm": "qwen2.5:1.5b",
+ "days": 20,
+ "seed": 20261019,
+ "score": {
+  "free_text": {
+   "days": 20,
+   "accepted": 20,
+   "actions": 60,
+   "name_a_camera": 45,
+   "misattributed": 8,
+   "misattributed_pct": 13.3,
+   "accepted_pct": 100.0
+  },
+  "structured": {
+   "days": 20,
+   "accepted": 19,
+   "actions": 57,
+   "name_a_camera": 57,
+   "misattributed": 0,
+   "misattributed_pct": 0.0,
+   "accepted_pct": 95.0
+  },
+  "menu": {
+   "days": 20,
+   "accepted": 20,
+   "actions": 60,
+   "name_a_camera": 60,
+   "misattributed": 0,
+   "misattributed_pct": 0.0,
+   "accepted_pct": 100.0
+  }
+ },
+ "rows": [
+  {
+   "day": 0,
+   "lang": "en",
+   "truth": {
+    "Site Office": {
+     "more than 2 people at the entrance": 2,
+     "people without hard hats": 14
+    },
+    "Scaffold": {
+     "more than 2 people at the entrance": 77,
+     "people without hard hats": 9
+    },
+    "Loading Dock": {
+     "people without hard hats": 19
+    },
+    "House Frame": {
+     "people without hard hats": 13,
+     "false hard-hat alarms the double-check filtered": 4
+    },
+    "Excavation Pit": {
+     "people without hard hats": 23,
+     "more than 2 people at the entrance": 7,
+     "false hard-hat alarms the double-check filtered": 38
+    }
+   },
+   "free_text": [
+    {
+     "text": "Post a reminder to all workers to ensure no more than 2 people enter the scaffold area during peak hours from 11:00 to 12:00.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Conduct a thorough inspection of the Excavation Pit camera to address the highest number of false alarms and improve detection accuracy.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Distribute hard hats to workers entering the Excavation Pit to prevent violations and ensure compliance with safety regulations.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Scaffold** · Entrance: more than 2 people: Stagger arrivals and post the maximum number of people for this area.",
+     "misattributed": false,
+     "source": "template"
+    },
+    {
+     "text": "**Excavation Pit** · Hard hat required on site: Keep spare hard hats and a reminder sign at the way in, and spot-check during the peak hour.",
+     "misattributed": false,
+     "source": "template"
+    },
+    {
+     "text": "**House Frame** · many false alarms (filtered by the double-check): Double-check the hard hat requirement for the house frame area to prevent false alarms and ensure compliance.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Scaffold** · Entrance: more than 2 people: Post the maximum number of people for this area and mark a queue.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Excavation Pit** · Hard hat required on site: Have a supervisor spot-check hard hats during 11:00-12:00.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Loading Dock** · Hard hat required on site: Keep spare hard hats and a reminder sign at the way in.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "template text for Scaffold: another kind of problem; Excavation Pit: another camera",
+   "menu_note": ""
+  },
+  {
+   "day": 1,
+   "lang": "zh",
+   "truth": {
+    "Site Gate": {
+     "people without hard hats": 12
+    },
+    "House Frame": {
+     "people within 3 m of the excavator": 3,
+     "people without hard hats": 16
+    },
+    "Site Walk": {
+     "people without hard hats": 25
+    }
+   },
+   "free_text": [
+    {
+     "text": "強化 Site Walk 攝像頭監控，確保所有工人佩戴安全帽。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "在 22:00-23:00 期間，增加 Site Walk 攝像頭的巡查頻率，以減少未經確認的警報。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "聯合 Site Walk 和 House Frame 攝像頭，提高安全監控效率，確保工地安全。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Site Walk**・Hard hat required on site：在高峰時間（22:00-23:00）要求所有工人戴安全帽",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**House Frame**・Hard hat required on site：在高峰時間（22:00-23:00）要求所有工人戴安全帽",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Site Gate**・Hard hat required on site：在入口放置備用安全帽與提醒標示，並於尖峰時段抽查。",
+     "misattributed": false,
+     "source": "template"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Site Walk**・Hard hat required on site：在入口放置備用安全帽與提醒標示。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**House Frame**・Hard hat required on site：22:00-23:00 安排主管到場抽查安全帽配戴。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Site Gate**・Hard hat required on site：在 22:00-23:00 前進行 5 分鐘工具箱會議，重申安全帽規定。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "template text for Site Gate: another kind of problem",
+   "menu_note": ""
+  },
+  {
+   "day": 2,
+   "lang": "en",
+   "truth": {
+    "House Frame": {
+     "people without hard hats": 6,
+     "people within 3 m of the excavator": 6
+    },
+    "Excavation Pit": {
+     "more than 2 people at the entrance": 18,
+     "people without hard hats": 12
+    },
+    "Site Office": {
+     "people without hard hats": 24,
+     "more than 2 people at the entrance": 6
+    },
+    "Site Gate": {
+     "more than 2 people at the entrance": 271
+    }
+   },
+   "free_text": [
+    {
+     "text": "Deploy additional safety monitors at the Site Gate to enforce the rule of more than 2 people entering.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Increase patrols at the Excavation Pit during the peak hour from 23:00 to 00:00 to reduce false alarms.",
+     "misattributed": true,
+     "source": "llm"
+    },
+    {
+     "text": "Implement a system to track and address hard hat violations at the Site Office to ensure compliance.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Site Gate** · Entrance: more than 2 people: Stagger arrivals and post the maximum number of people for this area.",
+     "misattributed": false,
+     "source": "template"
+    },
+    {
+     "text": "**Site Office** · Hard hat required on site: Implement a sign-up system for hard hats at the Site Office to ensure proper attire.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Excavation Pit** · Entrance: more than 2 people: Stagger arrivals and post the maximum number of people for this area.",
+     "misattributed": false,
+     "source": "template"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Site Office** · Hard hat required on site: Have a supervisor spot-check hard hats during 23:00-00:00.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Excavation Pit** · Entrance: more than 2 people: Have someone manage the number of people here during 23:00-00:00.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Excavation Pit** · Hard hat required on site: Have a supervisor spot-check hard hats during 23:00-00:00.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "template text for Site Gate: another kind of problem; Excavation Pit: another kind of problem",
+   "menu_note": ""
+  },
+  {
+   "day": 3,
+   "lang": "zh",
+   "truth": {
+    "Excavation Pit": {
+     "people without hard hats": 50,
+     "people within 3 m of the excavator": 6
+    },
+    "Site Office": {
+     "people without hard hats": 5,
+     "more than 2 people at the entrance": 13
+    },
+    "Welding Bay": {
+     "more than 2 people at the entrance": 22
+    },
+    "Loading Dock": {
+     "people within 3 m of the excavator": 9
+    },
+    "House Frame": {
+     "people within 3 m of the excavator": 28,
+     "more than 2 people at the entrance": 13
+    },
+    "Maintenance Shop": {
+     "more than 2 people at the entrance": 29,
+     "people within 3 m of the excavator": 29
+    }
+   },
+   "free_text": [
+    {
+     "text": "1. 立即調配人員到達維修場，確保人員進入時遵守規範，避免過多人聚集。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "2. 加強對挖掘坑處的監控，特別是在晚上21:00至22:00這個高峰時間，增加巡查頻率，確保安全。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "3. 增設更多攝影機在挖掘坑處，特別是那些容易發生誤報警的區域，提高預警系統的敏感度和準確性。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Excavation Pit**・Hard hat required on site：要求所有進入工地的工人戴安全帽",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Maintenance Shop**・Entrance: more than 2 people：限制維修車間進入人員數量，保持距離",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Maintenance Shop**・Keep 3 m from the excavator：確保所有機械裝置與建築物之間保持安全距離",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Maintenance Shop**・Entrance: more than 2 people：在此區張貼人數上限並設置排隊動線。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Maintenance Shop**・Keep 3 m from the excavator：向駕駛與作業人員重申車輛周圍的安全距離。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**House Frame**・Keep 3 m from the excavator：向駕駛與作業人員重申車輛周圍的安全距離。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "",
+   "menu_note": ""
+  },
+  {
+   "day": 4,
+   "lang": "en",
+   "truth": {
+    "Warehouse Aisle": {
+     "more than 2 people at the entrance": 10
+    },
+    "Site Walk": {
+     "more than 2 people at the entrance": 14
+    },
+    "Scaffold": {
+     "people without hard hats": 2
+    }
+   },
+   "free_text": [
+    {
+     "text": "Deploy additional safety monitors at the Site Walk entrance during peak hours from 21:00 to 22:00 to ensure compliance with the main rule.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Increase surveillance in the Scaffold area to address violations and reduce false alarms, focusing on the peak hour.",
+     "misattributed": true,
+     "source": "llm"
+    },
+    {
+     "text": "Utilize the Warehouse Aisle camera to monitor for any potential hazards or violations, especially during the peak hour.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Site Walk** · Entrance: more than 2 people: Assign additional security personnel to the entrance of the site to monitor and ensure compliance with safety protocols.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Warehouse Aisle** · Entrance: more than 2 people: Stagger arrivals and post the maximum number of people for this area.",
+     "misattributed": false,
+     "source": "template"
+    },
+    {
+     "text": "**Scaffold** · Hard hat required on site: Train all site workers on the importance of hard hats and provide them with additional hard hats for easy access.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Site Walk** · Entrance: more than 2 people: Post the maximum number of people for this area and mark a queue.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Warehouse Aisle** · Entrance: more than 2 people: Post the maximum number of people for this area and mark a queue.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Scaffold** · Hard hat required on site: Keep spare hard hats and a reminder sign at the way in.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "template text for Warehouse Aisle: another kind of problem",
+   "menu_note": ""
+  },
+  {
+   "day": 5,
+   "lang": "zh",
+   "truth": {
+    "House Frame": {
+     "more than 2 people at the entrance": 41,
+     "false hard-hat alarms the double-check filtered": 32
+    },
+    "Welding Bay": {
+     "more than 2 people at the entrance": 6
+    },
+    "Loading Dock": {
+     "more than 2 people at the entrance": 296,
+     "people within 3 m of the excavator": 93,
+     "false hard-hat alarms the double-check filtered": 20
+    }
+   },
+   "free_text": [
+    {
+     "text": "在 Loading Dock 拖車入口設定更多安全檢查員，確保遵守 2 人以上規範。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "為 Loading Dock 拖車入口增加更多安全檢查員，確保遵守 2 人以上規範。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "在 Loading Dock 拖車入口增加更多安全檢查員，確保遵守 2 人以上規範。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Loading Dock**・Entrance: more than 2 people：安排人員在 Loading Dock 門口增加監視，確保 2 人以下",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Loading Dock**・Keep 3 m from the excavator：在 Loading Dock 附近設定警示標誌，提醒施工人員保持安全距離",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**House Frame**・Entrance: more than 2 people：在 House Frame 門口增加監視，確保 2 人以下進入",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Loading Dock**・Keep 3 m from the excavator：向駕駛與作業人員重申車輛周圍的安全距離。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**House Frame**・Entrance: more than 2 people：11:00-12:00 安排專人管制此區人數。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Welding Bay**・Entrance: more than 2 people：11:00-12:00 安排專人管制此區人數。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "",
+   "menu_note": ""
+  },
+  {
+   "day": 6,
+   "lang": "en",
+   "truth": {
+    "Excavation Pit": {
+     "people within 3 m of the excavator": 15,
+     "more than 2 people at the entrance": 12,
+     "false hard-hat alarms the double-check filtered": 13
+    },
+    "Site Walk": {
+     "people without hard hats": 15,
+     "people within 3 m of the excavator": 12,
+     "false hard-hat alarms the double-check filtered": 19
+    },
+    "Warehouse Aisle": {
+     "people without hard hats": 28
+    },
+    "Site Office": {
+     "more than 2 people at the entrance": 68,
+     "people without hard hats": 21
+    },
+    "Site Gate": {
+     "more than 2 people at the entrance": 32,
+     "people without hard hats": 12
+    },
+    "Scaffold": {
+     "people within 3 m of the excavator": 2
+    }
+   },
+   "free_text": [
+    {
+     "text": "Deploy additional safety monitors at the Site Office entrance to ensure compliance with the main rule.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Increase patrols in the Warehouse Aisle during peak hours from 08:00 to 09:00 to address violations.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Deploy more security cameras at the Site Walk to reduce false alarms and improve overall safety.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Site Office** · Entrance: more than 2 people: Implement a sign-up system for the entrance area to monitor and limit the number of people present.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Site Gate** · Entrance: more than 2 people: Stagger arrivals and post the maximum number of people for this area.",
+     "misattributed": false,
+     "source": "template"
+    },
+    {
+     "text": "**Excavation Pit** · many false alarms (filtered by the double-check): Check this camera's angle and lighting so the double-check sees heads clearly.",
+     "misattributed": false,
+     "source": "template"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Warehouse Aisle** · Hard hat required on site: Keep spare hard hats and a reminder sign at the way in.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Site Gate** · Entrance: more than 2 people: Have someone manage the number of people here during 08:00-09:00.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Excavation Pit** · Keep 3 m from the excavator: Assign a spotter while vehicles operate and keep people out of their working radius.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "template text for Site Gate: another kind of problem; Excavation Pit: another camera",
+   "menu_note": ""
+  },
+  {
+   "day": 7,
+   "lang": "zh",
+   "truth": {
+    "Site Gate": {
+     "more than 2 people at the entrance": 33,
+     "people without hard hats": 21,
+     "false hard-hat alarms the double-check filtered": 17
+    },
+    "Warehouse Aisle": {
+     "people within 3 m of the excavator": 14
+    },
+    "Site Walk": {
+     "more than 2 people at the entrance": 20,
+     "people without hard hats": 6
+    },
+    "House Frame": {
+     "more than 2 people at the entrance": 110,
+     "people within 3 m of the excavator": 9
+    },
+    "Welding Bay": {
+     "people within 3 m of the excavator": 7,
+     "more than 2 people at the entrance": 57
+    },
+    "Scaffold": {
+     "people without hard hats": 12,
+     "people within 3 m of the excavator": 17
+    }
+   },
+   "free_text": [
+    {
+     "text": "針對 busiest camera Entrance, 確保每小時至少有2人透過，以維持安全與秩序。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "針對 Site Gate, 篩選並處理更多假警報，提高現場安全。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "針對 busiest camera Welding Bay, 確保所有佩戴安全帽的工人進入，確保焊接作業安全。",
+     "misattributed": true,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**House Frame**・Entrance: more than 2 people：安排人員在高峰時間前後加強監視，特別是入口處，確保無過多人員進入。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Welding Bay**・Entrance: more than 2 people：錯開人員進出時間，並張貼此區域的人數上限。",
+     "misattributed": false,
+     "source": "template"
+    },
+    {
+     "text": "**Scaffold**・Keep 3 m from the excavator：在腳手架旁設定標誌，提醒施工人員保持安全距離，避免與挖掘機碰撞。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**House Frame**・Entrance: more than 2 people：07:00-08:00 安排專人管制此區人數。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Welding Bay**・Entrance: more than 2 people：07:00-08:00 安排專人管制此區人數。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Site Gate**・Entrance: more than 2 people：07:00-08:00 安排專人管制此區人數。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "template text for Welding Bay: another kind of problem",
+   "menu_note": ""
+  },
+  {
+   "day": 8,
+   "lang": "en",
+   "truth": {
+    "Welding Bay": {
+     "more than 2 people at the entrance": 12,
+     "people within 3 m of the excavator": 22
+    },
+    "Warehouse Aisle": {
+     "people within 3 m of the excavator": 13,
+     "more than 2 people at the entrance": 35,
+     "false hard-hat alarms the double-check filtered": 3
+    },
+    "House Frame": {
+     "people within 3 m of the excavator": 67,
+     "people without hard hats": 15,
+     "false hard-hat alarms the double-check filtered": 40
+    },
+    "Maintenance Shop": {
+     "people without hard hats": 16
+    },
+    "Scaffold": {
+     "people within 3 m of the excavator": 11
+    }
+   },
+   "free_text": [
+    {
+     "text": "Implement a safety briefing at 07:00 AM in the House Frame area to reinforce the rule of keeping 3 meters away from the excavator.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Conduct a thorough inspection of the Maintenance Shop to address the highest number of hard hat violations.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Schedule a walk-through of the Warehouse Aisle at 08:00 AM to check for false alarms and ensure all safety protocols are followed.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Warehouse Aisle** · Entrance: more than 2 people: Monitor Warehouse Aisle traffic and enforce the 2-person rule.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Welding Bay** · Keep 3 m from the excavator: Mark a walkway clear of the vehicles and assign a spotter while they move.",
+     "misattributed": false,
+     "source": "template"
+    },
+    {
+     "text": "**House Frame** · many false alarms (filtered by the double-check): Review and improve the double-check process for warehouse alarms.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Warehouse Aisle** · Entrance: more than 2 people: Post the maximum number of people for this area and mark a queue.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Welding Bay** · Keep 3 m from the excavator: Brief drivers and workers on the safe distance around vehicles.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Maintenance Shop** · Hard hat required on site: Hold a 5-minute toolbox talk before 07:00-08:00, restating the hard-hat rule.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "template text for Welding Bay: another kind of problem",
+   "menu_note": ""
+  },
+  {
+   "day": 9,
+   "lang": "zh",
+   "truth": {
+    "Warehouse Aisle": {
+     "people without hard hats": 6,
+     "more than 2 people at the entrance": 4
+    },
+    "Maintenance Shop": {
+     "people without hard hats": 15
+    },
+    "Welding Bay": {
+     "people without hard hats": 17
+    },
+    "Excavation Pit": {
+     "more than 2 people at the entrance": 2
+    }
+   },
+   "free_text": [
+    {
+     "text": "引導所有工人佩戴安全帽，並在焊接區設定硬帽檢查站。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "限制維修車間的訪客，減少誤報警的機會。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "利用全天候監控系統，加強對焊接區的監控力度。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Maintenance Shop**・Hard hat required on site：在維修工廠入口設定明顯標示，提醒人員注意安全",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Warehouse Aisle**・Hard hat required on site：在倉庫過道入口設定明顯標示，提醒人員注意安全",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Warehouse Aisle**・Entrance: more than 2 people：在挖掘坑洞入口設定明顯標示，提醒人員注意安全",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Warehouse Aisle**・Entrance: more than 2 people：16:00-17:00 安排專人管制此區人數。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Excavation Pit**・Entrance: more than 2 people：16:00-17:00 安排專人管制此區人數。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Maintenance Shop**・Hard hat required on site：在 16:00-17:00 前進行 5 分鐘工具箱會議，重申安全帽規定。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "",
+   "menu_note": ""
+  },
+  {
+   "day": 10,
+   "lang": "en",
+   "truth": {
+    "Loading Dock": {
+     "people within 3 m of the excavator": 2
+    },
+    "House Frame": {
+     "more than 2 people at the entrance": 112,
+     "people without hard hats": 28
+    },
+    "Site Gate": {
+     "people within 3 m of the excavator": 4,
+     "more than 2 people at the entrance": 16
+    }
+   },
+   "free_text": [
+    {
+     "text": "Implement a stricter rule for the House Frame camera, enforcing more than 2 people entering the entrance to prevent overcrowding.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Increase patrols at the Site Gate to reduce false alarms and ensure safety.",
+     "misattributed": true,
+     "source": "llm"
+    },
+    {
+     "text": "Conduct a thorough review of the House Frame camera footage to identify and address violations of hard hat regulations.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**House Frame** · Entrance: more than 2 people: Monitor the entrance to ensure no more than 2 people are present.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**House Frame** · Hard hat required on site: Require hard hats on all workers entering the site.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Site Gate** · Keep 3 m from the excavator: Mark a walkway clear of the vehicles and assign a spotter while they move.",
+     "misattributed": false,
+     "source": "template"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**House Frame** · Entrance: more than 2 people: Have someone manage the number of people here during 03:00-04:00.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**House Frame** · Hard hat required on site: Keep spare hard hats and a reminder sign at the way in.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Site Gate** · Entrance: more than 2 people: Post the maximum number of people for this area and mark a queue.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "template text for Site Gate: another camera",
+   "menu_note": ""
+  },
+  {
+   "day": 11,
+   "lang": "zh",
+   "truth": {
+    "Site Gate": {
+     "more than 2 people at the entrance": 15,
+     "people without hard hats": 17
+    },
+    "Site Office": {
+     "more than 2 people at the entrance": 41,
+     "people without hard hats": 17
+    },
+    "Scaffold": {
+     "people within 3 m of the excavator": 24,
+     "people without hard hats": 16
+    },
+    "Warehouse Aisle": {
+     "people within 3 m of the excavator": 12,
+     "more than 2 people at the entrance": 4
+    },
+    "Welding Bay": {
+     "people without hard hats": 15,
+     "people within 3 m of the excavator": 72
+    }
+   },
+   "free_text": [
+    {
+     "text": "針對焊接區，請確保遵守3米安全距離與挖掘機保持距離，以預防潛在的安全風險。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "針對01:00-02:00高峰時間，請注意在工地入口門口檢查所有佩戴安全帽的人員，確保遵守規定。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "針對01:00-02:00高峰時間，請注意在工地入口門口檢查所有佩戴安全帽的人員，確保遵守規定。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Site Office**・Entrance: more than 2 people：加強Site Office區域的人員管理，確保不超過2人進入",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Scaffold**・Keep 3 m from the excavator：在Scaffold區域增加警戒線，保持3米距離",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Scaffold**・Hard hat required on site：在入口放置備用安全帽與提醒標示，並於尖峰時段抽查。",
+     "misattributed": false,
+     "source": "template"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Site Office**・Entrance: more than 2 people：01:00-02:00 安排專人管制此區人數。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Scaffold**・Keep 3 m from the excavator：車輛作業時安排專人指揮，禁止人員進入作業半徑。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Site Office**・Hard hat required on site：01:00-02:00 安排主管到場抽查安全帽配戴。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "template text for Scaffold: another camera",
+   "menu_note": ""
+  },
+  {
+   "day": 12,
+   "lang": "en",
+   "truth": {
+    "House Frame": {
+     "people without hard hats": 16
+    },
+    "Site Office": {
+     "people within 3 m of the excavator": 7,
+     "more than 2 people at the entrance": 5
+    },
+    "Loading Dock": {
+     "people without hard hats": 12,
+     "people within 3 m of the excavator": 18
+    },
+    "Site Walk": {
+     "more than 2 people at the entrance": 14
+    },
+    "Welding Bay": {
+     "people without hard hats": 18,
+     "more than 2 people at the entrance": 4
+    }
+   },
+   "free_text": [
+    {
+     "text": "Implement a 3-meter safety buffer around the excavator at the Loading Dock during peak hours from 01:00 to 02:00.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Post a safety reminder near the Welding Bay to ensure hard hats are worn at all times.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Review and adjust the false alarm settings on the camera in the Welding Bay to reduce unnecessary alerts.",
+     "misattributed": true,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Loading Dock** · Keep 3 m from the excavator: Move the camera to the Loading Dock to monitor workers at least 3 meters away from the excavator.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Welding Bay** · Hard hat required on site: Move the camera to the Welding Bay to ensure all workers wear hard hats.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**House Frame** · Hard hat required on site: Move the camera to the House Frame area to remind workers to wear hard hats.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Welding Bay** · Hard hat required on site: Keep spare hard hats and a reminder sign at the way in.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**House Frame** · Hard hat required on site: Keep spare hard hats and a reminder sign at the way in.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Loading Dock** · Hard hat required on site: Keep spare hard hats and a reminder sign at the way in.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "",
+   "menu_note": ""
+  },
+  {
+   "day": 13,
+   "lang": "zh",
+   "truth": {
+    "Maintenance Shop": {
+     "people without hard hats": 36,
+     "more than 2 people at the entrance": 49,
+     "false hard-hat alarms the double-check filtered": 17
+    },
+    "Scaffold": {
+     "people without hard hats": 144,
+     "people within 3 m of the excavator": 18
+    },
+    "Loading Dock": {
+     "people without hard hats": 9,
+     "people within 3 m of the excavator": 12,
+     "false hard-hat alarms the double-check filtered": 11
+    },
+    "Site Gate": {
+     "people without hard hats": 88,
+     "people within 3 m of the excavator": 17
+    }
+   },
+   "free_text": [
+    {
+     "text": "強制要求所有在工地上的工人佩戴安全帽，並在12:00-13:00高峰時間增加檢查頻率，以減少硬帽違規的發生。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "在工地入口設定安全門禁，確保所有進入工地的人員遵守安全規範，並在12:00-13:00高峰時間加強門禁檢查。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "在維修工場設定監控裝置，實時監控並減少誤報警的情況，確保維修工作安全進行。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Maintenance Shop**・Entrance: more than 2 people：錯開人員進出時間，並張貼此區域的人數上限。",
+     "misattributed": false,
+     "source": "template"
+    },
+    {
+     "text": "**Scaffold**・Keep 3 m from the excavator：在腳手架旁設定安全距離標示，確保施工人員與挖掘機保持安全距離。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Maintenance Shop**・誤報偏多（已由複核過濾）：在貨運碼頭設定錯誤報告檢查點，確保錯誤報告得到及時處理和確認。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Maintenance Shop**・Entrance: more than 2 people：在此區張貼人數上限並設置排隊動線。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Maintenance Shop**・Hard hat required on site：12:00-13:00 安排主管到場抽查安全帽配戴。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Scaffold**・Keep 3 m from the excavator：車輛作業時安排專人指揮，禁止人員進入作業半徑。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "template text for Maintenance Shop: another kind of problem",
+   "menu_note": ""
+  },
+  {
+   "day": 14,
+   "lang": "en",
+   "truth": {
+    "Site Gate": {
+     "people within 3 m of the excavator": 55
+    },
+    "Maintenance Shop": {
+     "people within 3 m of the excavator": 2
+    },
+    "Site Walk": {
+     "people within 3 m of the excavator": 13
+    },
+    "Warehouse Aisle": {
+     "people without hard hats": 30,
+     "people within 3 m of the excavator": 49
+    },
+    "Site Office": {
+     "people without hard hats": 30
+    }
+   },
+   "free_text": [
+    {
+     "text": "Post \"Keep 3 meters from excavator\" signs at the Warehouse Aisle camera to enforce safety rules.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Implement a 12:00-13:00 safety patrol focusing on Site Office and Site Gate cameras.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Increase surveillance at the Warehouse Aisle camera to monitor hard hat violations and reduce false alarms.",
+     "misattributed": true,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Site Gate** · Keep 3 m from the excavator: Remind workers to maintain 3 meters from the excavator at the Site Gate.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Site Office** · Hard hat required on site: Keep spare hard hats and a reminder sign at the way in, and spot-check during the peak hour.",
+     "misattributed": false,
+     "source": "template"
+    },
+    {
+     "text": "**Maintenance Shop** · Keep 3 m from the excavator: Maintain 3 meters from the excavator at the Maintenance Shop.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Warehouse Aisle** · Keep 3 m from the excavator: Assign a spotter while vehicles operate and keep people out of their working radius.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Site Office** · Hard hat required on site: Have a supervisor spot-check hard hats during 12:00-13:00.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Site Walk** · Keep 3 m from the excavator: Mark a walkway clear of the vehicles and fence it off.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "template text for Site Office: another camera",
+   "menu_note": ""
+  },
+  {
+   "day": 15,
+   "lang": "zh",
+   "truth": {
+    "House Frame": {
+     "people without hard hats": 9
+    },
+    "Loading Dock": {
+     "people within 3 m of the excavator": 25
+    },
+    "Site Gate": {
+     "people without hard hats": 7,
+     "people within 3 m of the excavator": 9
+    },
+    "Site Walk": {
+     "more than 2 people at the entrance": 19
+    },
+    "Maintenance Shop": {
+     "more than 2 people at the entrance": 20
+    },
+    "Scaffold": {
+     "people within 3 m of the excavator": 17,
+     "more than 2 people at the entrance": 7,
+     "false hard-hat alarms the double-check filtered": 17
+    }
+   },
+   "free_text": [
+    {
+     "text": "在 Loading Dock 拖吊機械時，保持距離 3 米以內，確保安全。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "在 00:00-01:00 期間，檢查所有施工人員是否佩戴安全帽，確保遵守規範。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "經過 Scaffold 機械時，請注意安全，避免碰撞。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Maintenance Shop**・Entrance: more than 2 people：改善維修場入口處的秩序，限制人數至2人以下",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Site Walk**・Entrance: more than 2 people：在現場入口處設定標誌，提醒人員注意安全距離",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Site Gate**・Keep 3 m from the excavator：在安全門口設定標誌，提醒進入人員注意安全距離",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Site Walk**・Entrance: more than 2 people：在此區張貼人數上限並設置排隊動線。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Site Gate**・Keep 3 m from the excavator：車輛作業時安排專人指揮，禁止人員進入作業半徑。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Scaffold**・誤報偏多（已由複核過濾）：抽查被過濾的警報快照，確認判斷正確。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "",
+   "menu_note": ""
+  },
+  {
+   "day": 16,
+   "lang": "en",
+   "truth": {
+    "Maintenance Shop": {
+     "people without hard hats": 22,
+     "false hard-hat alarms the double-check filtered": 15
+    },
+    "Site Gate": {
+     "people within 3 m of the excavator": 67
+    },
+    "Site Office": {
+     "people within 3 m of the excavator": 8
+    },
+    "Excavation Pit": {
+     "more than 2 people at the entrance": 6
+    },
+    "Warehouse Aisle": {
+     "people without hard hats": 15,
+     "false hard-hat alarms the double-check filtered": 22
+    },
+    "Loading Dock": {
+     "people within 3 m of the excavator": 16
+    }
+   },
+   "free_text": [
+    {
+     "text": "Post additional safety signs around the Site Gate to enforce the 3-meter rule.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Increase patrols at the Maintenance Shop during peak hours from 21:00 to 22:00 to check for hard hats and address any false alarms.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Schedule a maintenance check on the camera system at the Warehouse Aisle to ensure it is functioning properly and reducing false alarms.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Warehouse Aisle** · many false alarms (filtered by the double-check): Implement a double-check system for warehouse alarms to reduce false alarms.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Maintenance Shop** · many false alarms (filtered by the double-check): Improve the double-check system for maintenance shop alarms to decrease false alarms.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Excavation Pit** · Entrance: more than 2 people: Ensure that all workers in the excavation pit are supervised by a dedicated safety officer at all times.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Maintenance Shop** · Hard hat required on site: Hold a 5-minute toolbox talk before 21:00-22:00, restating the hard-hat rule.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Loading Dock** · Keep 3 m from the excavator: Assign a spotter while vehicles operate and keep people out of their working radius.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Excavation Pit** · Entrance: more than 2 people: Stagger arrivals and shift changes.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "",
+   "menu_note": ""
+  },
+  {
+   "day": 17,
+   "lang": "zh",
+   "truth": {
+    "Welding Bay": {
+     "people without hard hats": 19,
+     "people within 3 m of the excavator": 22
+    },
+    "Excavation Pit": {
+     "people without hard hats": 53,
+     "more than 2 people at the entrance": 6,
+     "false hard-hat alarms the double-check filtered": 8
+    },
+    "Scaffold": {
+     "more than 2 people at the entrance": 5
+    }
+   },
+   "free_text": [
+    {
+     "text": "強制在工地現場佩戴安全帽，並在高峰時間（22:00-23:00）加強監控，特別關注Excavation Pit區域。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "在焊接區（Welding Bay）安裝攝像頭，提高警報系統的準確性，減少誤報。",
+     "misattributed": true,
+     "source": "llm"
+    },
+    {
+     "text": "重點檢查Excavation Pit區域，加強監控力度，確保安全措施落實到位。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Welding Bay**・Hard hat required on site：在焊接區設定警示標誌，提醒員工佩戴安全帽",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Excavation Pit**・Entrance: more than 2 people：增加安全監督人員，確保進入挖掘坑時至少有2人",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Excavation Pit**・誤報偏多（已由複核過濾）：定期檢查和更新安全標誌，確保其清晰易見",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Welding Bay**・Keep 3 m from the excavator：車輛作業時安排專人指揮，禁止人員進入作業半徑。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Welding Bay**・Hard hat required on site：在入口放置備用安全帽與提醒標示。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Excavation Pit**・Entrance: more than 2 people：在此區張貼人數上限並設置排隊動線。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "",
+   "menu_note": ""
+  },
+  {
+   "day": 18,
+   "lang": "en",
+   "truth": {
+    "Excavation Pit": {
+     "people within 3 m of the excavator": 78,
+     "more than 2 people at the entrance": 14
+    },
+    "Welding Bay": {
+     "people without hard hats": 7
+    },
+    "Site Office": {
+     "people within 3 m of the excavator": 7
+    },
+    "Site Walk": {
+     "more than 2 people at the entrance": 108,
+     "false hard-hat alarms the double-check filtered": 23
+    },
+    "Warehouse Aisle": {
+     "people within 3 m of the excavator": 25
+    }
+   },
+   "free_text": [
+    {
+     "text": "Implement a safety briefing for all workers entering the site at 02:00-03:00, focusing on proper equipment use and safety protocols.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Conduct a thorough inspection of the welding bay at 02:00-03:00, ensuring all hard hats are worn correctly and that the area is free of any potential hazards.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "Schedule a review of the site walk footage at 02:00-03:00, focusing on identifying and addressing any false alarms that may have been triggered.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured": null,
+   "menu": [
+    {
+     "text": "**Site Walk** · Entrance: more than 2 people: Post the maximum number of people for this area and mark a queue.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Excavation Pit** · Keep 3 m from the excavator: Brief drivers and workers on the safe distance around vehicles.",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Warehouse Aisle** · Keep 3 m from the excavator: Brief drivers and workers on the safe distance around vehicles.",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "every LLM action strayed (Site Walk: another kind of problem; Excavation Pit: another camera; Warehouse Aisle: another camera)",
+   "menu_note": ""
+  },
+  {
+   "day": 19,
+   "lang": "zh",
+   "truth": {
+    "Excavation Pit": {
+     "people without hard hats": 101,
+     "more than 2 people at the entrance": 2
+    },
+    "Site Walk": {
+     "people within 3 m of the excavator": 30
+    },
+    "Loading Dock": {
+     "more than 2 people at the entrance": 11,
+     "people within 3 m of the excavator": 53
+    }
+   },
+   "free_text": [
+    {
+     "text": "引導所有施工人員佩戴安全帽，並在高峰時間16:00-17:00加強監督，特別關注Excavation Pit區域。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "增設更多安全監控裝置，特別是Excavation Pit，以減少硬帽未佩戴的事故。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "在Loading Dock附近設定更多攝影機，以減少誤報警，確保工作環境的安全。",
+     "misattributed": true,
+     "source": "llm"
+    }
+   ],
+   "structured": [
+    {
+     "text": "**Excavation Pit**・Hard hat required on site：要求所有進入現場的施工人員佩戴安全帽",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Loading Dock**・Keep 3 m from the excavator：在卸貨區設定安全標誌，提醒操作人員保持安全距離",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Loading Dock**・Entrance: more than 2 people：限制進入卸貨區的人數，確保安全距離",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "menu": [
+    {
+     "text": "**Loading Dock**・Keep 3 m from the excavator：車輛作業時安排專人指揮，禁止人員進入作業半徑。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Loading Dock**・Entrance: more than 2 people：16:00-17:00 安排專人管制此區人數。",
+     "misattributed": false,
+     "source": "llm"
+    },
+    {
+     "text": "**Excavation Pit**・Entrance: more than 2 people：16:00-17:00 安排專人管制此區人數。",
+     "misattributed": false,
+     "source": "llm"
+    }
+   ],
+   "structured_note": "",
+   "menu_note": ""
+  }
+ ],
+ "independent_judges": {
+  "method": "2 independent judge agents per action, blind to which approach wrote it, given each camera's real problems that day (prompt, batches and verdicts: docs/results/report_actions_judging/)",
+  "agreement_on_wrong_problem": "176/177",
+  "by_approach": {
+   "free_text": {
+    "actions": 60,
+    "wrong_problem_both_judges_pct": 20.0,
+    "wrong_problem_either_judge_pct": 20.0,
+    "sensible_both_judges_pct": 45.0,
+    "names_a_camera_pct": 88.3
+   },
+   "structured": {
+    "actions": 57,
+    "wrong_problem_both_judges_pct": 3.5,
+    "wrong_problem_either_judge_pct": 5.3,
+    "sensible_both_judges_pct": 52.6,
+    "names_a_camera_pct": 100.0
+   },
+   "structured/llm": {
+    "actions": 43,
+    "wrong_problem_both_judges_pct": 4.7,
+    "wrong_problem_either_judge_pct": 7.0,
+    "sensible_both_judges_pct": 37.2,
+    "names_a_camera_pct": 100.0
+   },
+   "structured/template": {
+    "actions": 14,
+    "wrong_problem_both_judges_pct": 0.0,
+    "wrong_problem_either_judge_pct": 0.0,
+    "sensible_both_judges_pct": 100.0,
+    "names_a_camera_pct": 100.0
+   },
+   "menu": {
+    "actions": 60,
+    "wrong_problem_both_judges_pct": 0.0,
+    "wrong_problem_either_judge_pct": 0.0,
+    "sensible_both_judges_pct": 100.0,
+    "names_a_camera_pct": 100.0
+   }
+  }
+ }
+}

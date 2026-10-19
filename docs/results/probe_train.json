@@ -1,0 +1,20 @@
+{
+ "encoder": "CLIP ViT-B/32 (OpenAI), frozen",
+ "head": "linear 512->2 on 10x unit features",
+ "train_crops": 2950,
+ "val_accuracy": 0.95,
+ "weight_decay": 0.0,
+ "test_crops": {
+  "helmet": 94,
+  "head": 99
+ },
+ "test_accuracy": 0.953,
+ "false_alarm_filter_rate": 0.957,
+ "violation_confirm_rate": 0.949,
+ "latency_ms_one_crop": {
+  "mean": 15.2,
+  "p95": 24.7,
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 5060 Ti"
+ }
+}

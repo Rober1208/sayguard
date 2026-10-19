@@ -66,13 +66,22 @@ def main() -> None:
 
     from sayguard.resources import require
     require("eval_vlm", gpu_gb=5.0, ram_gb=1.5)
-    from sayguard.verify import Verifier, bgr_to_pil, parse_yes_no
+    from sayguard.verify import VlmBackend, bgr_to_pil, parse_yes_no
 
     cfg = load_config()
-    v = Verifier(str(resolve(cfg["vlm"]["model"])), store=None, enabled=True)
-    v._load()                                  # synchronous load, no worker thread
+    vcfg = cfg.get("verifier") or cfg["vlm"]
+    model = vcfg.get("vlm_model") or vcfg["model"]
+    v = VlmBackend(str(resolve(model)))
+    v.load()                                   # synchronous load, no worker thread
     items = sample(work_dir() / "datasets" / "helmet" / "images" / "test", a.per_class, a.min_px, a.seed)
     tally = {"helmet": {"yes": 0, "no": 0, "unclear": 0}, "head": {"yes": 0, "no": 0, "unclear": 0}}
+    # untimed warm-up (CUDA kernels, allocator), as scripts/train_probe.py does for the CLIP probe
+    path0, _, (cx, cy, w, h) = items[0]
+    img0 = cv2.imread(str(path0))
+    H0, W0 = img0.shape[:2]
+    crop0 = alert_crop(img0, ((cx - w / 2) * W0, (cy - h / 2) * H0, (cx + w / 2) * W0, (cy + h / 2) * H0))
+    for _ in range(3):
+        v._ask(bgr_to_pil(crop0))
     ms = []
     for path, c, (cx, cy, w, h) in items:
         img = cv2.imread(str(path))
@@ -88,7 +97,7 @@ def main() -> None:
     hel, head = tally["helmet"], tally["head"]
     n_hel, n_head = sum(hel.values()), sum(head.values())
     res = {
-        "model": cfg["vlm"]["model"], "split": "test (held out)", "crops": {"helmet": n_hel, "head": n_head},
+        "model": model, "split": "test (held out)", "crops": {"helmet": n_hel, "head": n_head},
         "tally": tally,
         # would be filtered as a false alarm if the detector had wrongly flagged this helmet as bare
         "false_alarm_filter_rate": round(hel["yes"] / max(1, n_hel), 3),
@@ -96,7 +105,7 @@ def main() -> None:
         "violation_confirm_rate": round(head["no"] / max(1, n_head), 3),
         "accuracy": round((hel["yes"] + head["no"]) / max(1, n_hel + n_head), 3),
         "latency_ms": {"mean": round(sum(ms) / max(1, len(ms))), "p95": round(sorted(ms)[int(0.95 * (len(ms) - 1))]) if ms else None},
-        "device": v._device if hasattr(v, "_device") else None,
+        "device": v.device,
     }
     for d in (work_dir() / "results", ROOT / "docs" / "results"):
         d.mkdir(parents=True, exist_ok=True)

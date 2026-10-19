@@ -1,0 +1,238 @@
+{
+ "scene": "train/Warehouse_012",
+ "frames": 3000,
+ "fps": 10.0,
+ "cameras": 8,
+ "detector": "@work/models/site_yolov8s.pt",
+ "identity": {
+  "mota": 0.947,
+  "motp": 0.199,
+  "idf1": 0.651,
+  "idp": 0.65,
+  "idr": 0.652,
+  "num_switches": 107,
+  "num_fragmentations": 234,
+  "precision": 0.973,
+  "recall": 0.976,
+  "num_unique_objects": 15,
+  "mostly_tracked": 15,
+  "sequential_ids_per_person": {
+   "mean": 5.53,
+   "median": 6.0
+  },
+  "ids_ever_on_a_person": {
+   "mean": 9.07,
+   "median": 9.0
+  },
+  "duplicate_person_frames_pct": 2.43
+ },
+ "counting": {
+  "true_mean": 15.0,
+  "unique_workers_mean": 15.05,
+  "camera_sum_mean": 30.78,
+  "unique_abs_error_mean": 0.31,
+  "camera_sum_abs_error_mean": 15.78
+ },
+ "alerts": {
+  "site": {
+   "Zone check: west_aisle": {
+    "events": 23,
+    "events_alerted": 13,
+    "recall": 0.565,
+    "events_in_cooldown": 4,
+    "recall_with_cooldown": 0.739,
+    "alerts": 13,
+    "alerts_on_events": 13,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: north_staging_area": {
+    "events": 41,
+    "events_alerted": 19,
+    "recall": 0.463,
+    "events_in_cooldown": 20,
+    "recall_with_cooldown": 0.951,
+    "alerts": 20,
+    "alerts_on_events": 20,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.05
+   },
+   "Zone check: south_staging_area": {
+    "events": 32,
+    "events_alerted": 6,
+    "recall": 0.188,
+    "events_in_cooldown": 10,
+    "recall_with_cooldown": 0.5,
+    "alerts": 6,
+    "alerts_on_events": 6,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: west_rack_face": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   }
+  },
+  "camera": {
+   "Zone check: west_aisle": {
+    "events": 23,
+    "events_alerted": 7,
+    "recall": 0.304,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.304,
+    "alerts": 17,
+    "alerts_on_events": 17,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 2.43
+   },
+   "Zone check: north_staging_area": {
+    "events": 41,
+    "events_alerted": 6,
+    "recall": 0.146,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.146,
+    "alerts": 20,
+    "alerts_on_events": 20,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 3.33
+   },
+   "Zone check: south_staging_area": {
+    "events": 32,
+    "events_alerted": 10,
+    "recall": 0.312,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.312,
+    "alerts": 15,
+    "alerts_on_events": 15,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.5
+   },
+   "Zone check: west_rack_face": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   }
+  }
+ },
+ "alerts_in_view": {
+  "site": {
+   "Zone check: west_aisle": {
+    "events": 23,
+    "events_alerted": 13,
+    "recall": 0.565,
+    "events_in_cooldown": 4,
+    "recall_with_cooldown": 0.739,
+    "alerts": 13,
+    "alerts_on_events": 13,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: north_staging_area": {
+    "events": 41,
+    "events_alerted": 19,
+    "recall": 0.463,
+    "events_in_cooldown": 20,
+    "recall_with_cooldown": 0.951,
+    "alerts": 20,
+    "alerts_on_events": 20,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.05
+   },
+   "Zone check: south_staging_area": {
+    "events": 32,
+    "events_alerted": 6,
+    "recall": 0.188,
+    "events_in_cooldown": 10,
+    "recall_with_cooldown": 0.5,
+    "alerts": 6,
+    "alerts_on_events": 6,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: west_rack_face": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   }
+  },
+  "camera": {
+   "Zone check: west_aisle": {
+    "events": 23,
+    "events_alerted": 7,
+    "recall": 0.304,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.304,
+    "alerts": 17,
+    "alerts_on_events": 17,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 2.43
+   },
+   "Zone check: north_staging_area": {
+    "events": 41,
+    "events_alerted": 6,
+    "recall": 0.146,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.146,
+    "alerts": 20,
+    "alerts_on_events": 20,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 3.33
+   },
+   "Zone check: south_staging_area": {
+    "events": 32,
+    "events_alerted": 10,
+    "recall": 0.312,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.312,
+    "alerts": 15,
+    "alerts_on_events": 15,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.5
+   },
+   "Zone check: west_rack_face": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   }
+  }
+ },
+ "in_view_px": 40.0,
+ "forklift_detection": {
+  "forklift_frames_visible": 0,
+  "detected": 0,
+  "rate": null
+ },
+ "forklift_distance": {
+  "pairs": 0,
+  "pairs_forklift_not_detected": 0,
+  "mae_m": null,
+  "median_abs_error_m": null,
+  "mean_signed_error_m": null
+ },
+ "note": "Ground truth never enters the pipeline. Per-camera mode = same detections and floor distances, but each camera track alerts on its own (no cross-camera identity)."
+}

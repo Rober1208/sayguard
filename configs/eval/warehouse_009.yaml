@@ -1,0 +1,78 @@
+# Development scene for site mode: the same building and cameras as the training scene Warehouse_008, so it is
+# not an independent test; the alert logic was developed on it.
+# 12 synchronized, calibrated cameras of NVIDIA PhysicalAI-SmartSpaces MTMC_Tracking_2026 train/Warehouse_009
+# (synthetic, CC BY 4.0); the site detector never trains on it.  Zones were drawn on the floor plan
+# (map.png pixels) where at least two cameras see a standing person >= 40 px tall, by a reviewer who
+# had not seen any result.  Prepare and measure:
+#   python scripts/fetch_smartspaces.py train/Warehouse_009
+#   python scripts/make_site_streams.py train/Warehouse_009
+#   python scripts/eval_site.py --config configs/eval/warehouse_009.yaml --all-zones
+
+site_name: "Warehouse 009 (synthetic, NVIDIA PhysicalAI-SmartSpaces)"
+
+site:
+  calibration: "@work/datasets/smartspaces/train/Warehouse_009/calibration.json"
+  plan: "@work/datasets/smartspaces/train/Warehouse_009/map.png"
+  zone: warehouse
+  plan_width: 960
+
+detector:
+  backend: ultralytics
+  name: "YOLOv8s-site"
+  weights: "@work/models/site_yolov8s.pt"
+  hef: "@work/models/site_yolov8s.hef"
+  labels: [person, forklift, pallet_truck, transporter, mobile_robot, humanoid_robot]
+  imgsz: 960
+  conf: 0.25
+  half: true
+
+open_vocab:
+  enabled: false
+
+llm:
+  base_url: "http://127.0.0.1:11434"
+  model: "qwen2.5:1.5b"
+  timeout_s: 60
+
+asr:
+  model: "@work/models/hf/whisper-small"
+  language: "en"
+
+verifier:
+  enabled: false
+  backend: clip_probe
+
+streams:
+  fps: 10
+  tile_width: 640
+
+privacy:
+  blur_faces: true
+
+cameras:
+  - {id: cam00, calib: Camera_0000, name: "Camera 00", zone: warehouse, source: "@work/videos/site/Warehouse_009/Camera_0000.mp4"}
+  - {id: cam01, calib: Camera_0001, name: "Camera 01", zone: warehouse, source: "@work/videos/site/Warehouse_009/Camera_0001.mp4"}
+  - {id: cam02, calib: Camera_0002, name: "Camera 02", zone: warehouse, source: "@work/videos/site/Warehouse_009/Camera_0002.mp4"}
+  - {id: cam03, calib: Camera_0003, name: "Camera 03", zone: warehouse, source: "@work/videos/site/Warehouse_009/Camera_0003.mp4"}
+  - {id: cam04, calib: Camera_0004, name: "Camera 04", zone: warehouse, source: "@work/videos/site/Warehouse_009/Camera_0004.mp4"}
+  - {id: cam05, calib: Camera_0005, name: "Camera 05", zone: warehouse, source: "@work/videos/site/Warehouse_009/Camera_0005.mp4"}
+  - {id: cam06, calib: Camera_0006, name: "Camera 06", zone: warehouse, source: "@work/videos/site/Warehouse_009/Camera_0006.mp4"}
+  - {id: cam07, calib: Camera_0007, name: "Camera 07", zone: warehouse, source: "@work/videos/site/Warehouse_009/Camera_0007.mp4"}
+  - {id: cam08, calib: Camera_0008, name: "Camera 08", zone: warehouse, source: "@work/videos/site/Warehouse_009/Camera_0008.mp4"}
+  - {id: cam09, calib: Camera_0009, name: "Camera 09", zone: warehouse, source: "@work/videos/site/Warehouse_009/Camera_0009.mp4"}
+  - {id: cam10, calib: Camera_0010, name: "Camera 10", zone: warehouse, source: "@work/videos/site/Warehouse_009/Camera_0010.mp4"}
+  - {id: cam11, calib: Camera_0011, name: "Camera 11", zone: warehouse, source: "@work/videos/site/Warehouse_009/Camera_0011.mp4"}
+
+zones:
+  north_walkway: {en: "North cross walkway", zh: "北側橫向走道", plan_polygon: [[575, 420], [1340, 420], [1340, 524], [575, 524]]}
+  north_door: {en: "North wall door", zh: "北牆門口", plan_polygon: [[910, 80], [1003, 80], [1003, 180], [910, 180]]}
+  fenced_staging: {en: "Fenced pallet staging area", zh: "圍欄棧板暫存區", plan_polygon: [[710, 533], [1340, 533], [1340, 935], [710, 935]]}
+  pallet_block: {en: "North-east pallet stack", zh: "東北棧板堆放區", plan_polygon: [[1150, 230], [1310, 230], [1310, 412], [1150, 412]]}
+  warehouse: {en: "Warehouse", zh: "倉庫"}
+
+rules_file: "@work/state_eval/warehouse_009/rules.json"
+events_db: "@work/state_eval/warehouse_009/events.db"
+snapshots_dir: "@work/state_eval/warehouse_009/snapshots"
+retention_days: 14
+
+default_rules: []

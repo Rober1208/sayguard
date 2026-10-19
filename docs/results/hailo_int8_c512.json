@@ -1,0 +1,12 @@
+{
+ "har": "helmet_c512_optimized.har",
+ "images": 2001,
+ "instances": 5517,
+ "quantized": {
+  "mAP50-95": 0.5363,
+  "mAP50": 0.8513,
+  "helmet_mAP50": 0.8457,
+  "head_mAP50": 0.857,
+  "seconds": 1198.4
+ }
+}

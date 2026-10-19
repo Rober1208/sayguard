@@ -1,0 +1,78 @@
+# Development scene for site mode: the same room and cameras as the test scene Warehouse_018, so it is never
+# trained on (that would leak into the W018 test); the alert logic was developed on it.
+# 3 synchronized, calibrated cameras of NVIDIA PhysicalAI-SmartSpaces MTMC_Tracking_2026 train/Warehouse_017
+# (synthetic, CC BY 4.0); the site detector never trains on it.  Zones were drawn on the floor plan
+# (map.png pixels) where at least two cameras see a standing person >= 40 px tall, by a reviewer who
+# had not seen any result.  Prepare and measure:
+#   python scripts/fetch_smartspaces.py train/Warehouse_017
+#   python scripts/make_site_streams.py train/Warehouse_017
+#   python scripts/eval_site.py --config configs/eval/warehouse_017.yaml --all-zones
+
+site_name: "Warehouse 017 (synthetic, NVIDIA PhysicalAI-SmartSpaces)"
+
+site:
+  calibration: "@work/datasets/smartspaces/train/Warehouse_017/calibration.json"
+  plan: "@work/datasets/smartspaces/train/Warehouse_017/map.png"
+  zone: warehouse
+  plan_width: 960
+
+detector:
+  backend: ultralytics
+  name: "YOLOv8s-site"
+  weights: "@work/models/site_yolov8s.pt"
+  hef: "@work/models/site_yolov8s.hef"
+  labels: [person, forklift, pallet_truck, transporter, mobile_robot, humanoid_robot]
+  imgsz: 960
+  conf: 0.25
+  half: true
+
+open_vocab:
+  enabled: false
+
+llm:
+  base_url: "http://127.0.0.1:11434"
+  model: "qwen2.5:1.5b"
+  timeout_s: 60
+
+asr:
+  model: "@work/models/hf/whisper-small"
+  language: "en"
+
+verifier:
+  enabled: false
+  backend: clip_probe
+
+streams:
+  fps: 10
+  tile_width: 640
+
+privacy:
+  blur_faces: true
+
+cameras:
+  - {id: cam00, calib: Camera_0000, name: "Camera 00", zone: warehouse, source: "@work/videos/site/Warehouse_017/Camera_0000.mp4"}
+  - {id: cam01, calib: Camera_0001, name: "Camera 01", zone: warehouse, source: "@work/videos/site/Warehouse_017/Camera_0001.mp4"}
+  - {id: cam02, calib: Camera_0002, name: "Camera 02", zone: warehouse, source: "@work/videos/site/Warehouse_017/Camera_0002.mp4"}
+
+zones:
+  north_approach_aisle: {en: "North approach aisle to docks", zh: "碼頭北側通道", plan_polygon: [[1338, 415], [1436, 415], [1436, 594], [1145, 594], [1225, 496], [1338, 496]]}
+  dock_doors_apron: {en: "Dock doors apron", zh: "碼頭門口區", plan_polygon: [[1336, 602], [1436, 602], [1436, 975], [1336, 975]]}
+  dock_staging_area: {en: "Dock staging area", zh: "碼頭暫存區", plan_polygon: [[1132, 602], [1330, 602], [1330, 995], [1172, 995], [1100, 885], [1100, 670]]}
+  warehouse: {en: "Warehouse", zh: "倉庫"}
+
+rules_file: "@work/state_eval/warehouse_017/rules.json"
+events_db: "@work/state_eval/warehouse_017/events.db"
+snapshots_dir: "@work/state_eval/warehouse_017/snapshots"
+retention_days: 14
+
+default_rules:
+  - name: "Keep 3 m from forklifts"
+    type: object_near_person
+    object: forklift
+    threshold: 3.0
+    cameras: ["*"]
+    zones: ["warehouse"]
+    min_duration_s: 2.0
+    cooldown_s: 60.0
+    severity: high
+    message: "Worker within 3 m of a forklift"

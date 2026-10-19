@@ -1,6 +1,7 @@
 """Rule schema shared by the engine, the natural-language parser and the API."""
 from __future__ import annotations
 
+import re
 import time
 import uuid
 from typing import Literal
@@ -16,6 +17,21 @@ RULE_TYPES: dict[str, str] = {
     "object_present": "an object of class `object` is visible",
     "object_near_person": "an object of class `object` is within `threshold` metres of a person",
 }
+
+
+# site-detector class names; rule objects are matched against detector labels after canon_label
+SITE_CLASSES = {"person", "forklift", "pallet_truck", "transporter", "mobile_robot", "humanoid_robot"}
+_SYNONYMS = {"pallet_jack": "pallet_truck", "amr": "mobile_robot", "agv": "transporter", "humanoid": "humanoid_robot",
+             "fork_lift": "forklift"}
+
+
+def canon_label(name: str | None) -> str:
+    """'Pallet trucks' / 'pallet-truck' / 'AMR' -> 'pallet_truck' / 'pallet_truck' / 'mobile_robot'."""
+    n = re.sub(r"[\s\-]+", "_", (name or "").strip().lower())
+    n = _SYNONYMS.get(n, n)
+    if n.endswith("s") and (n[:-1] in SITE_CLASSES or _SYNONYMS.get(n[:-1], "") in SITE_CLASSES):
+        n = _SYNONYMS.get(n[:-1], n[:-1])
+    return n
 
 
 class TimeWindow(BaseModel):
@@ -73,6 +89,14 @@ class Rule(BaseModel):
         if self.zones and zone not in self.zones:
             return False
         return zone not in self.zones_exclude
+
+    def covers_any(self, cam_id: str, zones: list[str]) -> bool:
+        """covers() for a camera that sees several zones (site mode: floor-plan zones)."""
+        if "*" not in self.cameras and cam_id not in self.cameras:
+            return False
+        if self.zones and not any(z in self.zones for z in zones):
+            return False
+        return not zones or not all(z in self.zones_exclude for z in zones)
 
     def check_complete(self) -> list[str]:
         """Semantic problems that the JSON schema alone cannot catch."""

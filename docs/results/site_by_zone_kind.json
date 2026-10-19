@@ -1,0 +1,114 @@
+{
+ "by_kind_test_scenes": {
+  "final": {
+   "forklift": {
+    "events": 61,
+    "own_alert": 25,
+    "covered": 56,
+    "alerts": 26,
+    "false": 1
+   },
+   "lane": {
+    "events": 118,
+    "own_alert": 71,
+    "covered": 98,
+    "alerts": 77,
+    "false": 3
+   },
+   "door": {
+    "events": 53,
+    "own_alert": 52,
+    "covered": 53,
+    "alerts": 52,
+    "false": 0
+   },
+   "work": {
+    "events": 338,
+    "own_alert": 237,
+    "covered": 323,
+    "alerts": 362,
+    "false": 26
+   },
+   "other": {
+    "events": 48,
+    "own_alert": 34,
+    "covered": 43,
+    "alerts": 44,
+    "false": 6
+   }
+  },
+  "frozen": {
+   "forklift": {
+    "events": 61,
+    "own_alert": 23,
+    "covered": 54,
+    "alerts": 24,
+    "false": 1
+   },
+   "lane": {
+    "events": 118,
+    "own_alert": 39,
+    "covered": 76,
+    "alerts": 40,
+    "false": 1
+   },
+   "door": {
+    "events": 53,
+    "own_alert": 26,
+    "covered": 50,
+    "alerts": 26,
+    "false": 0
+   },
+   "work": {
+    "events": 338,
+    "own_alert": 147,
+    "covered": 281,
+    "alerts": 244,
+    "false": 16
+   },
+   "other": {
+    "events": 48,
+    "own_alert": 21,
+    "covered": 34,
+    "alerts": 30,
+    "false": 4
+   }
+  }
+ },
+ "zone_kinds": {
+  "Warehouse_010 (demo zones from configs/warehouse.yaml, kinds assigned by us)": {
+   "aisle_7": "lane",
+   "dock": "door",
+   "racks": "work",
+   "open_floor": "work"
+  },
+  "Warehouse_013 (drawn and labelled by an AI agent from the coverage map only)": {
+   "west_cross_aisle": "lane",
+   "north_staging_area": "work",
+   "south_open_floor": "work",
+   "west_rack_line": "other"
+  },
+  "Warehouse_015 (drawn and labelled by an AI agent from the coverage map only)": {
+   "north_cross_aisle": "lane",
+   "south_staging_floor": "work",
+   "west_rack_aisle": "work",
+   "east_rack_aisle": "other"
+  },
+  "Warehouse_018 (drawn and labelled by an AI agent from the coverage map only)": {
+   "staging_west_walkway": "lane",
+   "loading_dock_staging": "door",
+   "north_open_floor": "work"
+  },
+  "Warehouse_019 (drawn and labelled by an AI agent from the coverage map only)": {
+   "dock_side_aisle": "lane",
+   "dock_staging_area": "door",
+   "dock_approach_floor": "work"
+  },
+  "Warehouse_022 (drawn and labelled by an AI agent from the coverage map only)": {
+   "main_aisle_r1_r2": "lane",
+   "north_staging": "work",
+   "picking_aisle_r2_r3": "work"
+  }
+ },
+ "note": "events covered = own alert or inside the cooldown of an alert for the same person; own alert = strict recall"
+}

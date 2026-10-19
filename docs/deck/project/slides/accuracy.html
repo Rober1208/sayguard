@@ -1,27 +1,47 @@
-<section id="accuracy" data-transition="fade" style="background:#F3F0E8;color:#171B21;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
+<section id="accuracy" data-transition="fade" style="background:#F3F0E8;color:#171B21;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:16px">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8A5A00;letter-spacing:2px">EVIDENCE · RULE PARSING</p>
-<h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">The checker makes a small model usable</h2>
+<h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">With the checker, a 1.5B model gets 84–95 % of held-out rules exactly right</h2>
 </div>
-<div style="display:flex;flex-direction:column;gap:36px">
-<p style="font-size:30px;color:#4A5260">20 held-out sentences (Mandarin + English) never used to build the checker · rules exactly right</p>
+<div style="display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:28px;font-weight:600">Hard-hat mode · 20 typed held-out sentences <span style="font-weight:400;color:#4A5260">· share of sentences parsed exactly right</span></p>
 <div style="display:flex;align-items:center;gap:32px">
-<p style="font-size:32px;font-weight:600;width:360px">LLM alone</p>
-<div style="width:440px;height:72px;background:#9AA3AF;border-radius:8px"></div>
-<p style="font-family:Rubik, Arial, sans-serif;font-size:56px;font-weight:700">40 %</p>
-</div>
-<div style="display:flex;align-items:center;gap:32px">
-<p style="font-size:32px;font-weight:600;width:360px">Rule extractor alone</p>
-<div style="width:990px;height:72px;background:#5AA2E6;border-radius:8px"></div>
-<p style="font-family:Rubik, Arial, sans-serif;font-size:56px;font-weight:700">90 %</p>
+<p style="font-size:28px;width:340px;color:#4A5260">LLM alone</p>
+<div style="display:flex;width:1000px;height:36px;background:#E6E0D4;border-radius:8px"><div style="width:400px;height:36px;background:#9AA3AF;border-radius:8px"></div></div>
+<p style="font-family:Rubik, Arial, sans-serif;font-size:40px;font-weight:700;line-height:1">40 %</p>
 </div>
 <div style="display:flex;align-items:center;gap:32px">
-<p style="font-size:32px;font-weight:600;width:360px">LLM + checker</p>
-<div style="width:1045px;height:72px;background:#F2B233;border-radius:8px"></div>
-<p style="font-family:Rubik, Arial, sans-serif;font-size:56px;font-weight:700">95 %</p>
+<p style="font-size:28px;width:340px;color:#4A5260">Rule extractor alone</p>
+<div style="display:flex;width:1000px;height:36px;background:#E6E0D4;border-radius:8px"><div style="width:900px;height:36px;background:#5AA2E6;border-radius:8px"></div></div>
+<p style="font-family:Rubik, Arial, sans-serif;font-size:40px;font-weight:700;line-height:1">90 %</p>
+</div>
+<div style="display:flex;align-items:center;gap:32px">
+<p style="font-size:28px;width:340px;font-weight:600">LLM + checker</p>
+<div style="display:flex;width:1000px;height:36px;background:#E6E0D4;border-radius:8px"><div style="width:950px;height:36px;background:#F2B233;border-radius:8px"></div></div>
+<p style="font-family:Rubik, Arial, sans-serif;font-size:40px;font-weight:700;line-height:1">95 %</p>
 </div>
 </div>
-<p style="font-size:28px;line-height:1.4;color:#4A5260">Correct means every stated field matches: rule type, object, count or distance, time window, duration and the cameras it covers. Qwen2.5-1.5B, 0.34 s per rule on the PC.</p>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">SayGuard · Stage I proposal · 7 · scripts/eval_rules.py, docs/results/rule_parsing.json</p>
-<aside>We measured this honestly on twenty sentences written after the checker was finished. The 1.5B model alone gets 40 percent exactly right; it invents time windows and mixes up numbers. The checker alone gets 90 percent but misses phrasings it has never seen, like “大門口” for the site gate. Together: 95 percent.</aside>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:28px;font-weight:600">Warehouse mode · 2 × 25 typed held-out sentences <span style="font-weight:400;color:#4A5260">· lighter segment = spread between the two sets</span></p>
+<div style="display:flex;align-items:center;gap:32px">
+<p style="font-size:28px;width:340px;color:#4A5260">LLM alone</p>
+<div style="display:flex;width:1000px;height:36px;background:#E6E0D4;border-radius:8px"><div style="width:160px;height:36px;background:#9AA3AF;border-radius:8px 0px 0px 8px"></div><div style="width:80px;height:36px;background:#C8CDD4;border-radius:0px 8px 8px 0px"></div></div>
+<p style="font-family:Rubik, Arial, sans-serif;font-size:40px;font-weight:700;line-height:1">16–24 %</p>
+</div>
+<div style="display:flex;align-items:center;gap:32px">
+<p style="font-size:28px;width:340px;color:#4A5260">Rule extractor alone</p>
+<div style="display:flex;width:1000px;height:36px;background:#E6E0D4;border-radius:8px"><div style="width:680px;height:36px;background:#5AA2E6;border-radius:8px 0px 0px 8px"></div><div style="width:120px;height:36px;background:#B3D3F2;border-radius:0px 8px 8px 0px"></div></div>
+<p style="font-family:Rubik, Arial, sans-serif;font-size:40px;font-weight:700;line-height:1">68–80 %</p>
+</div>
+<div style="display:flex;align-items:center;gap:32px">
+<p style="font-size:28px;width:340px;font-weight:600">LLM + checker</p>
+<div style="display:flex;width:1000px;height:36px;background:#E6E0D4;border-radius:8px"><div style="width:840px;height:36px;background:#F2B233;border-radius:8px 0px 0px 8px"></div><div style="width:40px;height:36px;background:#F8D793;border-radius:0px 8px 8px 0px"></div></div>
+<p style="font-family:Rubik, Arial, sans-serif;font-size:40px;font-weight:700;line-height:1">84–88 %</p>
+</div>
+</div>
+</div>
+<p style="font-size:26px;line-height:1.35;color:#4A5260">Exactly right = every stated field matches; speech recognition is not included. Warehouse sentences were written and labelled by AI agents, a writer and a reviewer who never saw the parser code (a new pair for the second set). 84 % is the first set’s first run, before the fixes it exposed (no longer clean); 88 % is a fresh second set after the fixes.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">SayGuard · Stage I proposal · 7 · Ollama qwen2.5:1.5b on the PC GPU · scripts/eval_rules.py [--site], docs/results/rule_parsing*.json</p>
+<aside>Every sentence here was typed, and held out when it was measured: none had been used to build the checker. In hard-hat mode the small model alone gets 40 percent exactly right; it can, for example, guess a time window or misname an object. With the checker it reaches 95, and the rule extractor alone, which is the checker's own parser run without the model, already gets 90, so the model's share is the rephrasings the extractor misses. The warehouse sentences were written and labelled by AI agents that never saw our parser code. We report the first set's first run; we then fixed what it exposed, so that set is no longer clean, and measured a fresh set from a new pair, so neither figure comes from sentences we tuned on.</aside>
 </section>

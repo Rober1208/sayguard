@@ -35,8 +35,8 @@ CREATE INDEX IF NOT EXISTS idx_events_ts ON events(ts);
 COLUMNS = ("id", "ts", "cam_id", "cam_name", "zone", "rule_id", "rule_name", "rule_type", "severity", "message",
            "track_id", "box", "snapshot", "verified", "verify_note", "extra")
 PAGE_ROWS = 5000
-# Only hard-hat alerts are sent to the VLM; every other rule type keeps verified=NULL for good.
-VLM_CHECKED_TYPE = "no_helmet"
+# Only hard-hat alerts are double-checked; every other rule type keeps verified=NULL for good.
+CHECKED_TYPE = "no_helmet"
 
 
 class EventStore:
@@ -129,15 +129,15 @@ class EventStore:
 
     def counts(self, t0: float, t1: float) -> dict[str, int]:
         """Alert totals for t0 <= ts < t1 in one aggregate query (the dashboard polls this
-        every second).  pending = hard-hat alerts the VLM has not judged yet;
-        not_applicable = alerts of rule types the VLM never checks.  COALESCE because
+        every second).  pending = hard-hat alerts not double-checked yet;
+        not_applicable = alerts of rule types that are never checked.  COALESCE because
         SUM over zero rows is NULL."""
         with self._lock:
             r = self._db.execute(
                 "SELECT COUNT(*), COALESCE(SUM(verified = 1), 0), COALESCE(SUM(verified = 0), 0), "
                 "COALESCE(SUM(verified IS NULL AND rule_type = ?), 0), "
                 "COALESCE(SUM(verified IS NULL AND IFNULL(rule_type, '') != ?), 0) "
-                "FROM events WHERE ts>=? AND ts<?", (VLM_CHECKED_TYPE, VLM_CHECKED_TYPE, t0, t1)).fetchone()
+                "FROM events WHERE ts>=? AND ts<?", (CHECKED_TYPE, CHECKED_TYPE, t0, t1)).fetchone()
         return dict(zip(("total", "confirmed", "false_alarms", "pending", "not_applicable"), map(int, r)))
 
     def purge_older_than(self, ts: float) -> int:

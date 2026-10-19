@@ -1,0 +1,21 @@
+{
+ "har": "helmet_c512clip_optimized.har",
+ "images": 2001,
+ "instances": 5517,
+ "fp_optimized": {
+  "mAP50-95": 0.5662,
+  "mAP50": 0.8927,
+  "helmet_mAP50": 0.9035,
+  "head_mAP50": 0.8819,
+  "seconds": 167.8
+ },
+ "quantized": {
+  "mAP50-95": 0.56,
+  "mAP50": 0.889,
+  "helmet_mAP50": 0.9008,
+  "head_mAP50": 0.8772,
+  "seconds": 1301.7
+ },
+ "mAP50_drop": 0.0037,
+ "mAP50-95_drop": 0.0062
+}

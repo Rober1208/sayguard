@@ -18,3 +18,4 @@ regex
 git+https://github.com/ultralytics/CLIP.git   # text encoder for YOLO-World
 pytest
 # Stage II (UGen300): HailoRT 5.x Python wheel (hailo_platform) from the Hailo Developer Zone
+motmetrics>=1.4  # scripts/eval_site.py (MOTA / IDF1 on the floor plan)

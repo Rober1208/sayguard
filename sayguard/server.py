@@ -2,8 +2,11 @@
 
 GET  /                          dashboard (web/index.html)
 GET  /stream/{cam_id}           MJPEG tile stream (multipart/x-mixed-replace)
-GET  /api/config                site, cameras, zones, model names
-GET  /api/state                 live stats, per-camera status, Hailo load estimate, verifier/ASR status
+GET  /stream/map                site mode: live floor plan (workers by global id, zones, vehicles), same
+                                MJPEG format; 404 without a site
+GET  /api/config                site, cameras, zones, model names; "site" {name, zones, cameras} or null
+GET  /api/state                 live stats, per-camera status, Hailo load estimate, verifier/ASR status;
+                                site mode adds "site" {unique_people, camera_sum, zones, vehicles}
 GET  /api/events?limit=&since=  recent alerts (newest first), 1 <= limit <= 500
 GET  /api/events/{id}/snapshot  anonymised JPEG
 GET  /api/rules                 active rules
@@ -19,6 +22,7 @@ from __future__ import annotations
 
 import asyncio
 import time
+from collections.abc import Callable
 from pathlib import Path
 
 from fastapi import FastAPI, File, Form, HTTPException, Query, UploadFile
@@ -67,13 +71,41 @@ def site_vocabulary(cfg: dict) -> dict[str, str]:
     return {"zh": zh + "。", "en": en + "."}
 
 
+def mjpeg(frame: Callable[[], tuple[int, bytes | None]]) -> StreamingResponse:
+    """Stream frame() -> (seq, jpeg) as MJPEG, a part only when seq moves on.  Polled instead of
+    waiting on pipe.cond: a threading.Condition cannot be awaited without a thread per viewer."""
+    async def gen():
+        seq = -1
+        while True:
+            s, data = frame()
+            if data is not None and s != seq:
+                seq = s
+                yield (b"--frame\r\nContent-Type: image/jpeg\r\nContent-Length: " + str(len(data)).encode()
+                       + b"\r\n\r\n" + data + b"\r\n")
+            await asyncio.sleep(0.04)
+    return StreamingResponse(gen(), media_type="multipart/x-mixed-replace; boundary=frame")
+
+
 def create_app(pipe: Pipeline) -> FastAPI:
     app = FastAPI(title="SayGuard", docs_url="/api/docs")
     app.mount("/static", StaticFiles(directory=str(WEB)), name="static")
     cfg = pipe.cfg
-    cams = [{"id": c["id"], "name": c["name"], "zone": c["zone"]} for c in cfg["cameras"]]
+    # site mode: "zones" = the floor-plan zones a camera sees (set by SitePipeline), without which the
+    # parser's scope check and the dashboard's coverage preview reject "in aisle 3"
+    cams = [{"id": c["id"], "name": c["name"], "zone": c.get("zone", ""),
+             **({"zones": list(c["zones"])} if c.get("zones") else {})} for c in cfg["cameras"]]
     zones = cfg.get("zones", {})
     asr_holder: dict = {}
+
+    def site_config() -> dict | None:
+        """What the dashboard needs to label the floor plan; None outside site mode.  Zones are the
+        loaded Site's: the top-level `zones:` entries that carry a polygon or plan_polygon."""
+        site = getattr(pipe, "site", None)
+        if site is None:
+            return None
+        return {"name": (cfg.get("site") or {}).get("name") or cfg.get("site_name", ""),
+                "zones": [{"id": z.id, "name": z.name} for z in site.zones],
+                "cameras": [c["id"] for c in cams]}
 
     def asr():
         if "asr" not in asr_holder:
@@ -95,30 +127,29 @@ def create_app(pipe: Pipeline) -> FastAPI:
     async def index() -> HTMLResponse:
         return HTMLResponse((WEB / "index.html").read_text(encoding="utf-8"))
 
+    # registered before /stream/{cam_id}, which would otherwise take "map" for a camera id
+    @app.get("/stream/map")
+    async def stream_map():
+        if getattr(pipe, "site", None) is None:
+            raise HTTPException(404, "not in site mode")
+        return mjpeg(lambda: (pipe.map_seq, pipe.map_jpeg))
+
     @app.get("/stream/{cam_id}")
     async def stream(cam_id: str):
         st = pipe.states.get(cam_id)
         if st is None:
             raise HTTPException(404, "unknown camera")
-
-        async def gen():
-            seq = -1
-            while True:
-                if st.jpeg is not None and st.jpeg_seq != seq:
-                    seq, data = st.jpeg_seq, st.jpeg
-                    yield (b"--frame\r\nContent-Type: image/jpeg\r\nContent-Length: " + str(len(data)).encode()
-                           + b"\r\n\r\n" + data + b"\r\n")
-                await asyncio.sleep(0.04)
-        return StreamingResponse(gen(), media_type="multipart/x-mixed-replace; boundary=frame")
+        return mjpeg(lambda: (st.jpeg_seq, st.jpeg))
 
     @app.get("/api/config")
     async def config():
-        return {"site_name": cfg.get("site_name", ""), "cameras": cams, "zones": zones,
+        return {"site_name": cfg.get("site_name", ""), "site": site_config(), "cameras": cams, "zones": zones,
                 "models": {"detector": pipe.detector.name, "llm": cfg["llm"]["model"],
-                           "asr": cfg.get("asr", {}).get("model"), "vlm": cfg.get("vlm", {}).get("model"),
+                           "asr": cfg.get("asr", {}).get("model"), "verifier": pipe.verifier.label,
                            "open_vocab": cfg.get("open_vocab", {}).get("weights")},
                 "hailo_reference": cfg.get("hailo_reference", {}), "fps_target": pipe.fps_target,
-                "privacy": {"blur_faces": pipe.blur}}
+                "privacy": {"blur_faces": pipe.blur},
+                "examples": [str(x) for x in (cfg.get("examples") or [])][:6]}
 
     @app.get("/api/state")
     async def state():
@@ -144,6 +175,13 @@ def create_app(pipe: Pipeline) -> FastAPI:
     async def rules():
         return [r.model_dump() for r in pipe.engine.list()]
 
+    # rule types this pipeline cannot evaluate (site mode has no hard-hat detector): refused, so
+    # a rule is never listed as active while it can never fire
+    unsupported = set(getattr(pipe, "unsupported_rule_types", ()))
+
+    def unsupported_msg(rtype: str) -> str:
+        return f"rule type {rtype} is not available in this mode (site mode tracks whole people, not hard hats)"
+
     @app.post("/api/rules/parse")
     async def parse(body: ParseIn):
         text = body.text.strip()
@@ -152,6 +190,8 @@ def create_app(pipe: Pipeline) -> FastAPI:
         llm = pipe.llm if await run_in_threadpool(pipe.llm.available) else None
         t0 = time.perf_counter()
         res = await run_in_threadpool(rule_parser.parse, text, cams, zones, llm)
+        if res.rule is not None and res.rule.type in unsupported:
+            res.problems.append(unsupported_msg(res.rule.type))
         return {"ok": res.rule is not None and not res.problems, "rule": res.rule.model_dump() if res.rule else None,
                 "parser": res.parser, "notes": res.notes, "problems": res.problems,
                 "ms": int((time.perf_counter() - t0) * 1000)}
@@ -163,6 +203,8 @@ def create_app(pipe: Pipeline) -> FastAPI:
         except Exception as e:
             raise HTTPException(422, f"invalid rule: {e}")
         problems = rule.check_complete()
+        if rule.type in unsupported:
+            problems.append(unsupported_msg(rule.type))
         if problems:
             raise HTTPException(422, "; ".join(problems))
         if not pipe.engine.scope_cameras(rule):   # e.g. cam01 + zone_b while cam01 is at the entrance

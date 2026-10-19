@@ -36,7 +36,7 @@
   // ------------------------------------------------------------------ i18n
   const I18N = {
     en: {
-      tagline: "One UGen300 · 10 cameras · rules you can say",
+      tagline: "One UGen300 · {n} cameras · rules you can say",
       site: "Site",
       reconnecting: "Reconnecting…",
       lang_group: "Language",
@@ -53,13 +53,17 @@
       kpi_rules_sub: "of {n} total",
       kpi_confirmed: "Alerts confirmed · 24 h",
       kpi_confirmed_sub: "of {n} raised",
-      kpi_filtered: "False alarms filtered by VLM",
+      kpi_filtered: "False alarms filtered by double-check",
       kpi_filtered_sub: "24 h · {n} awaiting check",
-      kpi_filtered_na: "Hard-hat alerts only: {n} alerts from other rules are not VLM-checked",
+      kpi_filtered_na: "Hard-hat alerts only: {n} alerts from other rules are not double-checked",
       kpi_llm: "On-device LLM",
       llm_online: "Online",
       llm_offline: "Offline",
       llm_fallback: "rule extractor fallback",
+      kpi_site: "Workers on site",
+      kpi_site_unit: "unique",
+      kpi_site_sub: "{n} camera detections",
+      site_workers: "Workers on site: {unique} unique ({sum} camera detections)",
       wall_title: "Live cameras",
       wall_meta: "{n} cameras · {fps} FPS target each · click to enlarge",
       offline: "Offline",
@@ -68,15 +72,22 @@
       no_helmet: "No hard hat",
       fps_unit: "fps",
       open_camera: "Open {name} enlarged",
+      map_title: "Floor plan · each worker counted once",
+      open_map: "Open the floor plan enlarged",
+      map_workers: "Workers on site, each counted once",
+      vehicles: "Vehicles",
       alert: "Alert",
       alerts_title: "Live alerts",
       alerts_meta: "Newest first · click a card for details",
       alerts_empty: "No alerts yet. New alerts show up here within a second.",
-      vlm_confirmed: "Confirmed by VLM",
+      vlm_confirmed: "Confirmed by double-check",
       vlm_false: "False alarm filtered",
       vlm_checking: "Checking…",
       vlm_unchecked: "Not checked",
-      vlm_only_helmet: "The VLM double-checks hard-hat alerts only",
+      vlm_only_helmet: "Only hard-hat alerts are double-checked",
+      seen_by: "seen by {list}",
+      dist_m: "{d} m",
+      dist_tip: "Distance measured on the floor plan",
       sev_high: "High",
       sev_medium: "Medium",
       sev_low: "Low",
@@ -159,7 +170,7 @@
       err_report: "Could not build the report: {detail}",
       sys_detector: "Detector",
       sys_ov: "Open vocabulary",
-      sys_vlm: "VLM verifier",
+      sys_vlm: "Alert double-check",
       sys_asr: "Speech (ASR)",
       batch_info: "{ms} ms / batch · {cap} FPS capacity",
       ov_none: "idle (no object rules)",
@@ -186,11 +197,18 @@
       ev_severity: "Severity",
       ev_detail: "Detail",
       ev_spoken: "Spoken rule",
-      ev_vlm: "VLM check",
+      ev_vlm: "Double-check",
       ev_track: "Track ID",
+      ev_seen_by: "Seen by",
+      ev_distance: "Distance",
+      ev_world: "Floor position",
       snapshot_missing: "No snapshot",
       rules_here: "Rules on this camera",
       recent_here: "Recent alerts on this camera",
+      map_unique: "Workers",
+      map_sum: "Camera detections",
+      map_zones: "Workers per zone",
+      map_recent: "Recent alerts on site",
       none: "None",
       err_network: "Server unreachable",
       err_timeout: "The server took too long to answer",
@@ -198,7 +216,7 @@
       err_generic: "Something went wrong: {detail}",
     },
     zh: {
-      tagline: "一台 UGen300 · 10 支攝影機 · 用說的就能加規則",
+      tagline: "一台 UGen300 · {n} 支攝影機 · 用說的就能加規則",
       site: "廠區",
       reconnecting: "重新連線中…",
       lang_group: "語言",
@@ -215,13 +233,17 @@
       kpi_rules_sub: "共 {n} 條",
       kpi_confirmed: "已確認警報 · 24 小時",
       kpi_confirmed_sub: "共觸發 {n} 次",
-      kpi_filtered: "VLM 濾除的誤報",
+      kpi_filtered: "複核濾除的誤報",
       kpi_filtered_sub: "24 小時 · {n} 筆待複核",
-      kpi_filtered_na: "VLM 只複核安全帽警報：其他規則的 {n} 筆警報不經 VLM 複核",
+      kpi_filtered_na: "只複核安全帽警報：其他規則的 {n} 筆警報不經複核",
       kpi_llm: "裝置端 LLM",
       llm_online: "連線",
       llm_offline: "離線",
       llm_fallback: "改用規則擷取器",
+      kpi_site: "現場人數",
+      kpi_site_unit: "人",
+      kpi_site_sub: "各鏡頭合計 {n}",
+      site_workers: "現場人數：{unique} 人（各鏡頭合計 {sum}）",
       wall_title: "即時影像",
       wall_meta: "{n} 支攝影機 · 每支目標 {fps} FPS · 點擊放大",
       offline: "離線",
@@ -230,15 +252,22 @@
       no_helmet: "未戴安全帽",
       fps_unit: "fps",
       open_camera: "放大檢視 {name}",
+      map_title: "平面圖・每人只算一次",
+      open_map: "放大檢視平面圖",
+      map_workers: "現場人數（每人只算一次）",
+      vehicles: "車輛",
       alert: "警報",
       alerts_title: "即時警報",
       alerts_meta: "最新在前 · 點擊卡片查看細節",
       alerts_empty: "目前沒有警報，新警報會在一秒內出現在這裡。",
-      vlm_confirmed: "VLM 已確認",
+      vlm_confirmed: "複核確認",
       vlm_false: "已濾除誤報",
-      vlm_checking: "VLM 檢查中…",
+      vlm_checking: "複核中…",
       vlm_unchecked: "未檢查",
-      vlm_only_helmet: "VLM 只複核安全帽警報",
+      vlm_only_helmet: "只複核安全帽警報",
+      seen_by: "鏡頭：{list}",
+      dist_m: "{d} 公尺",
+      dist_tip: "在平面圖上量測的距離",
       sev_high: "高",
       sev_medium: "中",
       sev_low: "低",
@@ -321,7 +350,7 @@
       err_report: "報告產生失敗：{detail}",
       sys_detector: "偵測器",
       sys_ov: "開放詞彙",
-      sys_vlm: "VLM 複核",
+      sys_vlm: "警報複核",
       sys_asr: "語音辨識",
       batch_info: "每批 {ms} ms · 容量 {cap} FPS",
       ov_none: "待命（沒有物件規則）",
@@ -348,11 +377,18 @@
       ev_severity: "嚴重度",
       ev_detail: "細節",
       ev_spoken: "口述原句",
-      ev_vlm: "VLM 複核",
+      ev_vlm: "複核",
       ev_track: "追蹤 ID",
+      ev_seen_by: "鏡頭",
+      ev_distance: "距離",
+      ev_world: "平面位置",
       snapshot_missing: "沒有快照",
       rules_here: "套用在此攝影機的規則",
       recent_here: "此攝影機近期警報",
+      map_unique: "工人",
+      map_sum: "各鏡頭合計",
+      map_zones: "各區人數",
+      map_recent: "現場近期警報",
       none: "無",
       err_network: "無法連線到伺服器",
       err_timeout: "伺服器回應逾時",
@@ -414,6 +450,8 @@
     refresh: "M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7",
     camoff: "M3 3l18 18M10.5 6H15l2 3h2a1 1 0 0 1 1 1v7.5M17 19H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h2",
     shield: "M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6zM9 12l2 2 4-4",
+    dist: "M3 12h18M6.5 8.5L3 12l3.5 3.5M17.5 8.5L21 12l-3.5 3.5",
+    truck: "M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3.5v2.5h-7M5 18a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0M15 18a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0",
   };
 
   function icon(name, cls = "ico") {
@@ -455,6 +493,7 @@
   // ------------------------------------------------------------------ state
   const S = {
     config: null,
+    site: null,
     cams: [],
     camMap: new Map(),
     state: null,
@@ -478,10 +517,32 @@
   const serverNow = () => Date.now() + S.skewMs;
   const zoneName = (z) => {
     const names = S.config && S.config.zones && S.config.zones[z];
-    return names ? names[lang] || names.en || z : z || "";
+    if (names) return names[lang] || names.en || z;
+    const planZone = S.site && Array.isArray(S.site.zones) ? S.site.zones.find((x) => x && x.id === z) : null;
+    return planZone ? planZone.name || z : z || "";
   };
   const camName = (id) => (S.camMap.get(id) || {}).name || id;
   const objName = (o) => (lang === "zh" ? OBJ_ZH[o] || o : o) || "?";
+
+  // ------------------------------------------------------------------ site mode
+  const MAP_ID = "map";   // reserved tile id: the server routes /stream/map ahead of /stream/{cam_id}
+  const camTag = (id) => String(id || "").toUpperCase();
+  const camLabel = (id) => (camName(id) !== id ? `${camTag(id)} · ${camName(id)}` : camTag(id));
+  const fmtDist = (m) => t("dist_m", { d: m < 10 ? m.toFixed(1) : String(Math.round(m)) });
+  const siteStatus = () => (S.site && S.state && S.state.site && typeof S.state.site === "object" ? S.state.site : null);
+
+  // One alert per worker, however many cameras see them.  Outside site mode these fields are
+  // ignored, so the single-camera dashboard renders exactly as it always has.
+  function siteInfo(ev) {
+    const x = ev && ev.extra;
+    if (!S.site || !x || typeof x !== "object" || !isNum(x.global_id)) return null;
+    return {
+      cams: Array.isArray(x.cameras) ? x.cameras.filter((c) => typeof c === "string" && c) : [],
+      dist: numOr(x.distance_m),
+      world: Array.isArray(x.world) && isNum(x.world[0]) && isNum(x.world[1]) ? x.world : null,
+    };
+  }
+
 
   // ------------------------------------------------------------------ API
   class ApiError extends Error {
@@ -613,7 +674,7 @@
       renderAlerts(new Set(fresh.map((e) => e.id)));
       const now = serverNow();
       for (const ev of fresh.slice().reverse()) {
-        if (isNum(ev.ts) && now - ev.ts * 1000 < 60000) flashTile(ev.cam_id, ev);
+        if (isNum(ev.ts) && now - ev.ts * 1000 < 60000) for (const id of alertTiles(ev)) flashTile(id, ev);
       }
       if (S.camModal) S.camModal.update();
     } catch { /* retried on the next poll */ }
@@ -676,7 +737,7 @@
     setText("kConfirmed", fmtInt(a.confirmed));
     setText("kConfirmedSub", isNum(a.total) ? t("kpi_confirmed_sub", { n: fmtInt(a.total) }) : "");
     setText("kFiltered", fmtInt(a.false_alarms));
-    // unchecked = hard-hat alerts still waiting for the VLM; other rule types are never checked (not_applicable)
+    // unchecked = hard-hat alerts still waiting for the double-check; other rule types are never checked (not_applicable)
     setText("kFilteredSub", isNum(a.unchecked) ? t("kpi_filtered_sub", { n: fmtInt(a.unchecked) }) : "");
     const filteredSub = $("kFilteredSub");
     if (filteredSub) filteredSub.title = isNum(a.not_applicable) && a.not_applicable > 0 ? t("kpi_filtered_na", { n: fmtInt(a.not_applicable) }) : "";
@@ -688,51 +749,79 @@
     dot.classList.toggle("is-off", on === false);
     setText("kLlm", on === true ? t("llm_online") : on === false ? t("llm_offline") : "–");
     setText("kLlmSub", on === false ? `${llmModel} · ${t("llm_fallback")}` : llmModel);
+
+    if (S.site) {
+      // the gap between the two numbers is the point: one worker in three views counts once
+      const site = siteStatus() || {};
+      const unique = numOr(site.unique_people);
+      const sum = numOr(site.camera_sum);
+      setText("kSite", unique == null ? "–" : String(unique));
+      setText("kSiteUnit", unique == null ? "" : t("kpi_site_unit"));
+      setText("kSiteSub", sum == null ? "" : t("kpi_site_sub", { n: fmtInt(sum) }));
+      $("kSiteBox").title = unique == null ? "" : t("site_workers", { unique, sum: sum == null ? "–" : fmtInt(sum) });
+    }
   }
 
   // ------------------------------------------------------------------ camera wall
   const tiles = new Map();
 
+  // The floor plan is a tile like any camera (/stream/map), so it shares the stream budget,
+  // the poll fallback and the reconnect logic.
+  function makeTile(id, name, badges, open, cls = "tile") {
+    const img = h("img", { class: "tile-img", alt: "", decoding: "async", draggable: "false" });
+    const waitText = h("span", { class: "wait-text" });
+    const offText = h("span", { class: "off-text" });
+    const alertTag = h("span", { class: "tile-alert" });
+    const nameEl = h("span", { class: "tile-name", text: name });
+    const zone = h("span", { class: "tile-zone" });
+    const tile = h("figure", { class: cls, tabindex: "0", role: "button", dataset: { cam: id } },
+      h("div", { class: "tile-media" },
+        img,
+        h("div", { class: "tile-wait" }, h("span", { class: "spin", "aria-hidden": "true" }), waitText),
+        h("div", { class: "tile-off" }, icon("camoff"), offText),
+        alertTag),
+      h("figcaption", { class: "tile-cap" },
+        nameEl,
+        zone,
+        h("span", { class: "tile-badges" }, badges)));
+    const T = {
+      id, tile, img, waitText, offText, alertTag, nameEl, zone,
+      mode: "mjpeg", origin: "", errors: 0, everLoaded: false, retry: 0, flashTimer: 0,
+      poll: { due: 0, fails: 0, busy: false }, objUrl: null,
+    };
+    tile.addEventListener("click", open);
+    tile.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
+    });
+    img.addEventListener("load", () => markFrame(T));
+    img.addEventListener("error", () => onStreamError(T));
+    tiles.set(id, T);
+    return T;
+  }
+
   function buildWall() {
     const wall = $("wall");
     wall.textContent = "";
     tiles.clear();
+    if (S.site) {
+      const people = h("span", { class: "v" }, "–");
+      const vehicles = h("span", { class: "v" }, "–");
+      const peopleBadge = h("span", { class: "badge badge-people" }, icon("person"), people);
+      const vehBadge = h("span", { class: "badge badge-veh" }, icon("truck"), vehicles);
+      const T = makeTile(MAP_ID, t("map_title"), [peopleBadge, vehBadge], openMap, "tile tile-map");
+      Object.assign(T, { isMap: true, people, vehicles, peopleBadge, vehBadge });
+      wall.append(T.tile);
+    }
     for (const cam of S.cams) {
-      const img = h("img", { class: "tile-img", alt: "", decoding: "async", draggable: "false" });
-      const waitText = h("span", { class: "wait-text" });
-      const offText = h("span", { class: "off-text" });
-      const alertTag = h("span", { class: "tile-alert" });
-      const zone = h("span", { class: "tile-zone" });
       const people = h("span", { class: "v" }, "–");
       const nohat = h("span", { class: "v" }, "–");
       const fps = h("span", { class: "v" }, "–");
       const peopleBadge = h("span", { class: "badge badge-people" }, icon("person"), people);
       const nohatBadge = h("span", { class: "badge badge-nohat" }, icon("nohat"), nohat);
       const fpsBadge = h("span", { class: "badge badge-fps" }, fps);
-      const tile = h("figure", { class: "tile", tabindex: "0", role: "button", dataset: { cam: cam.id } },
-        h("div", { class: "tile-media" },
-          img,
-          h("div", { class: "tile-wait" }, h("span", { class: "spin", "aria-hidden": "true" }), waitText),
-          h("div", { class: "tile-off" }, icon("camoff"), offText),
-          alertTag),
-        h("figcaption", { class: "tile-cap" },
-          h("span", { class: "tile-name", text: cam.name || cam.id }),
-          zone,
-          h("span", { class: "tile-badges" }, peopleBadge, nohatBadge, fpsBadge)));
-      const T = {
-        id: cam.id, cam, tile, img, waitText, offText, alertTag, zone, people, nohat, fps,
-        peopleBadge, nohatBadge, fpsBadge,
-        mode: "mjpeg", origin: "", errors: 0, everLoaded: false, retry: 0, flashTimer: 0,
-        poll: { due: 0, fails: 0, busy: false }, objUrl: null,
-      };
-      tile.addEventListener("click", () => openCamera(cam.id));
-      tile.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openCamera(cam.id); }
-      });
-      img.addEventListener("load", () => markFrame(T));
-      img.addEventListener("error", () => onStreamError(T));
-      tiles.set(cam.id, T);
-      wall.append(tile);
+      const T = makeTile(cam.id, cam.name || cam.id, [peopleBadge, nohatBadge, fpsBadge], () => openCamera(cam.id));
+      Object.assign(T, { cam, people, nohat, fps, peopleBadge, nohatBadge, fpsBadge });
+      wall.append(T.tile);
     }
     renderWallLabels();
     setupStreams();
@@ -742,6 +831,16 @@
     const fpsTarget = S.config ? S.config.fps_target : null;
     setText("wallMeta", S.cams.length ? t("wall_meta", { n: S.cams.length, fps: isNum(fpsTarget) ? fmtNumber(fpsTarget) : "–" }) : "");
     for (const T of tiles.values()) {
+      if (T.isMap) {
+        T.nameEl.textContent = t("map_title");
+        T.zone.textContent = S.site.name || "";
+        T.tile.setAttribute("aria-label", t("open_map"));
+        T.waitText.textContent = t("connecting");
+        T.offText.textContent = t("offline");
+        T.peopleBadge.title = t("map_workers");
+        T.vehBadge.title = t("vehicles");
+        continue;
+      }
       T.zone.textContent = zoneName(T.cam.zone);
       T.tile.setAttribute("aria-label", t("open_camera", { name: T.cam.name || T.id }));
       T.waitText.textContent = t("connecting");
@@ -754,6 +853,13 @@
   function renderWallState() {
     const cams = (S.state && S.state.cameras) || {};
     for (const T of tiles.values()) {
+      if (T.isMap) {
+        const site = siteStatus() || {};
+        if (T.img.naturalWidth > 0) markFrame(T);
+        T.people.textContent = isNum(site.unique_people) ? String(site.unique_people) : "–";
+        T.vehicles.textContent = isNum(site.vehicles) ? String(site.vehicles) : "–";
+        continue;
+      }
       const c = cams[T.id];
       T.tile.classList.toggle("is-offline", !!c && c.online === false);
       if (T.img.naturalWidth > 0) markFrame(T);
@@ -773,6 +879,13 @@
       T.errors = 0;
     }
     T.tile.classList.add("has-frame");
+  }
+
+  // A site alert lights the floor plan and every camera that sees the worker, not only the one
+  // that took the snapshot.
+  function alertTiles(ev) {
+    const site = siteInfo(ev);
+    return site ? [MAP_ID, ...new Set([ev.cam_id, ...site.cams])] : [ev.cam_id];
   }
 
   function flashTile(camId, ev) {
@@ -1021,12 +1134,21 @@
     node.className = `alert sev-${sev}${ev.verified === false ? " is-false" : ""}${node.classList.contains("is-new") ? " is-new" : ""}`;
     node.title = [ev.rule_name, ev.extra && ev.extra.detail].filter(Boolean).join(" — ");
     node.setAttribute("aria-label", `${t(`sev_${sev}`)}: ${title}, ${where}, ${fmtTime(ev.ts)}, ${verdict(ev).text}`);
+    const site = siteInfo(ev);
+    const trail = site && site.cams.length
+      ? h("div", { class: "alert-trail", text: t("seen_by", { list: site.cams.map(camTag).join(" · ") }), title: site.cams.map(camLabel).join(", ") })
+      : null;
+    const dist = site && site.dist != null
+      ? h("span", { class: "alert-dist", title: t("dist_tip") }, icon("dist"), fmtDist(site.dist))
+      : null;
     const body = node.querySelector(".alert-body");
-    body.replaceChildren(
+    body.replaceChildren(...[
       h("div", { class: "alert-top" }, sevChip(sev), h("span", { class: "alert-time", text: fmtTime(ev.ts) })),
       h("div", { class: "alert-title", text: title }),
       h("div", { class: "alert-meta", text: where }),
-      h("div", { class: "alert-foot" }, verdictBadge(ev)));
+      trail,
+      h("div", { class: dist ? "alert-foot has-dist" : "alert-foot" }, verdictBadge(ev), dist),
+    ].filter(Boolean));
   }
 
   function renderAlerts(freshIds = new Set()) {
@@ -1091,11 +1213,14 @@
     return lang === "en" ? ucfirst(s) : s;
   }
 
+  // Mirrors Rule.covers / covers_any on the server.  In site mode a camera sees several floor-plan
+  // zones (cam.zones), so "in aisle 3" covers every camera that sees aisle 3.
   function ruleAppliesTo(r, cam) {
     const cams = Array.isArray(r.cameras) && r.cameras.length ? r.cameras : ["*"];
     if (!cams.includes("*") && !cams.includes(cam.id)) return false;
-    if (Array.isArray(r.zones) && r.zones.length && !r.zones.includes(cam.zone)) return false;
-    if (Array.isArray(r.zones_exclude) && r.zones_exclude.includes(cam.zone)) return false;
+    const seen = Array.isArray(cam.zones) && cam.zones.length ? cam.zones : [cam.zone];
+    if (Array.isArray(r.zones) && r.zones.length && !seen.some((z) => r.zones.includes(z))) return false;
+    if (Array.isArray(r.zones_exclude) && seen.every((z) => r.zones_exclude.includes(z))) return false;
     return true;
   }
 
@@ -1627,29 +1752,15 @@
   }
 
   // ------------------------------------------------------------------ camera view
-  function openCamera(id) {
-    const T = tiles.get(id);
-    const cam = S.camMap.get(id);
-    if (!T || !cam) return;
-    const canvas = h("canvas", { width: "640", height: "360", role: "img", "aria-label": cam.name || id });
-    const ctx = canvas.getContext("2d");
-    const stat = (label) => {
-      const b = h("b", null, "–");
-      const box = h("div", { class: "view-stat" }, b, h("span", { text: label }));
-      return { box, b };
-    };
-    const sPeople = stat(t("people"));
-    const sNohat = stat(t("no_helmet"));
-    const sFps = stat(t("fps_unit").toUpperCase());
-    const rulesUl = h("ul", { class: "view-list" });
-    const alertsUl = h("ul", { class: "view-list" });
-    const side = h("div", { class: "view-side" },
-      h("div", { class: "view-stats" }, sPeople.box, sNohat.box, sFps.box),
-      h("div", null, h("div", { class: "view-h", text: t("rules_here") }), rulesUl),
-      h("div", null, h("div", { class: "view-h", text: t("recent_here") }), alertsUl));
-    const body = h("div", { class: "view" }, h("div", { class: "view-media" }, canvas), side);
+  function viewStat(label) {
+    const b = h("b", null, "–");
+    const box = h("div", { class: "view-stat" }, b, h("span", { text: label }));
+    return { box, b };
+  }
 
-    // Copy frames from the tile instead of opening an 11th stream (connection budget).
+  // Copy frames from the tile instead of opening another stream (connection budget); returns stop().
+  function mirrorTile(T, canvas) {
+    const ctx = canvas.getContext("2d");
     let raf = 0;
     let last = 0;
     const draw = (ts) => {
@@ -1665,6 +1776,25 @@
       try { ctx.drawImage(img, 0, 0); } catch { /* frame not decodable yet */ }
     };
     raf = requestAnimationFrame(draw);
+    return () => cancelAnimationFrame(raf);
+  }
+
+  function openCamera(id) {
+    const T = tiles.get(id);
+    const cam = S.camMap.get(id);
+    if (!T || !cam) return;
+    const canvas = h("canvas", { width: "640", height: "360", role: "img", "aria-label": cam.name || id });
+    const sPeople = viewStat(t("people"));
+    const sNohat = viewStat(t("no_helmet"));
+    const sFps = viewStat(t("fps_unit").toUpperCase());
+    const rulesUl = h("ul", { class: "view-list" });
+    const alertsUl = h("ul", { class: "view-list" });
+    const side = h("div", { class: "view-side" },
+      h("div", { class: "view-stats" }, sPeople.box, sNohat.box, sFps.box),
+      h("div", null, h("div", { class: "view-h", text: t("rules_here") }), rulesUl),
+      h("div", null, h("div", { class: "view-h", text: t("recent_here") }), alertsUl));
+    const body = h("div", { class: "view" }, h("div", { class: "view-media" }, canvas), side);
+    const stop = mirrorTile(T, canvas);
 
     const update = () => {
       const c = (S.state && S.state.cameras && S.state.cameras[id]) || {};
@@ -1676,23 +1806,76 @@
       rulesUl.replaceChildren(...(rules.length
         ? rules.map((r) => h("li", null, h("div", { text: r.name || whatText(r) }), h("div", { class: "muted", text: ruleSummary(r) })))
         : [h("li", { class: "empty", text: t("none") })]));
-      const evs = S.events.filter((e) => e.cam_id === id).slice(0, 4);
-      alertsUl.replaceChildren(...(evs.length
-        ? evs.map((e) => h("li", null,
-          h("div", { text: e.message || e.rule_name || "—" }),
-          h("div", { class: "muted", text: `${fmtTime(e.ts)} · ${verdict(e).text}` })))
-        : [h("li", { class: "empty", text: t("none") })]));
+      const seenHere = (e) => {
+        const site = siteInfo(e);
+        return e.cam_id === id || (!!site && site.cams.includes(id));
+      };
+      alertsUl.replaceChildren(...recentItems(S.events.filter(seenHere).slice(0, 4)));
     };
     update();
     openModal({
       title: `${id.toUpperCase()} · ${cam.name || ""} — ${zoneName(cam.zone)}`,
       body,
       onClose: () => {
-        cancelAnimationFrame(raf);
+        stop();
         S.camModal = null;
       },
     });
     S.camModal = { id, update };
+  }
+
+  function recentItems(evs) {
+    return evs.length
+      ? evs.map((e) => h("li", null,
+        h("div", { text: e.message || e.rule_name || "—" }),
+        h("div", { class: "muted", text: `${fmtTime(e.ts)} · ${verdict(e).text}` })))
+      : [h("li", { class: "empty", text: t("none") })];
+  }
+
+  // ------------------------------------------------------------------ floor plan view
+  function openMap() {
+    const T = tiles.get(MAP_ID);
+    if (!T || !S.site) return;
+    const canvas = h("canvas", { width: "640", height: "360", role: "img", "aria-label": t("map_title") });
+    const sUnique = viewStat(t("map_unique"));
+    const sSum = viewStat(t("map_sum"));
+    const sVeh = viewStat(t("vehicles"));
+    const zonesUl = h("ul", { class: "view-list" });
+    const alertsUl = h("ul", { class: "view-list" });
+    const side = h("div", { class: "view-side" },
+      h("div", { class: "view-stats" }, sUnique.box, sSum.box, sVeh.box),
+      h("div", null, h("div", { class: "view-h", text: t("map_zones") }), zonesUl),
+      h("div", null, h("div", { class: "view-h", text: t("map_recent") }), alertsUl));
+    const body = h("div", { class: "view" }, h("div", { class: "view-media view-plan" }, canvas), side);
+    const stop = mirrorTile(T, canvas);
+
+    const update = () => {
+      const site = siteStatus() || {};
+      const num = (v) => (isNum(v) ? String(v) : "–");
+      sUnique.b.textContent = num(site.unique_people);
+      sSum.b.textContent = num(site.camera_sum);
+      sVeh.b.textContent = num(site.vehicles);
+      const counts = site.zones && typeof site.zones === "object" ? site.zones : {};
+      const ids = (Array.isArray(S.site.zones) ? S.site.zones : []).map((z) => z && z.id).filter(Boolean);
+      for (const z of Object.keys(counts)) if (!ids.includes(z)) ids.push(z);
+      zonesUl.replaceChildren(...(ids.length
+        ? ids.map((z) => {
+          const n = numOr(counts[z], 0);
+          return h("li", { class: `zone-count${n > 0 ? " is-busy" : ""}` }, h("span", { text: zoneName(z) }), h("b", { text: String(n) }));
+        })
+        : [h("li", { class: "empty", text: t("none") })]));
+      alertsUl.replaceChildren(...recentItems(S.events.slice(0, 4)));
+    };
+    update();
+    openModal({
+      title: S.site.name ? `${t("map_title")} — ${S.site.name}` : t("map_title"),
+      body,
+      onClose: () => {
+        stop();
+        S.camModal = null;
+      },
+    });
+    S.camModal = { id: MAP_ID, update };
   }
 
   // ------------------------------------------------------------------ alert detail
@@ -1709,16 +1892,20 @@
     }
     const extra = ev.extra && typeof ev.extra === "object" ? ev.extra : {};
     const note = verdictNote(ev);
+    const site = siteInfo(ev);
     const rows = [
       [t("ev_time"), fmtDateTime(ev.ts)],
       [t("ev_camera"), `${ev.cam_name || camName(ev.cam_id)} (${String(ev.cam_id || "").toUpperCase()})`],
+      site && site.cams.length ? [t("ev_seen_by"), h("div", null, site.cams.map((c) => h("div", { text: camLabel(c) })))] : null,
       [t("ev_zone"), zoneName(ev.zone) || "–"],
       [t("ev_rule"), ev.rule_name || "–"],
       [t("ev_severity"), sevChip(ev.severity)],
+      site && site.dist != null ? [t("ev_distance"), fmtDist(site.dist)] : null,
+      site && site.world ? [t("ev_world"), `x ${site.world[0].toFixed(1)} m · y ${site.world[1].toFixed(1)} m`] : null,
       extra.detail ? [t("ev_detail"), String(extra.detail)] : null,
       extra.source_text ? [t("ev_spoken"), `“${extra.source_text}”`] : null,
       [t("ev_vlm"), h("div", null, verdictBadge(ev), note ? h("div", { class: "muted", style: "margin-top:6px;color:var(--text-3);font-size:12.5px", text: note }) : null)],
-      ev.track_id != null ? [t("ev_track"), String(ev.track_id)] : null,
+      ev.track_id != null && !site ? [t("ev_track"), String(ev.track_id)] : null,   // site worker ids are not shown
     ];
     const body = h("div", { class: "view" }, media, h("div", { class: "view-side" }, detailList(rows)));
     openModal({ title: ev.message || ev.rule_name || t("alert"), body });
@@ -1924,7 +2111,8 @@
     if (v.device) vSub.push(String(v.device));
     if (isNum(v.checked) && v.checked > 0) vSub.push(t("checked_n", { n: v.checked }));
     if (isNum(v.queue) && v.queue > 0) vSub.push(t("queue_n", { n: v.queue }));
-    setSys("vlm", t("sys_vlm"), stateDot(v.state), stateName(v.state), vSub.join(" · "), v.reason || models.vlm || "");
+    if (v.backend) vSub.unshift(String(v.backend));
+    setSys("vlm", t("sys_vlm"), stateDot(v.state), stateName(v.state), vSub.join(" · "), v.reason || models.verifier || "");
 
     const a = st.asr || {};
     const aSub = [];
@@ -1960,7 +2148,9 @@
   // ------------------------------------------------------------------ language
   function applyStatic() {
     document.documentElement.lang = lang === "zh" ? "zh-Hant-TW" : "en";
-    document.querySelectorAll("[data-i18n]").forEach((el) => { el.textContent = t(el.dataset.i18n); });
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      el.textContent = el.dataset.i18n === "tagline" ? t("tagline", { n: S.cams.length || 10 }) : t(el.dataset.i18n);
+    });
     document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => { el.placeholder = t(el.dataset.i18nPlaceholder); });
     document.querySelectorAll("[data-i18n-aria]").forEach((el) => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
     document.querySelectorAll(".seg-btn").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
@@ -1990,9 +2180,20 @@
         const c = await api("/api/config", { timeout: 6000 });
         if (c && typeof c === "object") {
           S.config = c;
+          S.site = c.site && typeof c.site === "object" ? c.site : null;
           S.cams = Array.isArray(c.cameras) ? c.cameras.filter((x) => x && x.id) : [];
           S.camMap = new Map(S.cams.map((x) => [x.id, x]));
-          setText("siteName", c.site_name || "—");
+          setText("siteName", c.site_name || (S.site && S.site.name) || "—");
+          document.querySelectorAll('[data-i18n="tagline"]').forEach((el) => {
+            el.textContent = t("tagline", { n: S.cams.length || 10 });
+          });
+          // the configuration's example rules (site mode speaks of floor zones and forklifts, not hard hats)
+          if (Array.isArray(c.examples) && c.examples.length) {
+            $("examples").querySelector(".chips").replaceChildren(
+              ...c.examples.map((x) => h("button", { type: "button", class: "chip", text: String(x) })));
+          }
+          $("kSiteBox").hidden = !S.site;
+          $("kpis").classList.toggle("has-site", !!S.site);
           setOffline(false);
           return;
         }
@@ -2010,11 +2211,13 @@
       submitText($("ruleText").value);
     });
     $("ruleText").addEventListener("input", () => { S.heardNote = ""; });
-    document.querySelectorAll("#examples .chip").forEach((chip) => chip.addEventListener("click", () => {
+    $("examples").addEventListener("click", (e) => {        // delegated: the chips can come from the config
+      const chip = e.target instanceof Element ? e.target.closest(".chip") : null;
+      if (!chip || chip.disabled) return;
       $("ruleText").value = chip.textContent.trim();
       S.heardNote = "";
       submitText(chip.textContent);
-    }));
+    });
     $("reportBtn").addEventListener("click", openReport);
     modal.addEventListener("click", (e) => {
       if (e.target instanceof Element && e.target.closest("[data-close]")) closeModal();

@@ -28,9 +28,12 @@ asr:
   model: "@work/models/hf/whisper-small"        # openai/whisper-small (Hailo GenAI zoo: Whisper-Small)
   language: "zh"                # zh | en | null (auto)
 
-vlm:                            # second-opinion check before an alert is confirmed
+verifier:                       # second-opinion check before a hard-hat alert is confirmed
   enabled: true
-  model: "@work/models/hf/Qwen2-VL-2B-Instruct"  # Qwen/Qwen2-VL-2B-Instruct (Hailo GenAI zoo)
+  backend: clip_probe           # clip_probe: yes/no head on CLIP image features | vlm: Qwen2-VL asked in words
+  clip: "@work/models/clip/ViT-B-32.pt"          # OpenAI CLIP ViT-B/32 (Hailo: clip_vit_b_32_image_encoder)
+  probe: "@work/models/helmet_probe.npz"         # 2x512 head from scripts/train_probe.py
+  vlm_model: "@work/models/hf/Qwen2-VL-2B-Instruct"  # Qwen/Qwen2-VL-2B-Instruct (Hailo GenAI zoo)
 
 streams:
   fps: 10                       # processed frames per second per camera

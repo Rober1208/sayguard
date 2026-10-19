@@ -88,8 +88,9 @@ def attribution_md(rows: list[dict], manifest: dict[str, dict]) -> str:
         f"[{LICENSE}]({LICENSE_URL}). Each stream is {SECONDS} s starting at the listed offset, scaled to 960 px "
         f"wide, 10 fps, audio removed (clips shorter than {SECONDS} s are looped).",
         "",
-        "The footage itself is not redistributed in this repository; `scripts/fetch_videos.py`, "
-        "`scripts/score_clips.py` and `scripts/make_streams.py` re-create the streams.",
+        "The footage itself is not redistributed in this repository: download the clips by hand "
+        "(`python scripts/fetch_videos.py list` / `check`, see docs/VIDEO_SOURCES.md), then "
+        "`scripts/make_streams.py` re-creates the streams.",
         "",
         "| Camera | Title | Start (s) | Mixkit page | License |",
         "|---|---|---|---|---|",
@@ -152,10 +153,8 @@ def main() -> None:
         return
     md = attribution_md(rows, manifest)
     (out / "ATTRIBUTION.md").write_text(md, encoding="utf-8")
-    docs = ROOT / "docs" / "VIDEO_SOURCES.md"
-    docs.parent.mkdir(parents=True, exist_ok=True)
-    docs.write_text(md, encoding="utf-8")
-    print("wrote", out / "ATTRIBUTION.md", "and", docs)
+    # docs/VIDEO_SOURCES.md is maintained by hand (it carries the manual download steps)
+    print("wrote", out / "ATTRIBUTION.md")
     if failed:
         sys.exit(f"failed: {', '.join(failed)}")
 

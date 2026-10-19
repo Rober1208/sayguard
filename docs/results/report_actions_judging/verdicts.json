@@ -1,0 +1,2516 @@
+[
+ {
+  "batch": 0,
+  "judge": 0,
+  "verdicts": [
+   {
+    "id": "a165",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk really had 108 entrance-crowding events on day 18; posting a headcount limit and a queue is concrete and fits."
+   },
+   {
+    "id": "a081",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "The welding area (Welding Bay) had 17 no-hard-hat events on day 9, so a hard-hat checkpoint there fits."
+   },
+   {
+    "id": "a167",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 25 events within 3 m of the excavator on day 18; briefing drivers and workers on vehicle clearance fits."
+   },
+   {
+    "id": "a032",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "The label is right (29 events within 3 m), but the body talks about distance between machines and buildings, not keeping people away from the excavator."
+   },
+   {
+    "id": "a123",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 49 entrance-crowding events on day 13; a posted limit and queue route are concrete."
+   },
+   {
+    "id": "a079",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 22 events within 3 m of the excavator on day 8; a safe-distance briefing fits."
+   },
+   {
+    "id": "a082",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Maintenance Shop had no false alarms on day 9, only 15 no-hard-hat events; limiting visitors to cut false alarms misses the real problem."
+   },
+   {
+    "id": "a033",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 29 entrance-crowding events on day 3; a posted limit and queue route fit."
+   },
+   {
+    "id": "a078",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 35 entrance-crowding events on day 8; a posted limit and queue fit."
+   },
+   {
+    "id": "a056",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Site Walk did have 19 filtered false alarms, but extra cameras won't reduce them, a supervisor can't do this tomorrow, and it ignores the real hard-hat and 3 m violations."
+   },
+   {
+    "id": "a044",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 2 no-hard-hat events on day 4; spare hats and a sign at the entry are concrete."
+   },
+   {
+    "id": "a030",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Excavation Pit really had 50 no-hard-hat events, but the action only restates the rule and gives no concrete enforcement step."
+   },
+   {
+    "id": "a093",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 112 entrance-crowding events on day 10; watching the entrance to hold it to 2 people is actionable."
+   },
+   {
+    "id": "a091",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Site Gate had no false alarms on day 10 (its problems were crowding and 3 m proximity), so patrolling to reduce false alarms is misdirected."
+   },
+   {
+    "id": "a144",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 67 events within 3 m of the excavator on day 16; extra signs for the 3 m rule are concrete."
+   },
+   {
+    "id": "a046",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 296 entrance-crowding events on day 5; adding inspectors at the entrance fits, though the wording of the rule is garbled."
+   },
+   {
+    "id": "a018",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 271 entrance-crowding events on day 2; safety monitors at the gate fit, though the sentence sounds like it enforces the opposite of the rule."
+   },
+   {
+    "id": "a074",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Warehouse Aisle did have 3 false alarms, but a walk-through to check false alarms ignores its real problems (35 crowding, 13 within 3 m) and 'all safety protocols' is vague."
+   },
+   {
+    "id": "a028",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had real violations on day 3 (50 no hard hat, 6 within 3 m); more patrols at the peak hour are actionable, though it doesn't say which problem to check."
+   },
+   {
+    "id": "a066",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 110 entrance-crowding events on day 7; extra watch at the entrance around peak times fits."
+   },
+   {
+    "id": "a041",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had no-hard-hat events on day 4; training plus extra hats on hand is reasonable."
+   },
+   {
+    "id": "a102",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Site Office had 41 entrance-crowding events on day 11, but 'strengthen personnel management' is vague with no concrete step."
+   },
+   {
+    "id": "a154",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Welding Bay had no false alarms on day 17 (it had 19 no hard hat and 22 within 3 m); installing cameras to cut false alarms is the wrong problem."
+   },
+   {
+    "id": "a142",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 9 events within 3 m of the excavator on day 15; a banksman and a no-entry working radius are concrete."
+   },
+   {
+    "id": "a105",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Office had 41 entrance-crowding events on day 11; a dedicated person controlling headcount at a set time is concrete."
+   },
+   {
+    "id": "a140",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 9 events within 3 m on day 15; a safe-distance sign at the gate fits."
+   },
+   {
+    "id": "a172",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 53 events within 3 m on day 19; safety-distance signs are concrete and fit."
+   },
+   {
+    "id": "a133",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Office had 30 no-hard-hat events on day 14; a supervisor spot-check at a set hour is concrete."
+   },
+   {
+    "id": "a139",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Site Walk's day 15 problem was entrance crowding (19), but the body reminds people about safe distance, which is the excavator rule, not headcount."
+   },
+   {
+    "id": "a012",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Site Walk had 25 no-hard-hat events on day 1, but this only restates the rule and implies hats are needed only at the peak hour, with no enforcement step."
+   },
+   {
+    "id": "a149",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Excavation Pit did have entrance crowding (6), but full-time supervision of everyone in the pit is generic and doesn't control headcount at the entrance."
+   },
+   {
+    "id": "a042",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk had 14 entrance-crowding events on day 4; a posted limit and queue fit."
+   },
+   {
+    "id": "a043",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 10 entrance-crowding events on day 4; a posted limit and queue fit."
+   },
+   {
+    "id": "a099",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "The welding area had 72 events within 3 m on day 11, but the action only restates the 3 m rule with no concrete measure."
+   },
+   {
+    "id": "a124",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 36 no-hard-hat events on day 13; a supervisor spot-check at the peak hour fits."
+   },
+   {
+    "id": "a141",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk had 19 entrance-crowding events on day 15; a posted limit and queue route fit."
+   },
+   {
+    "id": "a060",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 28 no-hard-hat events on day 6; spare hats and a sign at the entry fit."
+   },
+   {
+    "id": "a027",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 29 entrance-crowding events on day 3; sending staff to control entry and stop crowding is concrete."
+   },
+   {
+    "id": "a174",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 53 events within 3 m on day 19; a banksman and a no-entry radius are concrete."
+   },
+   {
+    "id": "a049",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 93 events within 3 m on day 5; warning signs to keep distance are a reasonable first step."
+   },
+   {
+    "id": "a122",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Maintenance Shop did have 17 filtered false alarms, but the body moves to the cargo dock, an 'error-report checkpoint' is meaningless, and its real problems (36 no hard hat, 49 crowding) are ignored."
+   },
+   {
+    "id": "a098",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 16 entrance-crowding events on day 10; a posted limit and queue fit."
+   },
+   {
+    "id": "a156",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 19 no-hard-hat events on day 17; hard-hat warning signs are concrete."
+   },
+   {
+    "id": "a080",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 16 no-hard-hat events on day 8; a toolbox talk before the peak hour fits."
+   },
+   {
+    "id": "a104",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 16 no-hard-hat events on day 11; spare hats, a sign and peak spot-checks are concrete."
+   },
+   {
+    "id": "a021",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 271 entrance-crowding events on day 2; staggered arrivals and a posted limit fit well."
+   },
+   {
+    "id": "a075",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 35 entrance-crowding events on day 8; watching traffic and enforcing the 2-person limit is reasonable."
+   },
+   {
+    "id": "a050",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 41 entrance-crowding events on day 5; more watch at the door to hold it to 2 people fits."
+   },
+   {
+    "id": "a118",
+    "names_camera": false,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Names only a generic site entrance; Site Gate had 88 no-hard-hat events on day 13, so gate access checks at the peak hour are reasonable, though it doesn't say what to check."
+   },
+   {
+    "id": "a170",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Loading Dock had no false alarms on day 19 (it had 11 crowding and 53 within 3 m); adding cameras to cut false alarms is the wrong problem."
+   },
+   {
+    "id": "a016",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 16 no-hard-hat events on day 1; a supervisor spot-check at the peak hour fits."
+   },
+   {
+    "id": "a040",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 10 entrance-crowding events on day 4; staggered arrivals and a posted limit fit."
+   },
+   {
+    "id": "a152",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 6 entrance-crowding events on day 16; staggering arrivals and shift changes is concrete."
+   },
+   {
+    "id": "a023",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 18 entrance-crowding events on day 2; staggered arrivals and a posted limit fit."
+   },
+   {
+    "id": "a114",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 18 no-hard-hat events on day 12; spare hats and a sign at the entry fit."
+   },
+   {
+    "id": "a157",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Excavation Pit's problem was more than 2 people at the entrance, but the action requires at least 2 people to enter, which inverts the rule."
+   },
+   {
+    "id": "a131",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Maintenance Shop had 2 events within 3 m on day 14, but the action just restates the rule with no concrete step."
+   },
+   {
+    "id": "a150",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 22 no-hard-hat events on day 16; a toolbox talk before the peak hour fits."
+   },
+   {
+    "id": "a119",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Maintenance Shop did have 17 filtered false alarms, but adding monitoring hardware isn't a next-day supervisor action and ignores its 36 no-hard-hat and 49 crowding events."
+   }
+  ]
+ },
+ {
+  "batch": 0,
+  "judge": 1,
+  "verdicts": [
+   {
+    "id": "a165",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk had 108 crowding events at the entrance on day 18; posting a headcount limit and marking a queue fits."
+   },
+   {
+    "id": "a081",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "焊接區 (Welding Bay) had 17 people without hard hats on day 9; a hard-hat checkpoint there fits."
+   },
+   {
+    "id": "a167",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 25 people within 3 m of the excavator on day 18; briefing drivers and workers on safe distance fits."
+   },
+   {
+    "id": "a032",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "The label is right (29 people within 3 m on day 3), but the action is about machine-to-building clearance, not keeping people away from the excavator."
+   },
+   {
+    "id": "a123",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 49 crowding events on day 13; posting a limit and a queue route fits."
+   },
+   {
+    "id": "a079",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 22 people within 3 m of the excavator on day 8; the safe-distance briefing fits."
+   },
+   {
+    "id": "a082",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Maintenance Shop on day 9 had only hard-hat violations, with no false alarms; limiting visitors to cut false alarms targets a problem that did not exist."
+   },
+   {
+    "id": "a033",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 29 crowding events on day 3; posting a limit and a queue route fits."
+   },
+   {
+    "id": "a078",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 35 crowding events on day 8; posting a limit and a queue fits."
+   },
+   {
+    "id": "a056",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Site Walk did have 19 filtered false alarms on day 6, but adding cameras does not reduce false alarms, is not a next-day supervisor task, and ignores its hard-hat and excavator problems."
+   },
+   {
+    "id": "a044",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 2 hard-hat violations on day 4; spare hard hats and a sign at the way in fit."
+   },
+   {
+    "id": "a030",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Excavation Pit did have 50 hard-hat violations on day 3, but the action only restates the rule and gives no concrete measure."
+   },
+   {
+    "id": "a093",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 112 crowding events on day 10; monitoring the entrance to cap it at 2 people is doable."
+   },
+   {
+    "id": "a091",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Site Gate on day 10 had crowding and excavator-distance events but no false alarms, so patrolling to reduce false alarms is misdirected."
+   },
+   {
+    "id": "a144",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 67 people within 3 m of the excavator on day 16; extra signs for the 3 m rule are a concrete, fitting step."
+   },
+   {
+    "id": "a046",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 296 crowding events on day 5; more inspectors at the entrance fit, though '2人以上規範' is worded awkwardly."
+   },
+   {
+    "id": "a018",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 271 crowding events on day 2; extra monitors at the gate fit, though the rule wording is garbled."
+   },
+   {
+    "id": "a074",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Warehouse Aisle had only 3 false alarms on day 8, and a physical walk-through cannot check camera false alarms; it ignores the main crowding (35) and excavator (13) problems."
+   },
+   {
+    "id": "a028",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "挖掘坑 (Excavation Pit) had 50 hard-hat violations and 6 excavator-distance events on day 3; more patrols at a set hour is doable, though no problem is named."
+   },
+   {
+    "id": "a066",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 110 crowding events on day 7; staffing the entrance around the peak hour fits."
+   },
+   {
+    "id": "a041",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had hard-hat violations on day 4; training plus spare hard hats is reasonable."
+   },
+   {
+    "id": "a102",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Site Office did have 41 crowding events on day 11, but 'strengthen personnel management' only restates the rule and gives no concrete measure."
+   },
+   {
+    "id": "a154",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Welding Bay on day 17 had hard-hat and excavator-distance problems but no false alarms; installing cameras to cut false alarms is wrong and not a supervisor action."
+   },
+   {
+    "id": "a142",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 9 people within 3 m of the excavator on day 15; a signaller and an exclusion radius fit."
+   },
+   {
+    "id": "a105",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Office had 41 crowding events on day 11; assigning someone to control headcount during a set hour fits."
+   },
+   {
+    "id": "a140",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had excavator-distance events on day 15; signs reminding people of the safe distance are a modest but fitting step."
+   },
+   {
+    "id": "a172",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 53 people within 3 m of the excavator on day 19; safe-distance signs fit."
+   },
+   {
+    "id": "a133",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Office had 30 hard-hat violations on day 14; a supervisor spot-check at a set hour fits."
+   },
+   {
+    "id": "a139",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Site Walk's day 15 problem was entrance crowding, but the action reminds people to keep a 'safe distance' (the excavator rule) instead of limiting headcount."
+   },
+   {
+    "id": "a012",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Site Walk did have 25 hard-hat violations on day 1, but requiring hard hats only at peak hour restates the rule, and wrongly limits it to one hour."
+   },
+   {
+    "id": "a149",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Excavation Pit did have 6 crowding events on day 16, but full-time supervision of everyone in the pit does not target entrance headcount and is out of proportion."
+   },
+   {
+    "id": "a042",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk had 14 crowding events on day 4; posting a limit and a queue fits."
+   },
+   {
+    "id": "a043",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 10 crowding events on day 4; posting a limit and a queue fits."
+   },
+   {
+    "id": "a099",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "焊接區 (Welding Bay) did have 72 excavator-distance events on day 11, but the action only restates the 3 m rule with no concrete measure."
+   },
+   {
+    "id": "a124",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 36 hard-hat violations on day 13; a supervisor spot-check at a set hour fits."
+   },
+   {
+    "id": "a141",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk had 19 crowding events on day 15; posting a limit and a queue route fits."
+   },
+   {
+    "id": "a060",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 28 hard-hat violations on day 6; spare hard hats and a sign fit."
+   },
+   {
+    "id": "a027",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "維修場 (Maintenance Shop) had 29 crowding events on day 3; sending staff to control entry fits."
+   },
+   {
+    "id": "a174",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 53 excavator-distance events on day 19; a signaller and an exclusion radius fit."
+   },
+   {
+    "id": "a049",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 93 excavator-distance events on day 5; warning signs fit, though they are a weak control."
+   },
+   {
+    "id": "a122",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Maintenance Shop did have 17 false alarms on day 13, but the action sends an 'error report checkpoint' to the cargo dock instead, which is incoherent and not actionable."
+   },
+   {
+    "id": "a098",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 16 crowding events on day 10; posting a limit and a queue fits."
+   },
+   {
+    "id": "a156",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 19 hard-hat violations on day 17; hard-hat warning signs fit."
+   },
+   {
+    "id": "a080",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 16 hard-hat violations on day 8; a toolbox talk restating the rule fits."
+   },
+   {
+    "id": "a104",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 16 hard-hat violations on day 11; spare hard hats, a sign and a peak-hour spot-check fit."
+   },
+   {
+    "id": "a021",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 271 crowding events on day 2; staggering arrivals and posting a limit fit."
+   },
+   {
+    "id": "a075",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 35 crowding events on day 8; monitoring traffic and enforcing the limit fits, though it is general."
+   },
+   {
+    "id": "a050",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 41 crowding events on day 5; watching the entrance to cap it at 2 fits."
+   },
+   {
+    "id": "a118",
+    "names_camera": false,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Generic 'site entrance' with no clear camera; hard-hat problems were widespread on day 13 (88 at Site Gate), and a peak-hour gate check is doable."
+   },
+   {
+    "id": "a170",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Loading Dock on day 19 had crowding and excavator-distance events but no false alarms; adding cameras to cut false alarms is misdirected."
+   },
+   {
+    "id": "a016",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 16 hard-hat violations on day 1; a supervisor spot-check at a set hour fits."
+   },
+   {
+    "id": "a040",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 10 crowding events on day 4; staggering arrivals and posting a limit fit."
+   },
+   {
+    "id": "a152",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 6 crowding events on day 16; staggering arrivals and shift changes fits."
+   },
+   {
+    "id": "a023",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 18 crowding events on day 2; staggering arrivals and posting a limit fit."
+   },
+   {
+    "id": "a114",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 18 hard-hat violations on day 12; spare hard hats and a sign fit."
+   },
+   {
+    "id": "a157",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Excavation Pit did have crowding on day 17, but the action inverts the rule ('at least 2 people' instead of no more than 2)."
+   },
+   {
+    "id": "a131",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Maintenance Shop did have 2 excavator-distance events on day 14, but the action only restates the 3 m rule with no measure."
+   },
+   {
+    "id": "a150",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 22 hard-hat violations on day 16; a toolbox talk restating the rule fits."
+   },
+   {
+    "id": "a119",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "維修工場 (Maintenance Shop) did have 17 false alarms on day 13, but installing more monitoring devices is not a next-day supervisor action and ignores its 36 hard-hat and 49 crowding events."
+   }
+  ]
+ },
+ {
+  "batch": 1,
+  "judge": 0,
+  "verdicts": [
+   {
+    "id": "a070",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 57 crowding events on day 7; putting someone on headcount control in a set hour is concrete."
+   },
+   {
+    "id": "a088",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had crowding (2) on day 9; headcount control in a set hour fits."
+   },
+   {
+    "id": "a126",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 49 people within 3 m of the excavator on day 14; posting distance signs fits."
+   },
+   {
+    "id": "a096",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 112 crowding events on day 10; headcount control in the peak hour fits."
+   },
+   {
+    "id": "a063",
+    "names_camera": false,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "'Entrance' is not a camera, and asking for at least 2 people per hour turns the crowding rule upside down."
+   },
+   {
+    "id": "a162",
+    "names_camera": false,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "A vague briefing on 'equipment use and protocols' misses day 18's main problems (78 near the excavator, 108 crowding)."
+   },
+   {
+    "id": "a089",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 15 hard-hat violations on day 9; a toolbox talk on hard hats before the peak hour fits."
+   },
+   {
+    "id": "a128",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Warehouse Aisle had no false alarms on day 14, and 'increase surveillance' is vague and ignores its 49 excavator-distance cases."
+   },
+   {
+    "id": "a019",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Excavation Pit had no false alarms on day 2; its problems were crowding and hard hats."
+   },
+   {
+    "id": "a045",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 296 crowding events on day 5; putting inspectors at the entrance to enforce the headcount rule fits, though the wording is loose."
+   },
+   {
+    "id": "a164",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk had 23 filtered false alarms on day 18, so reviewing that footage fits, but it ignores the 108 crowding events."
+   },
+   {
+    "id": "a116",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 12 hard-hat violations on day 12; spare hard hats and a sign at the way in are concrete."
+   },
+   {
+    "id": "a064",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Site Gate did have false alarms, but 'filter and handle more false alarms' is not something a supervisor can act on, and it ignores the crowding and hard hats."
+   },
+   {
+    "id": "a106",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 24 people within 3 m of the excavator on day 11; a spotter and an exclusion radius fit."
+   },
+   {
+    "id": "a055",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle's only problem on day 6 was hard hats (28); peak-hour patrols are workable, though the action never says what violation to check."
+   },
+   {
+    "id": "a004",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 23 hard-hat violations on day 0; spare hats, a sign and peak-hour spot-checks fit."
+   },
+   {
+    "id": "a168",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 101 hard-hat violations on day 19; hard-hat supervision in the peak hour fits."
+   },
+   {
+    "id": "a069",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 110 crowding events on day 7; headcount control in a set hour fits."
+   },
+   {
+    "id": "a120",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 49 crowding events on day 13; staggered entry and a posted limit fit."
+   },
+   {
+    "id": "a109",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 18 hard-hat violations on day 12; a hard-hat reminder sign is a concrete step, if a mild one."
+   },
+   {
+    "id": "a067",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 57 crowding events on day 7; staggered entry and a posted limit fit."
+   },
+   {
+    "id": "a159",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 22 people within 3 m of the excavator on day 17; a spotter and an exclusion radius fit."
+   },
+   {
+    "id": "a038",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "'Use the camera to monitor for any hazards' is vague and is not a supervisor action for Warehouse Aisle's crowding."
+   },
+   {
+    "id": "a111",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Loading Dock did have excavator-distance cases, but 'move the camera to the Loading Dock' makes no sense and is not a safety measure."
+   },
+   {
+    "id": "a014",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 12 hard-hat violations on day 1; spare hats, a sign and spot-checks fit."
+   },
+   {
+    "id": "a171",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "The problem (101 hard-hat violations) is right, but the action only repeats the rule and gives no way to enforce it."
+   },
+   {
+    "id": "a057",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Office had 68 crowding events on day 6; a sign-up system to limit headcount is workable."
+   },
+   {
+    "id": "a022",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Site Office did have hard-hat violations, but a 'sign-up system for hard hats' is not a meaningful fix."
+   },
+   {
+    "id": "a145",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had hard-hat violations and false alarms on day 16; peak-hour hard-hat patrols fit, though patrols do nothing about false alarms."
+   },
+   {
+    "id": "a031",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 29 crowding events on day 3; limiting how many enter fits."
+   },
+   {
+    "id": "a052",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 41 crowding events on day 5; headcount control in a set hour fits."
+   },
+   {
+    "id": "a039",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk had 14 crowding events on day 4; extra staff at the entrance is workable, though it points at the site entrance and is vague."
+   },
+   {
+    "id": "a034",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 29 excavator-distance cases on day 3; restating the safe distance to drivers and workers fits."
+   },
+   {
+    "id": "a025",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 18 crowding events on day 2; headcount control in the peak hour fits."
+   },
+   {
+    "id": "a148",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Maintenance Shop did have false alarms, but 'improve the double-check system' is not a task a site supervisor can do and ignores its 22 real violations."
+   },
+   {
+    "id": "a090",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "House Frame's crowding is the right problem, but 'enforcing more than 2 people entering' states the rule backwards."
+   },
+   {
+    "id": "a006",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 77 crowding events on day 0; posting a limit and marking a queue fit."
+   },
+   {
+    "id": "a000",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 77 crowding events on day 0; a peak-hour reminder to keep to 2 people or fewer fits."
+   },
+   {
+    "id": "a002",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 23 hard-hat violations on day 0; handing out hard hats at entry is concrete."
+   },
+   {
+    "id": "a037",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Scaffold had no false alarms on day 4, only 2 hard-hat violations, and 'increase surveillance' is vague."
+   },
+   {
+    "id": "a051",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 93 excavator-distance cases on day 5; restating the safe distance fits."
+   },
+   {
+    "id": "a072",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 67 people within 3 m of the excavator on day 8; a morning briefing on the 3 m rule fits."
+   },
+   {
+    "id": "a073",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Maintenance Shop did have the most hard-hat violations, but 'conduct a thorough inspection' does not say how hard hats get enforced."
+   },
+   {
+    "id": "a065",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Welding Bay had crowding and excavator-distance problems on day 7, not hard hats, and the sentence is garbled."
+   },
+   {
+    "id": "a071",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 33 crowding events on day 7; headcount control in a set hour fits."
+   },
+   {
+    "id": "a001",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had the most false alarms on day 0 (38); inspecting that camera is reasonable, though it skips the 23 real hard-hat violations."
+   },
+   {
+    "id": "a059",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 13 false alarms on day 6; checking camera angle and lighting is concrete and fits."
+   },
+   {
+    "id": "a112",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Welding Bay did have hard-hat violations, but 'move the camera to the Welding Bay' makes no sense as a safety measure."
+   },
+   {
+    "id": "a007",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 23 hard-hat violations on day 0; a supervisor spot-check in the peak hour fits."
+   },
+   {
+    "id": "a009",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Site Walk did have 25 hard-hat violations, but 'strengthen camera monitoring' is not a concrete step on site."
+   },
+   {
+    "id": "a135",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Loading Dock did have excavator-distance cases, but 'keep within 3 m' reverses the rule and is unsafe."
+   },
+   {
+    "id": "a173",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 11 crowding events on day 19; limiting entry fits, though its 53 excavator-distance cases go unaddressed."
+   },
+   {
+    "id": "a010",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Site Walk had no false or unconfirmed alarms on day 1, only 25 hard-hat violations."
+   },
+   {
+    "id": "a036",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk's only problem on day 4 was crowding; peak-hour monitors at its entrance fit, though 'the main rule' is vague."
+   },
+   {
+    "id": "a024",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Office had 24 hard-hat violations on day 2; a supervisor spot-check in the peak hour fits."
+   },
+   {
+    "id": "a161",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had crowding (6) on day 17; posting a limit and a queue route fit."
+   },
+   {
+    "id": "a047",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 296 crowding events on day 5; more inspectors at the entrance to enforce the headcount rule is workable, though the wording is loose."
+   },
+   {
+    "id": "a130",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Office had 30 hard-hat violations on day 14; spare hats, a sign and spot-checks fit."
+   },
+   {
+    "id": "a143",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 17 filtered false alarms on day 15; spot-checking the filtered snapshots is concrete and fits."
+   }
+  ]
+ },
+ {
+  "batch": 1,
+  "judge": 1,
+  "verdicts": [
+   {
+    "id": "a070",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 57 crowding events on day 7; assigning a person to control headcount in the peak hour fits."
+   },
+   {
+    "id": "a088",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 2 crowding events on day 9; headcount control during 16:00-17:00 fits."
+   },
+   {
+    "id": "a126",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 49 within-3 m events on day 14; posting distance signs is concrete, though light."
+   },
+   {
+    "id": "a096",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 112 crowding events on day 10; assigning headcount control at the peak hour fits."
+   },
+   {
+    "id": "a063",
+    "names_camera": false,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "'Entrance' is not a camera, and 'ensure at least 2 people pass per hour' turns the crowding rule upside down."
+   },
+   {
+    "id": "a162",
+    "names_camera": false,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "A generic briefing on 'equipment use' targets none of day 18's main problems (excavator distance, crowding)."
+   },
+   {
+    "id": "a089",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 15 no-hard-hat events on day 9; a toolbox talk before the peak hour fits."
+   },
+   {
+    "id": "a128",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Warehouse Aisle had no false alarms on day 14 (it had hard hat and excavator issues), and 'increase surveillance' is vague."
+   },
+   {
+    "id": "a019",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Excavation Pit had no false alarms on day 2 (only crowding and hard hats), and patrols cannot reduce false alarms."
+   },
+   {
+    "id": "a045",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Loading Dock crowding is real (296), but 'ensure compliance with the 2-or-more-people rule' is garbled and reads as the opposite of a limit."
+   },
+   {
+    "id": "a164",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk had 23 filtered false alarms on day 18; reviewing that footage is concrete, though it skips the much bigger crowding problem (108)."
+   },
+   {
+    "id": "a116",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 12 no-hard-hat events on day 12; spare hats and a sign at the entry fit."
+   },
+   {
+    "id": "a064",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Site Gate did have false alarms (17), but 'filter and handle more false alarms' is vague, not a supervisor action, and skips its crowding and hard hat issues."
+   },
+   {
+    "id": "a106",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 24 within-3 m events on day 11; a banksman and an exclusion radius fit."
+   },
+   {
+    "id": "a055",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 28 no-hard-hat events on day 6; patrols at the peak hour are actionable, though 'violations' is vague."
+   },
+   {
+    "id": "a004",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 23 no-hard-hat events on day 0; spare hats, a sign and peak spot-checks fit."
+   },
+   {
+    "id": "a168",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 101 no-hard-hat events on day 19; closer supervision at the peak hour fits."
+   },
+   {
+    "id": "a069",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 110 crowding events on day 7; headcount control at the peak hour fits."
+   },
+   {
+    "id": "a120",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 49 crowding events on day 13; staggered entry and a posted cap fit."
+   },
+   {
+    "id": "a109",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 18 no-hard-hat events on day 12; a posted reminder is concrete, though light."
+   },
+   {
+    "id": "a067",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 57 crowding events on day 7; staggered entry and a posted cap fit."
+   },
+   {
+    "id": "a159",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 22 within-3 m events on day 17; a banksman and an exclusion radius fit."
+   },
+   {
+    "id": "a038",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "'Monitor for any potential hazards' is vague and never names the real issue (crowding)."
+   },
+   {
+    "id": "a111",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "The excavator-distance problem is real (18), but moving the camera to where it already is does nothing to keep people back."
+   },
+   {
+    "id": "a014",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 12 no-hard-hat events on day 1; spare hats, a sign and peak spot-checks fit."
+   },
+   {
+    "id": "a171",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "The hard hat problem is right (101), but it only repeats the rule and gives no concrete measure."
+   },
+   {
+    "id": "a057",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Office had 68 crowding events on day 6; a sign-in system to cap headcount is workable."
+   },
+   {
+    "id": "a022",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "The hard hat problem is right (24), but a 'sign-up system for hard hats' is unclear and does not get people to wear them."
+   },
+   {
+    "id": "a145",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had both no-hard-hat (22) and false-alarm (15) events on day 16; peak-hour patrols checking hard hats fit."
+   },
+   {
+    "id": "a031",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "The crowding problem is right (29), but 'limit entry, keep distance' just repeats the rule with no concrete measure."
+   },
+   {
+    "id": "a052",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 41 crowding events on day 5; headcount control at the peak hour fits."
+   },
+   {
+    "id": "a039",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk had 14 crowding events on day 4; extra staff at the entrance fit, though 'safety protocols' is generic."
+   },
+   {
+    "id": "a034",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 29 within-3 m events on day 3; reminding drivers and workers of the safe distance fits."
+   },
+   {
+    "id": "a025",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 18 crowding events on day 2; headcount control at the peak hour fits."
+   },
+   {
+    "id": "a148",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Maintenance Shop did have false alarms (15), but 'improve the double-check system' is a vague IT task, not a supervisor action."
+   },
+   {
+    "id": "a090",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "The crowding problem is right (112), but it says to enforce 'more than 2 people entering', which inverts the rule."
+   },
+   {
+    "id": "a006",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 77 crowding events on day 0; a posted cap and a marked queue fit."
+   },
+   {
+    "id": "a000",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 77 crowding events on day 0; a posted no-more-than-2 reminder at the peak hour is concrete."
+   },
+   {
+    "id": "a002",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 23 no-hard-hat events on day 0; handing out hard hats at entry fits."
+   },
+   {
+    "id": "a037",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Scaffold had no false alarms on day 4 (only 2 hard hat events), and 'increase surveillance' is vague."
+   },
+   {
+    "id": "a051",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 93 within-3 m events on day 5; reminding drivers and workers of the safe distance fits."
+   },
+   {
+    "id": "a072",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 67 within-3 m events on day 8; a morning briefing on the 3 m rule fits."
+   },
+   {
+    "id": "a073",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had the most no-hard-hat events on day 8 (16); an inspection walk-through is actionable."
+   },
+   {
+    "id": "a065",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Welding Bay had no hard hat problem on day 7 (only crowding and excavator distance), and it was not the busiest camera."
+   },
+   {
+    "id": "a071",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 33 crowding events on day 7; headcount control at the peak hour fits."
+   },
+   {
+    "id": "a001",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had the most false alarms on day 0 (38); inspecting the camera to improve detection is a concrete fix."
+   },
+   {
+    "id": "a059",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 13 false alarms on day 6; checking the camera angle and lighting fits."
+   },
+   {
+    "id": "a112",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "The hard hat problem is right (18), but moving the camera to where it already is does not get people to wear hats."
+   },
+   {
+    "id": "a007",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 23 no-hard-hat events on day 0; supervisor spot-checks at the peak hour fit."
+   },
+   {
+    "id": "a009",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "The hard hat problem is right (25), but 'strengthen camera monitoring' is vague, not a concrete site action."
+   },
+   {
+    "id": "a135",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "The excavator-distance problem is right (25), but it says to stay 'within 3 m', the opposite of the rule."
+   },
+   {
+    "id": "a173",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "The crowding problem is right (11), but it just repeats the rule, and it skips the bigger excavator-distance problem (53)."
+   },
+   {
+    "id": "a010",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Site Walk had no false alarms on day 1 (only hard hats), and 'more camera patrols' is vague."
+   },
+   {
+    "id": "a036",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk had 14 crowding events on day 4; monitors at the entrance during the peak hour fit, though 'main rule' is vague."
+   },
+   {
+    "id": "a024",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Office had 24 no-hard-hat events on day 2; supervisor spot-checks at the peak hour fit."
+   },
+   {
+    "id": "a161",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 6 crowding events on day 17; a posted cap and a queue line fit."
+   },
+   {
+    "id": "a047",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Loading Dock crowding is real (296), but 'ensure compliance with the 2-or-more-people rule' is garbled and reads as the opposite of a limit."
+   },
+   {
+    "id": "a130",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Office had 30 no-hard-hat events on day 14; spare hats, a sign and peak spot-checks fit."
+   },
+   {
+    "id": "a143",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 17 filtered false alarms on day 15; spot-checking the filtered snapshots fits."
+   }
+  ]
+ },
+ {
+  "batch": 2,
+  "judge": 0,
+  "verdicts": [
+   {
+    "id": "a095",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate really had excavator-distance cases on day 10, and a marked walkway plus a spotter is a concrete fix."
+   },
+   {
+    "id": "a158",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Excavation Pit did have filtered false alarms on day 17, but refreshing safety signs does nothing about false alarms."
+   },
+   {
+    "id": "a175",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had entrance crowding on day 19, and putting someone in charge of headcount at the peak hour fits."
+   },
+   {
+    "id": "a100",
+    "names_camera": false,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "It names only a generic site entrance, not a camera; hard-hat violations did happen on day 11 and a peak-hour hard-hat check at the entrance is doable."
+   },
+   {
+    "id": "a107",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Office had 17 people without hard hats on day 11, and a supervisor spot-check at the peak hour fits."
+   },
+   {
+    "id": "a113",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "House Frame's hard-hat problem is real, but moving the camera to where it already is does not remind anyone of anything."
+   },
+   {
+    "id": "a035",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 28 excavator-distance cases on day 3, and briefing drivers and workers on safe distance fits."
+   },
+   {
+    "id": "a084",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Maintenance Shop's hard-hat problem is real, but a generic 'pay attention to safety' sign does not target hard hats."
+   },
+   {
+    "id": "a085",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Warehouse Aisle did have hard-hat violations on day 9, but the generic 'be safe' sign does not address hard hats specifically."
+   },
+   {
+    "id": "a020",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Site Office's hard-hat problem is real, but 'implement a system to track violations' is too vague to carry out tomorrow."
+   },
+   {
+    "id": "a068",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had excavator-distance cases on day 7, and distance signs by the scaffold are a concrete fix."
+   },
+   {
+    "id": "a029",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "No camera had false alarms on day 3 (Excavation Pit's problems were hard hats and excavator distance), and adding cameras is not a next-day action."
+   },
+   {
+    "id": "a146",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle did have 22 filtered false alarms on day 16, so checking the camera is reasonable, though it skips the real hard-hat violations."
+   },
+   {
+    "id": "a153",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 53 people without hard hats on day 17, and enforcing hard hats with more checks at the peak hour fits, if somewhat generic."
+   },
+   {
+    "id": "a005",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "House Frame did have false alarms on day 0, but 'double-check the hard hat requirement to prevent false alarms' is muddled and not actionable."
+   },
+   {
+    "id": "a166",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 78 excavator-distance cases on day 18, and a safe-distance briefing fits."
+   },
+   {
+    "id": "a094",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "House Frame's hard-hat problem is real, but the action just restates the rule with no concrete measure."
+   },
+   {
+    "id": "a076",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 22 excavator-distance cases on day 8, and a walkway plus a spotter is concrete."
+   },
+   {
+    "id": "a103",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 24 excavator-distance cases on day 11, and a 3 m barrier line is a concrete fix."
+   },
+   {
+    "id": "a160",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 19 people without hard hats on day 17, and spare hats plus a sign at the entrance fit."
+   },
+   {
+    "id": "a054",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Office had heavy entrance crowding (68) on day 6, and posting monitors at the entrance fits, though 'main rule' is vague."
+   },
+   {
+    "id": "a110",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Welding Bay had no false alarms on day 12; its real problems were hard hats and crowding."
+   },
+   {
+    "id": "a097",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 28 people without hard hats on day 10, and spare hats plus a reminder sign fit."
+   },
+   {
+    "id": "a138",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Maintenance Shop crowding is real, but 'improve order and limit to 2 people' restates the rule without saying how."
+   },
+   {
+    "id": "a134",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk had excavator-distance cases on day 14, and a fenced walkway away from vehicles is concrete."
+   },
+   {
+    "id": "a155",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "It names Excavation Pit but says only 'monitor more and make sure safety measures are in place', with no specific problem or action."
+   },
+   {
+    "id": "a163",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 7 people without hard hats on day 18, and a peak-hour hard-hat inspection fits."
+   },
+   {
+    "id": "a062",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 15 excavator-distance cases on day 6, and a spotter plus keeping people out of the working radius fits."
+   },
+   {
+    "id": "a092",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "House Frame's hard-hat problem is real, but reviewing old footage looks backward and adds no preventive step for tomorrow."
+   },
+   {
+    "id": "a017",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 12 people without hard hats on day 1, and a toolbox talk before the peak hour fits."
+   },
+   {
+    "id": "a136",
+    "names_camera": false,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "No camera named; hard-hat violations did happen on day 15, and a peak-hour hard-hat check is doable."
+   },
+   {
+    "id": "a011",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "It names real day-1 cameras but addresses no specific problem, and 'combining cameras' is not a supervisor action."
+   },
+   {
+    "id": "a086",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "The header is Warehouse Aisle crowding (real), but the action puts a generic safety sign at the excavation pit entrance, so it misses both the area and the crowding."
+   },
+   {
+    "id": "a129",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 55 excavator-distance cases on day 14, and reminding workers about the 3 m rule is a minimal but doable step."
+   },
+   {
+    "id": "a053",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had entrance crowding on day 5, and putting someone in charge of headcount at the peak hour fits."
+   },
+   {
+    "id": "a147",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Warehouse Aisle did have filtered false alarms, but the double-check already exists, so 'implement a double-check' is not a real action."
+   },
+   {
+    "id": "a026",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 12 people without hard hats on day 2, and a supervisor spot-check at the peak hour fits."
+   },
+   {
+    "id": "a087",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had entrance crowding on day 9, and putting someone in charge of headcount at the peak hour fits."
+   },
+   {
+    "id": "a125",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 18 excavator-distance cases on day 13, and a signaller plus no entry to the working radius fits."
+   },
+   {
+    "id": "a108",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 18 excavator-distance cases on day 12, and a 3 m buffer is concrete, though limiting it to the peak hour is odd."
+   },
+   {
+    "id": "a013",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "House Frame's hard-hat problem is real, but 'require hard hats at the peak hour' just restates the rule and wrongly suggests it only applies at peak."
+   },
+   {
+    "id": "a008",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 19 people without hard hats on day 0, and spare hats plus a sign fit."
+   },
+   {
+    "id": "a058",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 32 entrance-crowding cases on day 6, and staggering arrivals plus a posted limit fit."
+   },
+   {
+    "id": "a151",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 16 excavator-distance cases on day 16, and assigning a spotter fits."
+   },
+   {
+    "id": "a117",
+    "names_camera": false,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "No camera named; hard-hat violations were widespread on day 13, and more checks at the peak hour are doable."
+   },
+   {
+    "id": "a127",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Office (hard hats) and Site Gate (excavator distance) both had problems on day 14, and a peak-hour patrol of both is concrete."
+   },
+   {
+    "id": "a132",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 49 excavator-distance cases on day 14, and assigning a spotter fits."
+   },
+   {
+    "id": "a083",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "It names Welding Bay but only says 'monitor more' with the existing system, with no specific problem or step."
+   },
+   {
+    "id": "a061",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had entrance crowding on day 6, and someone managing headcount at the peak hour fits."
+   },
+   {
+    "id": "a015",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk had 25 people without hard hats on day 1, and spare hats plus a sign at the entrance fit."
+   },
+   {
+    "id": "a003",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 77 entrance-crowding cases on day 0, and staggering arrivals plus a posted limit fit."
+   },
+   {
+    "id": "a101",
+    "names_camera": false,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Same text as a100: it names only a generic site entrance; hard-hat violations did happen on day 11 and a peak-hour check is doable."
+   },
+   {
+    "id": "a137",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Scaffold did have machinery-proximity cases on day 15, but 'be careful near machinery' is too vague to act on."
+   },
+   {
+    "id": "a077",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "House Frame did have 40 filtered false alarms on day 8, but the action is about warehouse alarms instead and is vague."
+   },
+   {
+    "id": "a169",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Excavation Pit's 101 hard-hat violations are real, but installing more monitoring devices does not get people wearing hard hats tomorrow."
+   },
+   {
+    "id": "a121",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 18 excavator-distance cases on day 13, and distance signs by the scaffold fit."
+   },
+   {
+    "id": "a048",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had heavy entrance crowding (296) on day 5, and posting a person at the door fits."
+   },
+   {
+    "id": "a176",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had entrance crowding on day 19, and headcount control at the peak hour fits, though its hard-hat problem was far bigger."
+   },
+   {
+    "id": "a115",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 16 people without hard hats on day 12, and spare hats plus a sign fit."
+   }
+  ]
+ },
+ {
+  "batch": 2,
+  "judge": 1,
+  "verdicts": [
+   {
+    "id": "a095",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 4 people within 3 m of the excavator on day 10, and a marked walkway plus a spotter is a concrete fix."
+   },
+   {
+    "id": "a158",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Excavation Pit did have 8 filtered false alarms, but updating safety signs does nothing about false detections."
+   },
+   {
+    "id": "a175",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 11 entrance-crowding events on day 19; assigning a person to control headcount fits."
+   },
+   {
+    "id": "a100",
+    "names_camera": false,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "No camera is named (just 'site entrance'); hard-hat violations did happen on day 11, including at Site Gate, and an entrance check is doable despite the awkward wording."
+   },
+   {
+    "id": "a107",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Office had 17 no-hard-hat events on day 11; a supervisor spot-check is concrete."
+   },
+   {
+    "id": "a113",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "House Frame did have hard-hat violations, but moving a camera that is already there in order to 'remind workers' makes no sense."
+   },
+   {
+    "id": "a035",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 28 within-3 m events on day 3; re-briefing drivers and workers on safe distance fits."
+   },
+   {
+    "id": "a084",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 15 no-hard-hat events on day 9; an entrance sign is actionable, though its 'pay attention to safety' wording is generic."
+   },
+   {
+    "id": "a085",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 6 no-hard-hat events on day 9; an entrance sign is actionable, though generic."
+   },
+   {
+    "id": "a020",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Site Office did have 24 hard-hat violations on day 2, but 'implement a tracking system' is vague and can't be done tomorrow."
+   },
+   {
+    "id": "a068",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 17 within-3 m events on day 7; distance signs near the scaffold are a concrete measure."
+   },
+   {
+    "id": "a029",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Excavation Pit had no false alarms on day 3 (its problems were hard hats and excavator distance), and adding cameras is not a next-day action."
+   },
+   {
+    "id": "a146",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 22 filtered false alarms on day 16; a camera maintenance check is a reasonable, concrete step, though it ignores the 15 real hard-hat violations."
+   },
+   {
+    "id": "a153",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 53 no-hard-hat events on day 17; enforcing hard hats with focused checks at peak hour fits."
+   },
+   {
+    "id": "a005",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "House Frame did have 4 filtered false alarms, but 'double-check the hard hat requirement' is muddled and won't reduce false alarms."
+   },
+   {
+    "id": "a166",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 78 within-3 m events on day 18; briefing drivers and workers fits."
+   },
+   {
+    "id": "a094",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 28 no-hard-hat events on day 10; enforcing hard hats at entry fits, though it mostly restates the rule."
+   },
+   {
+    "id": "a076",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 22 within-3 m events on day 8; a walkway plus a spotter is concrete."
+   },
+   {
+    "id": "a103",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 24 within-3 m events on day 11; barrier tape to keep 3 m is concrete."
+   },
+   {
+    "id": "a160",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 19 no-hard-hat events on day 17; spare hard hats and a sign at the entrance fit."
+   },
+   {
+    "id": "a054",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Site Office did have crowding and hard-hat issues on day 6, but 'the main rule' is undefined, so the monitors would not know what to enforce."
+   },
+   {
+    "id": "a110",
+    "names_camera": true,
+    "wrong_problem": true,
+    "sensible": false,
+    "why": "Welding Bay had no false alarms on day 12 (it had hard-hat and crowding problems), so tuning false-alarm settings is the wrong fix."
+   },
+   {
+    "id": "a097",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 28 no-hard-hat events on day 10; spare hats and a sign fit."
+   },
+   {
+    "id": "a138",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Maintenance Shop had 20 entrance-crowding events on day 15; limiting entrance headcount fits, though it doesn't say how."
+   },
+   {
+    "id": "a134",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk had 13 within-3 m events on day 14; a fenced walkway is concrete."
+   },
+   {
+    "id": "a155",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Excavation Pit did have issues on day 17, but 'strengthen monitoring, ensure measures' is vague and names no problem or action."
+   },
+   {
+    "id": "a163",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 7 no-hard-hat events on day 18; a timed hard-hat inspection fits."
+   },
+   {
+    "id": "a062",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 15 within-3 m events on day 6; a spotter and an exclusion radius fit."
+   },
+   {
+    "id": "a092",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 28 no-hard-hat events on day 10; reviewing footage to find violators is doable, though it looks back rather than preventing."
+   },
+   {
+    "id": "a017",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 12 no-hard-hat events on day 1; a toolbox talk restating the rule fits."
+   },
+   {
+    "id": "a136",
+    "names_camera": false,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "No camera is named; hard-hat violations did occur on day 15 (House Frame, Site Gate), and a timed check is concrete."
+   },
+   {
+    "id": "a011",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Both cameras were active on day 1, but 'combine cameras to improve efficiency' addresses no specific hazard and isn't a site action."
+   },
+   {
+    "id": "a086",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Warehouse Aisle did have crowding on day 9, but the action puts a generic safety sign at the Excavation Pit entrance: wrong place, and it doesn't address crowding."
+   },
+   {
+    "id": "a129",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 55 within-3 m events on day 14; reminding workers of the 3 m distance is concrete, if weak."
+   },
+   {
+    "id": "a053",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Welding Bay had 6 entrance-crowding events on day 5; headcount control at the peak hour fits."
+   },
+   {
+    "id": "a147",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Warehouse Aisle did have 22 false alarms, but a double-check already filtered them, so 'implement a double-check system' is redundant."
+   },
+   {
+    "id": "a026",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 12 no-hard-hat events on day 2; a supervisor spot-check fits."
+   },
+   {
+    "id": "a087",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 4 entrance-crowding events on day 9; headcount control fits."
+   },
+   {
+    "id": "a125",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 18 within-3 m events on day 13; a banksman plus an exclusion radius fit."
+   },
+   {
+    "id": "a108",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 18 within-3 m events on day 12; a 3 m buffer is concrete, though limiting it to peak hours is weak."
+   },
+   {
+    "id": "a013",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 16 no-hard-hat events on day 1; enforcing hard hats at peak hour fits, though the rule should apply at all times."
+   },
+   {
+    "id": "a008",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 19 no-hard-hat events on day 0; spare hats and a sign fit."
+   },
+   {
+    "id": "a058",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 32 entrance-crowding events on day 6; staggering arrivals and posting a maximum fit."
+   },
+   {
+    "id": "a151",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 16 within-3 m events on day 16; a spotter and an exclusion radius fit."
+   },
+   {
+    "id": "a117",
+    "names_camera": false,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "No camera is named; hard-hat violations were heavy on day 13, and more checks at the peak hour are concrete."
+   },
+   {
+    "id": "a127",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Office (hard hats) and Site Gate (excavator distance) both had issues on day 14; a timed patrol is doable, though it doesn't say what to check."
+   },
+   {
+    "id": "a132",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Warehouse Aisle had 49 within-3 m events on day 14; a spotter and an exclusion radius fit."
+   },
+   {
+    "id": "a083",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Welding Bay had hard-hat violations on day 9, but 'strengthen 24/7 monitoring' is vague and names no actual fix."
+   },
+   {
+    "id": "a061",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Gate had 32 entrance-crowding events on day 6; assigning headcount control at the peak hour fits."
+   },
+   {
+    "id": "a015",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Site Walk had 25 no-hard-hat events on day 1; spare hats and a sign fit."
+   },
+   {
+    "id": "a003",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 77 entrance-crowding events on day 0; staggering arrivals and posting a maximum fit."
+   },
+   {
+    "id": "a101",
+    "names_camera": false,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Same as a100: no camera named; day 11 had hard-hat violations including at Site Gate, and an entrance check is doable."
+   },
+   {
+    "id": "a137",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Scaffold did have 17 within-3 m events on day 15, but 'be careful, avoid collision' is a vague reminder, not an action."
+   },
+   {
+    "id": "a077",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "House Frame did have 40 filtered false alarms, but the action talks about 'warehouse alarms', a different area, so it doesn't fit."
+   },
+   {
+    "id": "a169",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": false,
+    "why": "Excavation Pit had 101 no-hard-hat events on day 19, but adding monitoring devices doesn't make people wear hard hats and can't be done tomorrow."
+   },
+   {
+    "id": "a121",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Scaffold had 18 within-3 m events on day 13; safe-distance signs are concrete."
+   },
+   {
+    "id": "a048",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Loading Dock had 296 entrance-crowding events on day 5; staffing the door to keep it to 2 people fits."
+   },
+   {
+    "id": "a176",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "Excavation Pit had 2 entrance-crowding events on day 19; headcount control fits, though the 101 hard-hat violations matter more."
+   },
+   {
+    "id": "a115",
+    "names_camera": true,
+    "wrong_problem": false,
+    "sensible": true,
+    "why": "House Frame had 16 no-hard-hat events on day 12; spare hats and a sign fit."
+   }
+  ]
+ }
+]

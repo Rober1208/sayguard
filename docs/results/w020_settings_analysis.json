@@ -1,0 +1,161 @@
+{
+ "scene": "val/Warehouse_020 (validation; v3 site detector; replay of its detection cache)",
+ "worker_filter": {
+  "rule": "highest person-frame F1 (1 m match); within 0.005 of the best, the lowest show threshold",
+  "grid": [
+   {
+    "show": 0.0,
+    "keep": 0.0,
+    "recall": 0.551,
+    "precision": 0.459,
+    "f1": 0.501,
+    "count_abs_error": 9.95
+   },
+   {
+    "show": 0.5,
+    "keep": 0.4,
+    "recall": 0.543,
+    "precision": 0.514,
+    "f1": 0.528,
+    "count_abs_error": 4.53
+   },
+   {
+    "show": 0.5,
+    "keep": 0.5,
+    "recall": 0.539,
+    "precision": 0.529,
+    "f1": 0.534,
+    "count_abs_error": 3.93
+   },
+   {
+    "show": 0.6,
+    "keep": 0.4,
+    "recall": 0.539,
+    "precision": 0.537,
+    "f1": 0.538,
+    "count_abs_error": 3.8
+   },
+   {
+    "show": 0.6,
+    "keep": 0.5,
+    "recall": 0.535,
+    "precision": 0.551,
+    "f1": 0.543,
+    "count_abs_error": 3.87
+   },
+   {
+    "show": 0.6,
+    "keep": 0.6,
+    "recall": 0.529,
+    "precision": 0.569,
+    "f1": 0.548,
+    "count_abs_error": 4.65
+   },
+   {
+    "show": 0.7,
+    "keep": 0.4,
+    "recall": 0.53,
+    "precision": 0.573,
+    "f1": 0.551,
+    "count_abs_error": 4.94
+   },
+   {
+    "show": 0.7,
+    "keep": 0.5,
+    "recall": 0.527,
+    "precision": 0.588,
+    "f1": 0.555,
+    "count_abs_error": 5.81
+   },
+   {
+    "show": 0.7,
+    "keep": 0.6,
+    "recall": 0.521,
+    "precision": 0.603,
+    "f1": 0.559,
+    "count_abs_error": 6.99
+   },
+   {
+    "show": 0.7,
+    "keep": 0.7,
+    "recall": 0.508,
+    "precision": 0.625,
+    "f1": 0.56,
+    "count_abs_error": 9.18
+   },
+   {
+    "show": 0.8,
+    "keep": 0.4,
+    "recall": 0.506,
+    "precision": 0.621,
+    "f1": 0.558,
+    "count_abs_error": 9.19
+   },
+   {
+    "show": 0.8,
+    "keep": 0.5,
+    "recall": 0.502,
+    "precision": 0.633,
+    "f1": 0.56,
+    "count_abs_error": 10.18
+   },
+   {
+    "show": 0.8,
+    "keep": 0.6,
+    "recall": 0.494,
+    "precision": 0.647,
+    "f1": 0.561,
+    "count_abs_error": 11.57
+   },
+   {
+    "show": 0.8,
+    "keep": 0.8,
+    "recall": 0.446,
+    "precision": 0.704,
+    "f1": 0.546,
+    "count_abs_error": 18.0
+   }
+  ],
+  "picked": {
+   "show": 0.7,
+   "keep": 0.6
+  }
+ },
+ "forklift_box_confidence": {
+  "note": "forklift boxes vs ground-truth forklift boxes (IoU >= 0.3), every 5th frame, all 16 cameras",
+  "bins": {
+   "<0.4": {
+    "true": 2072,
+    "false": 1367
+   },
+   "0.4-0.6": {
+    "true": 2134,
+    "false": 711
+   },
+   "0.6-0.8": {
+    "true": 3660,
+    "false": 95
+   },
+   ">=0.8": {
+    "true": 7324,
+    "false": 24
+   }
+  },
+  "false_below_0.6_mostly": "pallet trucks (665) and background (1406)",
+  "picked": 0.6
+ },
+ "forklift_distance_pad": {
+  "bias_with_0.5_m": -0.38,
+  "picked_pad_m": 0.1,
+  "bias_after": 0.01
+ },
+ "in_view_px": {
+  "person_detection_by_max_box_height": {
+   "<20 px": "78 of 569 detected (14 %)",
+   "20-40 px": "68 % detected",
+   "40-80 px": "92 % detected",
+   ">=80 px": "99 % detected"
+  },
+  "picked": 40
+ }
+}

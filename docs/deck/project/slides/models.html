@@ -1,17 +1,19 @@
-<section id="models" data-transition="fade" style="background:#F3F0E8;color:#171B21;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<section id="models" data-transition="fade" style="background:#F3F0E8;color:#171B21;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
 <div style="display:flex;flex-direction:column;gap:16px">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8A5A00;letter-spacing:2px">ARCHITECTURE · SOFTWARE</p>
-<h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">Every model is already in the Hailo Model Zoo</h2>
+<h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">Every job maps to a Hailo-10H model</h2>
 </div>
-<table style="font-size:27px;color:#171B21;background:#FBFAF6;border:1px solid #DDD7CB;border-radius:16px">
-<tr><th style="width:24%;text-align:left">Job</th><th style="width:24%;text-align:left">Model</th><th style="width:26%;text-align:left">PC prototype (measured)</th><th style="width:26%;text-align:left">Hailo-10H (Hailo reference)</th></tr>
+<table style="font-size:26px;color:#171B21;background:#FBFAF6;border:1px solid #DDD7CB;border-radius:16px">
+<tr><th style="width:21%;text-align:left">Job</th><th style="width:23%;text-align:left">Model</th><th style="width:26%;text-align:left">PC prototype (measured)</th><th style="width:30%;text-align:left">Hailo-10H (Hailo reference)</th></tr>
 <tr><td>Hard hats, all cameras</td><td>YOLOv8s, fine-tuned</td><td>31–40 ms per 10-frame batch</td><td>252 FPS at batch 8</td></tr>
-<tr><td>Objects named in rules</td><td>YOLO-World v2-S</td><td>12 ms per frame</td><td>46.6 FPS</td></tr>
-<tr><td>Speech to text</td><td>Whisper-Small</td><td>0.4–0.8 s per rule</td><td>10.6 tokens/s</td></tr>
-<tr><td>Rule drafts, report actions</td><td>Qwen2.5-1.5B-Instruct</td><td>0.34 s per rule</td><td>7.35 tokens/s · 0.37 s first token</td></tr>
-<tr><td>Alert double-check</td><td>Qwen2-VL-2B-Instruct</td><td>0.16–0.3 s per alert</td><td>7.04 tokens/s · 1.02 s first token</td></tr>
+<tr><td>Warehouse objects</td><td>YOLOv8s 6-class, 960 px</td><td>63–95 ms per 11-frame batch</td><td>YOLOv8s family (HEF in Stage II)</td></tr>
+<tr><td>Objects named in rules</td><td>YOLO-World v2-S</td><td>–</td><td>46.6 FPS</td></tr>
+<tr><td>Speech to text</td><td>Whisper-Small</td><td>–</td><td>10.6 tokens/s</td></tr>
+<tr style="background:#F6EBD0"><td>Rules and report plan</td><td>Qwen2.5-1.5B-Instruct</td><td>0.35–0.40 s mean per rule<br>max 0.64 s</td><td>7.35 tokens/s · 0.37 s first token</td></tr>
+<tr><td>Yes/no check on alerts</td><td>CLIP ViT-B/32 + 2×512 head</td><td>15.2 ms mean per crop</td><td>81.5 FPS</td></tr>
 </table>
-<p style="font-size:28px;line-height:1.4;color:#4A5260">LLM calls use the Ollama API, which hailo-ollama serves on the UGen300: switching is a URL change. The detector goes ONNX → HEF with the Hailo Dataflow Compiler; the HailoRT backend is written and is validated in Stage II.</p>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">SayGuard · Stage I proposal · 13 · Hailo Model Zoo and Hailo GenAI Model Zoo, Hailo-10H</p>
-<aside>This table is the feasibility argument. Each job already has a Hailo-10H build in Hailo’s model zoos, with published throughput. Language models are called only on demand: a spoken rule, an alert to check, a report. Only the detector runs on every frame.</aside>
+<p style="font-size:26px;line-height:1.4;color:#4A5260"><b style="color:#171B21">Hailo emulator, bit-exact INT8:</b> the hard-hat detector, the only model compiled to a HEF so far (not yet run on hardware), scores mAP50 0.889 vs 0.893 float; the CLIP yes/no check reaches 95.3 % with its head retrained on INT8 features (violations kept 93.9 %).</p>
+<p style="font-size:26px;line-height:1.4;color:#4A5260"><b style="color:#171B21">UGen300 estimates, not measured:</b> spoken rule → rule JSON about 11.3 s; a 5 s Whisper transcription about 2.4 s. LLM accuracy and latency were measured with Ollama qwen2.5:1.5b on the PC; the Hailo GenAI build is not measured yet.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">SayGuard · Stage I proposal · 16 · PC: RTX 5060 Ti, docs/results/ · estimates: docs/results/benchmark.md · Hailo-10H: Hailo Model Zoo, GenAI Model Zoo</p>
+<aside>This table is the feasibility argument. Every job maps to a model Hailo already publishes for Hailo-10H; the warehouse detector uses the same YOLOv8s architecture, and we compile its HEF in the first week of Stage II. The language model runs only on demand, when someone speaks a rule or the daily report is planned, and our code calls it through the Ollama API, which hailo-ollama serves on the UGen300; on the PC a rule takes well under a second, and from Hailo’s reference speeds we estimate about eleven seconds on the UGen300, which is fine for a rule the officer confirms. So far only the hard-hat detector is compiled to a HEF; it and the CLIP encoder were quantized to INT8 and checked bit-exactly in Hailo’s emulator, not yet on hardware.</aside>
 </section>

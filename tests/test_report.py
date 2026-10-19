@@ -1,12 +1,13 @@
 """Report stats and fallbacks on a synthetic event store (no models, no network)."""
 from __future__ import annotations
 
+import json
 import time
 
 import pytest
 
 from sayguard.events import EventStore
-from sayguard.report import build_report, unsupported_numbers
+from sayguard.report import action_issues, build_report, compute_stats, unsupported_numbers
 from sayguard.types import Event
 
 CAMS = [{"id": "cam01", "name": "Gate A", "zone": "entrance"},
@@ -92,11 +93,11 @@ def test_template_stats_and_markdown(store, lang):
     actions = md.split(f"## {heads[2]}")[1].split("---")[0]
     assert sum(1 for line in actions.splitlines() if line.startswith("- ")) == 3
     if lang == "en":
-        assert "4 alerts were filtered as false alarms by the VLM" in md
-        assert "(5 confirmed by the VLM, 2 not yet checked, 1 not subject to VLM check)" in md
+        assert "4 alerts were filtered as false alarms by the double-check" in md
+        assert "(5 confirmed by the double-check, 2 not yet checked, 1 not subject to the double-check)" in md
     else:
-        assert "4 則經 VLM 複核判定為誤報" in md
-        assert "（VLM 確認 5 則、尚待複核 2 則、1 則屬不經 VLM 複核的規則）" in md
+        assert "4 則經複核判定為誤報" in md
+        assert "（複核確認 5 則、尚待複核 2 則、1 則屬不經複核的規則）" in md
 
 
 def test_short_window_targets_hard_hat_camera(store):
@@ -105,12 +106,12 @@ def test_short_window_targets_hard_hat_camera(store):
     assert (s["total"], s["false_alarms"], s["violations"]) == (4, 1, 3)
     assert s["busiest_camera"] == "Gate A" and s["busiest_camera_top_rule"] == "Forklift proximity"
     assert s["no_helmet_top_camera"] == "Scaffold North"
-    assert "1 alert was filtered as a false alarm by the VLM" in r["markdown"]
+    assert "1 alert was filtered as a false alarm by the double-check" in r["markdown"]
     assert "spare hard hats and a reminder sign at Scaffold North" in r["markdown"]
 
 
-def test_rules_the_vlm_never_checks_are_not_pending(tmp_path):
-    """Only hard-hat alerts go to the VLM: forklift alerts are violations, never 'awaiting re-check'."""
+def test_rules_never_double_checked_are_not_pending(tmp_path):
+    """Only hard-hat alerts are double-checked: forklift alerts are violations, never 'awaiting re-check'."""
     s = EventStore(tmp_path / "e.db", tmp_path / "snaps")
     for i, (h, m) in enumerate([(9, 0), (9, 30), (10, 15)]):
         s.add(_event(i, "cam01", FORK, None, at(h, m)))
@@ -119,13 +120,14 @@ def test_rules_the_vlm_never_checks_are_not_pending(tmp_path):
     assert (st["violations"], st["unchecked"], st["not_applicable"], st["confirmed"]) == (3, 0, 3, 0)
     assert {e["status"] for e in st["examples"]} == {"not_applicable"}
     md = r["markdown"]
-    assert "0 not yet checked, 3 not subject to VLM check" in md
-    assert "not checked yet" not in md                                # no 'review unchecked snapshots' action
-    assert "(not subject to VLM check)" in md and "(not yet checked)" not in md
+    assert "0 not yet checked, 3 not subject to the double-check" in md
+    actions = md.split("## Recommended actions")[1]
+    assert "duty officer" not in actions                              # no 'review unchecked snapshots' action
+    assert "(not subject to the double-check)" in md and "(not yet checked)" not in md
     facts = FakeLLM(GOOD_ZH)
     build_report(s, facts, CAMS, "en", now=NOW, mode="llm")
     assert '"violations_not_yet_checked": 0' in facts.calls[0]["messages"][-1]["content"]
-    assert '"violations_not_subject_to_vlm_check": 3' in facts.calls[0]["messages"][-1]["content"]
+    assert '"violations_not_subject_to_double_check": 3' in facts.calls[0]["messages"][-1]["content"]
 
 
 def test_window_is_capped_at_a_week(store):
@@ -143,7 +145,7 @@ def test_empty_store(tmp_path):
 
 
 GOOD_ZH = """## 摘要
-过去 24 小时共 12 则警报，有 4 则警报经 VLM 复核判定为误报，已过滤。
+过去 24 小时共 12 则警报，有 4 则警报经复核判定为误报，已过滤。
 ## 重点发现
 - Gate A 违规 5 则
 - 尖峰时段 08:00-09:00
@@ -192,25 +194,99 @@ class SeqLLM:
         return self.replies.pop(0)
 
 
+def picks(*items) -> str:
+    """The structured reply the actions step asks for: [(issue number, action text)]."""
+    return json.dumps({"actions": [{"issue": i, "action": a} for i, a in items]}, ensure_ascii=False)
+
+
+def issues_of(store, lang="en"):
+    stats = compute_stats(list(store.between(NOW - 24 * 3600, NOW)), CAMS, NOW - 24 * 3600, NOW)
+    return action_issues(stats, lang)
+
+
 def test_rejected_draft_falls_back_to_llm_actions_with_template_numbers(store):
-    actions = "- 在 Gate A 於尖峰前進行工具箱會議\n- 尖峰時段安排主管巡查 Gate A\n- 檢查 Scaffold North 鏡頭角度"
+    actions = picks((0, "於尖峰前進行工具箱會議"), (1, "尖峰時段安排主管巡查"), (2, "檢查鏡頭角度"))
     llm = SeqLLM(GOOD_ZH.replace("12 则", "99 则"), actions)
-    r = build_report(store, llm, CAMS, "zh", now=NOW, mode="llm")
+    r = build_report(store, llm, CAMS, "zh", now=NOW, mode="llm", actions="free")
     assert r["generator"] == "llm+template", r["note"]
-    assert "工具箱會議" in r["markdown"] and "Gate A" in r["markdown"]
+    first = issues_of(store, "zh")[0]
+    assert f"**{first['camera']}**・{first['issue']}：於尖峰前進行工具箱會議" in r["markdown"]
     assert "99" not in r["markdown"]                       # the invented number never reaches the report
     assert '"violations_by_camera"' not in llm.calls[1]["messages"][-1]["content"]   # no counts given for actions
     assert "seq-llm" in r["markdown"]
 
 
-def test_llm_actions_with_invented_numbers_are_rejected(store):
-    llm = SeqLLM("just one line", "- 12 people at Gate A\n- b\n- c")
-    r = build_report(store, llm, CAMS, "en", now=NOW, mode="llm")
-    assert r["generator"] == "template"
+def test_an_action_with_an_invented_number_gets_the_template_text(store):
+    llm = SeqLLM("just one line", picks((0, "Send 12 people there"), (1, "Supervisor walk"), (2, "Check the view")))
+    r = build_report(store, llm, CAMS, "en", now=NOW, mode="llm", actions="free")
+    assert r["generator"] == "llm+template" and "12 people" not in r["markdown"]
+    assert "Supervisor walk" in r["markdown"] and "number not in the stats" in r["note"]
 
 
-def test_default_hybrid_mode_asks_only_for_actions(store):
-    llm = SeqLLM("- Toolbox talk at Gate A before the peak hour\n- Supervisor walk at Gate A\n- Check the Scaffold North view")
+def test_all_three_actions_straying_falls_back_to_the_template(store):
+    llm = SeqLLM(picks((0, "Send 12 people"), (1, "Send 13 people"), (2, "Send 14 people")))
+    assert build_report(store, llm, CAMS, "en", now=NOW, actions="free")["generator"] == "template"
+
+
+def test_llm_actions_that_are_not_json_are_rejected(store):
+    llm = SeqLLM("- Toolbox talk at Gate A\n- b\n- c")
+    assert build_report(store, llm, CAMS, "en", now=NOW, actions="free")["generator"] == "template"
+
+
+def test_an_action_cannot_name_another_camera(store):
+    issues = issues_of(store)
+    other = next(x["camera"] for x in issues if x["camera"] != issues[0]["camera"])
+    llm = SeqLLM(picks((0, f"Move the spare hard hats to {other}"), (1, "Supervisor walk"), (2, "Check the view")))
+    r = build_report(store, llm, CAMS, "en", now=NOW, actions="free")
+    assert f"Move the spare hard hats to {other}" not in r["markdown"] and "another camera" in r["note"]
+
+
+def test_an_action_about_another_kind_of_problem_gets_the_template_text(store):
+    issues = issues_of(store)
+    k = next(i for i, x in enumerate(issues) if x["kind"] not in ("hard_hat", "false_alarm"))
+    rest = [i for i in range(len(issues)) if i != k][:2]
+    llm = SeqLLM(picks((k, "Make everyone wear hard hats"), (rest[0], "Supervisor walk"), (rest[1], "Check the view")))
+    r = build_report(store, llm, CAMS, "en", now=NOW, actions="free")
+    assert "Make everyone wear hard hats" not in r["markdown"] and "another kind of problem" in r["note"]
+
+
+def test_the_same_issue_twice_is_rejected(store):
+    llm = SeqLLM(picks((0, "a"), (0, "b"), (1, "c")))
+    assert build_report(store, llm, CAMS, "en", now=NOW, actions="free")["generator"] == "template"
+
+
+def test_free_text_actions_name_camera_and_issue(store):
+    llm = SeqLLM(picks((0, "Toolbox talk before the peak hour"), (1, "Supervisor walk"), (2, "Check the view")))
+    r = build_report(store, llm, CAMS, "en", now=NOW, actions="free")
+    assert r["generator"] == "llm+template" and len(llm.calls) == 1
+    first = issues_of(store)[0]
+    assert f"**{first['camera']}** · {first['issue']}: Toolbox talk before the peak hour" in r["markdown"]
+    assert "| Gate A |" in r["markdown"]
+
+
+def test_chinese_actions_use_taiwan_terms(store):
+    llm = SeqLLM(picks((0, "检查摄像头角度，减少假警报"), (1, "b"), (2, "c")))
+    r = build_report(store, llm, CAMS, "zh", now=NOW, actions="free")
+    assert "攝影機" in r["markdown"] and "誤報" in r["markdown"] and "攝像頭" not in r["markdown"]
+
+
+
+def plan(*items) -> str:
+    return json.dumps({"actions": [{"issue": i, "fix": f} for i, f in items]})
+
+
+def test_default_actions_are_vetted_fixes_the_llm_picks(store):
+    from sayguard.report import TEXT
+    llm = SeqLLM(plan((0, 2), (1, 0), (2, 1)))
     r = build_report(store, llm, CAMS, "en", now=NOW)
     assert r["generator"] == "llm+template" and len(llm.calls) == 1
-    assert "Toolbox talk at Gate A" in r["markdown"] and "| Gate A |" in r["markdown"]
+    first = issues_of(store)[0]
+    fix = TEXT["en"]["menu"][first["kind"]][2].format(peak=compute_stats(
+        list(store.between(NOW - 24 * 3600, NOW)), CAMS, NOW - 24 * 3600, NOW)["peak_hour"])
+    assert f"**{first['camera']}** · {first['issue']}: {fix}" in r["markdown"]
+
+
+def test_a_plan_with_a_repeated_or_unknown_issue_falls_back_to_the_template(store):
+    assert build_report(store, SeqLLM(plan((0, 0), (0, 1), (1, 2))), CAMS, "en", now=NOW)["generator"] == "template"
+    assert build_report(store, SeqLLM(plan((0, 0), (1, 5), (2, 1))), CAMS, "en", now=NOW)["generator"] == "template"
+    assert build_report(store, SeqLLM("not json"), CAMS, "en", now=NOW)["generator"] == "template"

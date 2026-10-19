@@ -7,16 +7,19 @@ from ..types import Detection
 
 
 class UltralyticsDetector:
-    def __init__(self, weights: str, imgsz: int = 640, conf: float = 0.35, half: bool = True):
+    def __init__(self, weights: str, imgsz: int = 640, conf: float = 0.35, half: bool = True,
+                 classes: list[str] | None = None, name: str | None = None):
         import torch
         from ultralytics import YOLO
 
-        self.name = f"YOLOv8s-helmet (Ultralytics, {'cuda' if torch.cuda.is_available() else 'cpu'})"
+        self.name = f"{name or 'YOLOv8s-helmet'} (Ultralytics, {'cuda' if torch.cuda.is_available() else 'cpu'})"
         self.model = YOLO(weights)
         self.imgsz, self.conf = imgsz, conf
         self.device = 0 if torch.cuda.is_available() else "cpu"
         self.half = half and self.device == 0
         self.labels = self.model.names
+        # e.g. only 'person' from a COCO model: filtered inside predict, before NMS and max_det
+        self.class_ids = [i for i, n in self.labels.items() if n in classes] if classes else None
         # warm-up so the first real batch is not slow
         self.model.predict([np.zeros((imgsz, imgsz, 3), np.uint8)], imgsz=imgsz, device=self.device,
                            quantize=16 if self.half else 32, verbose=False)
@@ -28,7 +31,8 @@ class UltralyticsDetector:
         # ambiguous head, which became two tracks (double head count, and a "no hard hat"
         # alert for a worker whose helmet was also seen).  Agnostic NMS keeps the stronger.
         results = self.model.predict(frames, imgsz=self.imgsz, conf=self.conf, device=self.device,
-                                     quantize=16 if self.half else 32, agnostic_nms=True, verbose=False)
+                                     quantize=16 if self.half else 32, agnostic_nms=True, classes=self.class_ids,
+                                     verbose=False)
         out = []
         for r in results:
             b = r.boxes

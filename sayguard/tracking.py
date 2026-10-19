@@ -55,14 +55,22 @@ def _iou(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     return inter / np.maximum(union, 1e-9)
 
 
-def _nms(dets: list[Detection], iou: float) -> list[Detection]:
+def _nms(dets: list[Detection], iou: float, contain: float | None = None) -> list[Detection]:
     """Class-agnostic NMS: of boxes overlapping by >= iou, the highest score (and
-    its label) survives."""
+    its label) survives.  contain: also suppress a box whose overlap covers this share of
+    the smaller box (a half-body box inside a full-body box of the same person)."""
     order = sorted(dets, key=lambda d: -d.conf)
     if len(order) < 2:
         return order
     boxes = np.array([d.xyxy for d in order], dtype=float)
     m = _iou(boxes, boxes)
+    if contain is not None:
+        lt = np.maximum(boxes[:, None, :2], boxes[None, :, :2])
+        rb = np.minimum(boxes[:, None, 2:], boxes[None, :, 2:])
+        inter = np.prod(np.clip(rb - lt, 0, None), axis=2)
+        area = np.prod(np.clip(boxes[:, 2:] - boxes[:, :2], 0, None), axis=1)
+        cover = inter / np.maximum(np.minimum(area[:, None], area[None, :]), 1e-9)
+        m = np.where(cover >= contain, 1.0, m)
     keep: list[int] = []
     for i in range(len(order)):
         if all(m[i, j] < iou for j in keep):
@@ -124,9 +132,18 @@ class _Track:
 
 
 class CameraTracker:
-    def __init__(self, fps: float = 10.0, lost_s: float = LOST_S, low_conf: float = LOW_CONF):
+    def __init__(self, fps: float = 10.0, lost_s: float = LOST_S, low_conf: float = LOW_CONF,
+                 labels: tuple[str, ...] = ("helmet", "head"), merge_iou: float = MERGE_IOU,
+                 contain: float | None = None):
+        """labels: the detector classes that are one tracked subject (site mode tracks 'person'
+        boxes; the label history then just records that class).  merge_iou / contain: how
+        overlapping boxes are merged before tracking (body boxes overlap less than the helmet
+        and head boxes of one head, and a partly hidden person can get a half-body box inside
+        the full one: two tracks of one person that the floor plan would count twice)."""
         self.lost_s = lost_s
         self.low_conf = low_conf
+        self.labels = labels
+        self.merge_iou, self.contain = merge_iou, contain
         # extrapolate motion at most ~3 frame intervals; beyond that a stopped
         # worker would be predicted out of reach of their own next detection
         self.max_predict_s = max(0.3, 3.0 / max(fps, 1e-3))
@@ -136,7 +153,7 @@ class CameraTracker:
         self.seen: dict[int, float] = {}
 
     def update(self, dets: list[Detection], ts: float) -> tuple[list[Person], list[Detection]]:
-        ppe = _nms([d for d in dets if d.label in ("helmet", "head")], MERGE_IOU)
+        ppe = _nms([d for d in dets if d.label in self.labels], self.merge_iou, self.contain)
         self.tracks = [t for t in self.tracks if ts - t.last_ts <= self.lost_s]
         matched = self._match(ppe, ts)
 

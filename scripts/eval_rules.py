@@ -8,10 +8,16 @@
 A sentence counts as correct only if every labelled field matches.  Needs the
 Ollama-compatible server from configs/site.yaml.
 
-    python scripts/eval_rules.py
+    python scripts/eval_rules.py                 # camera sites: tests/test_parser.py + HELDOUT below
+    python scripts/eval_rules.py --site [--dev]  # warehouse floor plan: tests/site_rule_sentences.json
+
+--site uses configs/warehouse.yaml (floor zones, site detector objects) and the sentences an outside
+writer and reviewer labelled without seeing the parser; --dev runs only their dev set (the one the
+parser may be fixed on), so the held-out set is measured once.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 import time
@@ -96,6 +102,23 @@ def matches(rule: dict | None, expected: dict) -> tuple[bool, list[str]]:
     return not bad, bad
 
 
+def site_matches(rule: dict | None, expected: dict) -> tuple[bool, list[str]]:
+    """Site rules: the floor zones themselves are compared ("warehouse" = the whole site = no zone),
+    and a site rule must cover every camera (cameras see parts of zones; workers are on the floor)."""
+    if rule is None:
+        return False, ["no rule"]
+    bad = [k for k in ("type", "object", "threshold", "time_window") if rule.get(k) != expected.get(k)]
+    if expected.get("min_duration_s") is not None and rule.get("min_duration_s") != expected["min_duration_s"]:
+        bad.append("min_duration_s")
+    def norm(z):
+        return sorted(set(z or []) - {"warehouse"})
+    if norm(rule.get("zones")) != norm(expected.get("zones")):
+        bad.append("zones")
+    if (rule.get("cameras") or ["*"]) != ["*"]:
+        bad.append("cameras")
+    return not bad, bad
+
+
 def llm_only(text: str, cams: list[dict], zones: dict, llm: LLMClient) -> dict | None:
     try:
         raw = llm.chat(P.llm_prompt(text, cams, zones), fmt=P.llm_schema(), temperature=0.0, max_tokens=300)
@@ -107,18 +130,38 @@ def llm_only(text: str, cams: list[dict], zones: dict, llm: LLMClient) -> dict |
 
 
 def main() -> None:
-    import test_parser as T
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--site", action="store_true", help="warehouse floor-plan sentences (configs/warehouse.yaml)")
+    ap.add_argument("--dev", action="store_true", help="with --site: only the dev set")
+    args = ap.parse_args()
 
-    cfg = load_config()
+    cfg = load_config(str(ROOT / "configs" / "warehouse.yaml")) if args.site else load_config()
     cams = [{"id": c["id"], "name": c["name"], "zone": c["zone"]} for c in cfg["cameras"]]
     CAMS[:] = cams
     zones = cfg["zones"]
     llm = LLMClient(cfg["llm"]["base_url"], cfg["llm"]["model"], 120)
     if not llm.available():
         raise SystemExit("LLM server not reachable: start Ollama (or hailo-ollama) first")
-    sets = {"dev (used to build the extractor)": [(t, e) for t, e in T.CASES if e is not None],
-            "held-out (never used for tuning)": HELDOUT}
-    out = {"llm": cfg["llm"]["model"], "fields_compared": ["type", "object", "threshold", "time_window", "min_duration_s when stated", "scope (cameras the rule applies to)"], "sets": {}}
+    if args.site:
+        data = json.loads((ROOT / "tests" / "site_rule_sentences.json").read_text(encoding="utf-8"))
+        keys = ("type", "zones", "object", "threshold", "time_window", "min_duration_s")
+        def cases(name):
+            return [(c["text"], {k: c[k] for k in keys}) for c in data[name]]
+        sets = {"site dev (may be used to fix the parser)": cases("dev")}
+        if not args.dev:
+            sets["site held-out v1 (first run 84 % before fixes; seen since)"] = cases("heldout")
+            sets["site held-out v2 (fresh, never used for tuning)"] = cases("heldout2")
+        check = site_matches
+        fields = ["type", "object", "threshold", "time_window", "min_duration_s when stated", "floor zones",
+                  "covers every camera"]
+    else:
+        import test_parser as T
+        sets = {"dev (used to build the extractor)": [(t, e) for t, e in T.CASES if e is not None],
+                "held-out (never used for tuning)": HELDOUT}
+        check = matches
+        fields = ["type", "object", "threshold", "time_window", "min_duration_s when stated",
+                  "scope (cameras the rule applies to)"]
+    out = {"llm": cfg["llm"]["model"], "fields_compared": fields, "sets": {}}
     for name, cases in sets.items():
         score = {"llm_only": 0, "rules": 0, "llm+check": 0}
         ms: list[float] = []
@@ -129,7 +172,7 @@ def main() -> None:
             t0 = time.perf_counter()
             c = P.parse(text, cams, zones, llm=llm).rule
             ms.append((time.perf_counter() - t0) * 1000)
-            res = {k: matches(r.model_dump() if hasattr(r, "model_dump") else r, exp)
+            res = {k: check(r.model_dump() if hasattr(r, "model_dump") else r, exp)
                    for k, r in (("llm_only", a), ("rules", b), ("llm+check", c))}
             for k, (ok, _) in res.items():
                 score[k] += ok
@@ -143,9 +186,10 @@ def main() -> None:
         for k, v in score.items():
             print(f"  {k:10s} {v}/{n} = {v / n:.0%}")
         print(f"  llm+check latency: mean {round(sum(ms) / n)} ms, max {round(max(ms))} ms")
-    for d in (work_dir() / "results", ROOT / "docs" / "results"):
+    name = "rule_parsing_site" + ("_dev" if args.dev else "") if args.site else "rule_parsing"
+    for d in (work_dir() / "results",) if args.dev else (work_dir() / "results", ROOT / "docs" / "results"):
         d.mkdir(parents=True, exist_ok=True)
-        (d / "rule_parsing.json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+        (d / f"{name}.json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
 if __name__ == "__main__":

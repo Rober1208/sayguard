@@ -1,0 +1,763 @@
+{
+ "llm": "qwen2.5:1.5b",
+ "fields_compared": [
+  "type",
+  "object",
+  "threshold",
+  "time_window",
+  "min_duration_s when stated",
+  "floor zones",
+  "covers every camera"
+ ],
+ "sets": {
+  "site dev (may be used to fix the parser)": {
+   "sentences": 15,
+   "correct": {
+    "llm_only": 3,
+    "rules": 15,
+    "llm+check": 15
+   },
+   "accuracy": {
+    "llm_only": 0.2,
+    "rules": 1.0,
+    "llm+check": 1.0
+   },
+   "llm+check_latency_ms": {
+    "mean": 369,
+    "max": 469
+   },
+   "rows": [
+    {
+     "text": "Alert me if anyone enters aisle seven.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "晚上十點到早上六點，碼頭區有人就通知我",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "threshold"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Flag anyone who stays in the rack area for more than 20 seconds.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "type",
+       "threshold",
+       "time_window",
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "開放作業區超過三個人就警告",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Warn me when more than 6 people are in the warehouse.",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "堆高機開進七號走道要通報",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Tell me whenever an AMR shows up on the loading dock.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "cameras"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "貨架區出現人形機器人就提醒我",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Alert if a person gets within 2 metres of a pallet truck in the rack area.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "有人靠近搬運車三公尺以內就警報",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "碼頭區有人離叉車不到五公尺，馬上警告",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "After 11 pm, report anyone on the open floor.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "time_window"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "倉庫裡有人待超過十五秒就通知",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "type",
+       "threshold",
+       "time_window"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Let me know if a transporter enters the open floor.",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "碼頭超過五個人要通知我",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    }
+   ]
+  },
+  "site held-out (never used for tuning)": {
+   "sentences": 25,
+   "correct": {
+    "llm_only": 4,
+    "rules": 20,
+    "llm+check": 21
+   },
+   "accuracy": {
+    "llm_only": 0.16,
+    "rules": 0.8,
+    "llm+check": 0.84
+   },
+   "llm+check_latency_ms": {
+    "mean": 404,
+    "max": 514
+   },
+   "rows": [
+    {
+     "text": "Anybody on the loading dock between 1 pm and 3 pm should trigger an alert.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "threshold"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "有人在7號走道停留超過八秒就跟我說",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "type",
+       "threshold",
+       "time_window"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Between 22:00 and 05:30, flag anyone anywhere in the warehouse.",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "凌晨一點以後貨架區不准有人",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "time_window",
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Raise an alarm if a worker remains on the open floor longer than one minute.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "type",
+       "time_window"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "碼頭區如果有人逗留兩分鐘以上，通報一下",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "type",
+       "min_duration_s",
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": false,
+      "wrong_fields": [
+       "min_duration_s"
+      ]
+     },
+     "llm+check": {
+      "ok": false,
+      "wrong_fields": [
+       "min_duration_s"
+      ]
+     }
+    },
+    {
+     "text": "開放作業區從14:00到16:00之間有人進入就提醒",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Alert when there are more than 4 people in aisle 7.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "If 5 or more people gather on the loading dock, warn me.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "threshold",
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": false,
+      "wrong_fields": [
+       "type",
+       "threshold"
+      ]
+     },
+     "llm+check": {
+      "ok": false,
+      "wrong_fields": [
+       "type",
+       "threshold"
+      ]
+     }
+    },
+    {
+     "text": "貨架區裡如果同時有超過兩個人，就發警告",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "整個倉庫人數一旦超過二十，立刻通知我",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": false,
+      "wrong_fields": [
+       "no rule"
+      ]
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "If there are over 3 people in the rack area or aisle seven, sound the alarm.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Notify me when the open floor has more than 8 people at once.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "貨架區要是有叉車進去，跟我回報一聲",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Notify me if a pallet truck is in aisle seven.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "搬運機器人跑到開放作業區要提醒",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object"
+      ]
+     },
+     "rules": {
+      "ok": false,
+      "wrong_fields": [
+       "no rule"
+      ]
+     },
+     "llm+check": {
+      "ok": false,
+      "wrong_fields": [
+       "object"
+      ]
+     }
+    },
+    {
+     "text": "Alert me when a humanoid robot enters the dock.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "倉庫裡任何地方出現搬運車都要通知",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "碼頭區有油壓車就跟我講",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "cameras"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Warn if anyone comes within 4 metres of a forklift in aisle seven.",
+     "llm_only": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "AMR旁邊兩公尺內有人就警報",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object"
+      ]
+     },
+     "rules": {
+      "ok": false,
+      "wrong_fields": [
+       "type",
+       "object",
+       "threshold"
+      ]
+     },
+     "llm+check": {
+      "ok": false,
+      "wrong_fields": [
+       "type",
+       "object",
+       "threshold"
+      ]
+     }
+    },
+    {
+     "text": "Alert when a person is closer than 1 metre to the humanoid robot on the open floor.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "七號走道有人跟托板車距離小於三公尺就警告",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "Sound the alarm if someone is within 2.5 metres of a transporter at the dock.",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object",
+       "zones"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    },
+    {
+     "text": "倉庫任何地方，堆高機周圍六公尺內有人都要警報",
+     "llm_only": {
+      "ok": false,
+      "wrong_fields": [
+       "object"
+      ]
+     },
+     "rules": {
+      "ok": true,
+      "wrong_fields": []
+     },
+     "llm+check": {
+      "ok": true,
+      "wrong_fields": []
+     }
+    }
+   ]
+  }
+ }
+}

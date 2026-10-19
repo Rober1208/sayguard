@@ -21,8 +21,8 @@
  "violation_confirm_rate": 0.939,
  "accuracy": 0.917,
  "latency_ms": {
-  "mean": 160,
-  "p95": 189
+  "mean": 283,
+  "p95": 531
  },
  "device": "cuda"
 }

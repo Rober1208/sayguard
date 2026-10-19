@@ -4,26 +4,27 @@
 <h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">Speak a rule, confirm it, it is live</h2>
 </div>
 <div style="display:flex;gap:56px;flex:1">
-<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
 <div style="display:flex;gap:28px;align-items:center;background:#1B212A;padding:24px 32px;border-radius:16px">
-<p style="font-family:Rubik, Arial, sans-serif;font-size:44px;font-weight:700;color:#F2B233;min-width:max-content">1</p>
-<div style="display:flex;flex-direction:column;gap:4px"><h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600">Speak</h3><p style="font-size:26px;color:#A7B0BC">Whisper-Small, Mandarin or English, primed with the site’s zone names</p></div>
+<p style="font-family:Rubik, Arial, sans-serif;font-size:44px;font-weight:700;color:#F2B233;width:36px;text-align:center">1</p>
+<div style="display:flex;flex-direction:column;gap:4px"><h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600">Speak</h3><p style="font-size:26px;color:#A7B0BC">Whisper-Small, Mandarin or English, site words as a decoder prompt</p></div>
 </div>
 <div style="display:flex;gap:28px;align-items:center;background:#1B212A;padding:24px 32px;border-radius:16px">
-<p style="font-family:Rubik, Arial, sans-serif;font-size:44px;font-weight:700;color:#F2B233;min-width:max-content">2</p>
-<div style="display:flex;flex-direction:column;gap:4px"><h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600">Draft</h3><p style="font-size:26px;color:#A7B0BC">Qwen2.5-1.5B turns the sentence into a rule under a JSON schema</p></div>
+<p style="font-family:Rubik, Arial, sans-serif;font-size:44px;font-weight:700;color:#F2B233;width:36px;text-align:center">2</p>
+<div style="display:flex;flex-direction:column;gap:4px"><h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600">Draft</h3><p style="font-size:26px;color:#A7B0BC">Qwen2.5-1.5B writes the rule as JSON under a fixed schema</p></div>
 </div>
 <div style="display:flex;gap:28px;align-items:center;background:#1B212A;padding:24px 32px;border-radius:16px;border:2px solid #F2B233">
-<p style="font-family:Rubik, Arial, sans-serif;font-size:44px;font-weight:700;color:#F2B233;min-width:max-content">3</p>
-<div style="display:flex;flex-direction:column;gap:4px"><h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600">Check</h3><p style="font-size:26px;color:#A7B0BC">A deterministic checker overrides any number, distance, time or object the sentence states</p></div>
+<p style="font-family:Rubik, Arial, sans-serif;font-size:44px;font-weight:700;color:#F2B233;width:36px;text-align:center">3</p>
+<div style="display:flex;flex-direction:column;gap:4px"><h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600">Check</h3><p style="font-size:26px;color:#A7B0BC">A deterministic checker overrides the numbers, times and objects it finds</p></div>
 </div>
 <div style="display:flex;gap:28px;align-items:center;background:#1B212A;padding:24px 32px;border-radius:16px">
-<p style="font-family:Rubik, Arial, sans-serif;font-size:44px;font-weight:700;color:#F2B233;min-width:max-content">4</p>
-<div style="display:flex;flex-direction:column;gap:4px"><h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600">Confirm</h3><p style="font-size:26px;color:#A7B0BC">The officer sees the rule in plain words and activates it</p></div>
+<p style="font-family:Rubik, Arial, sans-serif;font-size:44px;font-weight:700;color:#F2B233;width:36px;text-align:center">4</p>
+<div style="display:flex;flex-direction:column;gap:4px"><h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600">Confirm → live rule</h3><p style="font-size:26px;color:#A7B0BC">The officer reads the rule in plain words and switches it on</p></div>
 </div>
+<p style="font-size:26px;line-height:1.35;color:#A7B0BC">LLM offline? The checker’s rule extractor alone still parses 68–90 % of typed held-out sentences.</p>
 </div>
-<img src="/_blob/583676d1ab17b561708d4ca0f5ce0ccc" alt="Say a rule panel: hold-to-talk microphone, a text box, example rules in Mandarin and English, and the list of active rules including a Zone A excavator proximity rule" style="width:338px;height:640px;object-fit:contain;border-radius:12px;border:1px solid #2C3440">
+<img src="/_blob/c564a023cbf6ee8c9f9bcb8ffc15e8c3" alt="Say a rule panel: hold-to-talk button, a text box, example rules in Mandarin and English, and the list of active rules" style="width:320px;height:596px;object-fit:contain;border-radius:12px;border:1px solid #2C3440">
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7D8794">SayGuard · Stage I proposal · 6</p>
-<aside>Four steps. The important one is step three: the small language model proposes, and a deterministic checker makes sure every number, distance, time window and object matches what was actually said. When the LLM is offline, the checker’s own extractor still parses the rule.</aside>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7D8794">SayGuard · Stage I proposal · 6 · screenshot: SayGuard prototype, Say a rule panel</p>
+<aside>The officer holds the button and says the rule. Whisper-Small transcribes it, primed with the site's own zone and object names to help it transcribe them correctly. The small LLM drafts the rule as structured JSON, and a deterministic checker then overrides the numbers, times and objects it finds stated in the sentence; it can miss an unusual phrasing, which is why the officer reads the result in plain words before switching it on. If the LLM is offline, the checker's own rule extractor still parses most typed test sentences; speech recognition accuracy itself has not been measured yet.</aside>
 </section>

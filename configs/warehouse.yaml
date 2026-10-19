@@ -1,0 +1,115 @@
+# SayGuard site mode: eleven synchronized, calibrated cameras of one warehouse, fused on its
+# floor plan (each worker counted once, distances in metres, one alert per person).
+#
+# Footage and calibration: NVIDIA PhysicalAI-SmartSpaces, MTMC_Tracking_2026, train/Warehouse_010
+# (synthetic, CC BY 4.0).  Prepare with:
+#   python scripts/fetch_smartspaces.py train/Warehouse_010
+#   python scripts/make_site_streams.py train/Warehouse_010
+# Run:  python -m sayguard serve --config configs/warehouse.yaml
+# Warehouse_010 is never used to train the site detector (scripts/prepare_site_dataset.py):
+# it is the scene scripts/eval_site.py measures on.
+
+site_name: "Warehouse 010 (synthetic, NVIDIA PhysicalAI-SmartSpaces)"
+
+site:
+  calibration: "@work/datasets/smartspaces/train/Warehouse_010/calibration.json"
+  plan: "@work/datasets/smartspaces/train/Warehouse_010/map.png"
+  zone: warehouse                 # whole-site zone every worker is in
+  plan_width: 960
+# Rules can name any class the site detector outputs (forklift, pallet truck, transporter, mobile
+# robot, humanoid robot); only 'person' boxes become workers, so robots are never counted.
+
+detector:
+  backend: ultralytics            # ultralytics (PC prototype) | hailo (Stage II, UGen300)
+  name: "YOLOv8s-site"
+  weights: "@work/models/site_yolov8s.pt"      # scripts/train_detector.py --data @work/datasets/site/data.yaml
+  hef: "@work/models/site_yolov8s.hef"         # compile like hailo/build_helmet.py; not built yet
+  labels: [person, forklift, pallet_truck, transporter, mobile_robot, humanoid_robot]   # class order, for the hailo backend
+  imgsz: 960
+  conf: 0.25
+  half: true
+
+open_vocab:                       # only for objects a rule names that the site detector does not know
+  enabled: true
+  weights: "yolov8s-worldv2.pt"
+  conf: 0.20
+  every_n_frames: 3
+
+llm:
+  base_url: "http://127.0.0.1:11434"
+  model: "qwen2.5:1.5b"
+  timeout_s: 60
+
+asr:
+  model: "@work/models/hf/whisper-small"
+  language: "en"
+
+verifier:                         # hard-hat double-check; site mode has no hard-hat rule
+  enabled: false
+  backend: clip_probe
+
+streams:
+  fps: 10                         # the synced streams are every 3rd source frame (30 fps -> 10 fps)
+  tile_width: 640
+
+privacy:
+  blur_faces: true
+
+hailo_reference:                  # YOLOv8s, Hailo Model Zoo, Hailo-10H (the site detector has the same backbone)
+  model: "yolov8s"
+  fps_batch1: 166
+  fps_batch8: 252
+
+cameras:
+  - {id: cam00, calib: Camera_0000, name: "West Racks",       zone: warehouse, source: "@work/videos/site/Warehouse_010/Camera_0000.mp4"}
+  - {id: cam01, calib: Camera_0001, name: "East Racks",       zone: warehouse, source: "@work/videos/site/Warehouse_010/Camera_0001.mp4"}
+  - {id: cam02, calib: Camera_0002, name: "Dock Floor",       zone: warehouse, source: "@work/videos/site/Warehouse_010/Camera_0002.mp4"}
+  - {id: cam03, calib: Camera_0003, name: "North Aisle West", zone: warehouse, source: "@work/videos/site/Warehouse_010/Camera_0003.mp4"}
+  - {id: cam04, calib: Camera_0004, name: "North Aisle",      zone: warehouse, source: "@work/videos/site/Warehouse_010/Camera_0004.mp4"}
+  - {id: cam05, calib: Camera_0005, name: "North Aisle East", zone: warehouse, source: "@work/videos/site/Warehouse_010/Camera_0005.mp4"}
+  - {id: cam06, calib: Camera_0006, name: "South Wall",       zone: warehouse, source: "@work/videos/site/Warehouse_010/Camera_0006.mp4"}
+  - {id: cam07, calib: Camera_0007, name: "West Floor",       zone: warehouse, source: "@work/videos/site/Warehouse_010/Camera_0007.mp4"}
+  - {id: cam08, calib: Camera_0008, name: "Rack Exit",        zone: warehouse, source: "@work/videos/site/Warehouse_010/Camera_0008.mp4"}
+  - {id: cam09, calib: Camera_0009, name: "Centre Floor",     zone: warehouse, source: "@work/videos/site/Warehouse_010/Camera_0009.mp4"}
+  - {id: cam10, calib: Camera_0010, name: "East Floor",       zone: warehouse, source: "@work/videos/site/Warehouse_010/Camera_0010.mp4"}
+
+# Zones: display names for spoken rules, plus a polygon on the floor plan (map.png pixels;
+# "polygon: [[x, y], ...]" in metres also works).  More specific zones first.
+zones:
+  aisle_7:    {en: "Aisle 7",        zh: "七號走道",   plan_polygon: [[1075, 110], [1135, 110], [1135, 368], [1075, 368]]}
+  dock:       {en: "Dock",           zh: "碼頭區",     plan_polygon: [[1010, 595], [1245, 595], [1245, 800], [1010, 800]]}
+  racks:      {en: "Rack area",      zh: "貨架區",     plan_polygon: [[700, 105], [1150, 105], [1150, 370], [700, 370]]}
+  open_floor: {en: "Open floor",     zh: "開放作業區", plan_polygon: [[700, 400], [1150, 400], [1150, 820], [700, 820]]}
+  warehouse:  {en: "Warehouse",      zh: "倉庫"}
+
+rules_file: "@work/state_site/rules.json"
+events_db: "@work/state_site/events.db"
+snapshots_dir: "@work/state_site/snapshots"
+retention_days: 14
+
+# example rules shown under "Say a rule" (site mode watches floor zones and vehicles, not hard hats)
+examples:
+  - "七號走道有人停留超過5秒就通知我"
+  - "Warn me if anyone is within 3 m of a forklift"
+  - "碼頭區超過3個人要提醒"
+  - "Tell me if an AMR enters aisle seven"
+
+default_rules:
+  - name: "Keep 3 m from forklifts"
+    type: object_near_person
+    object: forklift
+    threshold: 3.0
+    cameras: ["*"]
+    zones: ["warehouse"]
+    min_duration_s: 2.0
+    cooldown_s: 60.0
+    severity: high
+    message: "Worker within 3 m of a forklift"
+  - name: "No walking in aisle 7 (forklift parked)"
+    type: person_present
+    cameras: ["*"]
+    zones: ["aisle_7"]
+    min_duration_s: 3.0
+    cooldown_s: 60.0
+    severity: medium
+    message: "Worker in aisle 7"

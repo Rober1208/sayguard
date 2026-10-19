@@ -22,8 +22,9 @@ def make_detector(cfg: dict) -> Detector:
     d = cfg["detector"]
     if d["backend"] == "ultralytics":
         from .ultralytics_backend import UltralyticsDetector
-        return UltralyticsDetector(str(resolve(d["weights"])), imgsz=d["imgsz"], conf=d["conf"], half=d.get("half", True))
+        return UltralyticsDetector(str(resolve(d["weights"])), imgsz=d["imgsz"], conf=d["conf"], half=d.get("half", True),
+                                   classes=d.get("classes"), name=d.get("name"))
     if d["backend"] == "hailo":
         from .hailo_backend import HailoDetector
-        return HailoDetector(str(resolve(d["hef"])), conf=d["conf"])
+        return HailoDetector(str(resolve(d["hef"])), conf=d["conf"], labels=d.get("labels"))
     raise ValueError(f"unknown detector backend {d['backend']}")

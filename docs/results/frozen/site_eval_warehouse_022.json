@@ -1,0 +1,238 @@
+{
+ "scene": "val/Warehouse_022",
+ "frames": 3090,
+ "fps": 10.0,
+ "cameras": 4,
+ "detector": "@work/models/site_yolov8s.pt",
+ "identity": {
+  "mota": 0.791,
+  "motp": 0.243,
+  "idf1": 0.287,
+  "idp": 0.31,
+  "idr": 0.268,
+  "num_switches": 142,
+  "num_fragmentations": 364,
+  "precision": 0.959,
+  "recall": 0.83,
+  "num_unique_objects": 24,
+  "mostly_tracked": 17,
+  "sequential_ids_per_person": {
+   "mean": 6.58,
+   "median": 7.0
+  },
+  "ids_ever_on_a_person": {
+   "mean": 7.83,
+   "median": 8.0
+  },
+  "duplicate_person_frames_pct": 1.2
+ },
+ "counting": {
+  "true_mean": 9.8,
+  "unique_workers_mean": 8.48,
+  "camera_sum_mean": 13.51,
+  "unique_abs_error_mean": 1.35,
+  "camera_sum_abs_error_mean": 3.86
+ },
+ "alerts": {
+  "site": {
+   "Keep 3 m from forklifts": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   },
+   "Zone check: main_aisle_r1_r2": {
+    "events": 51,
+    "events_alerted": 15,
+    "recall": 0.294,
+    "events_in_cooldown": 13,
+    "recall_with_cooldown": 0.549,
+    "alerts": 15,
+    "alerts_on_events": 15,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: north_staging": {
+    "events": 4,
+    "events_alerted": 2,
+    "recall": 0.5,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.5,
+    "alerts": 3,
+    "alerts_on_events": 2,
+    "false_alerts": 1,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: picking_aisle_r2_r3": {
+    "events": 30,
+    "events_alerted": 16,
+    "recall": 0.533,
+    "events_in_cooldown": 4,
+    "recall_with_cooldown": 0.667,
+    "alerts": 16,
+    "alerts_on_events": 16,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   }
+  },
+  "camera": {
+   "Keep 3 m from forklifts": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   },
+   "Zone check: main_aisle_r1_r2": {
+    "events": 51,
+    "events_alerted": 8,
+    "recall": 0.157,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.157,
+    "alerts": 9,
+    "alerts_on_events": 8,
+    "false_alerts": 1,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: north_staging": {
+    "events": 4,
+    "events_alerted": 3,
+    "recall": 0.75,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.75,
+    "alerts": 3,
+    "alerts_on_events": 3,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: picking_aisle_r2_r3": {
+    "events": 30,
+    "events_alerted": 10,
+    "recall": 0.333,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.333,
+    "alerts": 22,
+    "alerts_on_events": 22,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 2.2
+   }
+  }
+ },
+ "alerts_in_view": {
+  "site": {
+   "Keep 3 m from forklifts": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   },
+   "Zone check: main_aisle_r1_r2": {
+    "events": 46,
+    "events_alerted": 14,
+    "recall": 0.304,
+    "events_in_cooldown": 9,
+    "recall_with_cooldown": 0.5,
+    "alerts": 14,
+    "alerts_on_events": 14,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: north_staging": {
+    "events": 4,
+    "events_alerted": 2,
+    "recall": 0.5,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.5,
+    "alerts": 3,
+    "alerts_on_events": 2,
+    "false_alerts": 1,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: picking_aisle_r2_r3": {
+    "events": 30,
+    "events_alerted": 16,
+    "recall": 0.533,
+    "events_in_cooldown": 4,
+    "recall_with_cooldown": 0.667,
+    "alerts": 16,
+    "alerts_on_events": 16,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   }
+  },
+  "camera": {
+   "Keep 3 m from forklifts": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   },
+   "Zone check: main_aisle_r1_r2": {
+    "events": 46,
+    "events_alerted": 8,
+    "recall": 0.174,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.174,
+    "alerts": 9,
+    "alerts_on_events": 8,
+    "false_alerts": 1,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: north_staging": {
+    "events": 4,
+    "events_alerted": 3,
+    "recall": 0.75,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.75,
+    "alerts": 3,
+    "alerts_on_events": 3,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: picking_aisle_r2_r3": {
+    "events": 30,
+    "events_alerted": 10,
+    "recall": 0.333,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.333,
+    "alerts": 22,
+    "alerts_on_events": 22,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 2.2
+   }
+  }
+ },
+ "in_view_px": 40.0,
+ "forklift_detection": {
+  "forklift_frames_visible": 546,
+  "detected": 433,
+  "rate": 0.793
+ },
+ "forklift_distance": {
+  "pairs": 110,
+  "pairs_forklift_not_detected": 39,
+  "mae_m": 0.6,
+  "median_abs_error_m": 0.47,
+  "mean_signed_error_m": 0.43
+ },
+ "note": "Ground truth never enters the pipeline. Per-camera mode = same detections and floor distances, but each camera track alerts on its own (no cross-camera identity)."
+}

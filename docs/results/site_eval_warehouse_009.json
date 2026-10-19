@@ -1,0 +1,238 @@
+{
+ "scene": "train/Warehouse_009",
+ "frames": 3000,
+ "fps": 10.0,
+ "cameras": 12,
+ "detector": "@work/models/site_yolov8s.pt",
+ "identity": {
+  "mota": 0.874,
+  "motp": 0.174,
+  "idf1": 0.485,
+  "idp": 0.468,
+  "idr": 0.503,
+  "num_switches": 184,
+  "num_fragmentations": 160,
+  "precision": 0.909,
+  "recall": 0.977,
+  "num_unique_objects": 13,
+  "mostly_tracked": 13,
+  "sequential_ids_per_person": {
+   "mean": 10.0,
+   "median": 10.0
+  },
+  "ids_ever_on_a_person": {
+   "mean": 26.77,
+   "median": 27.0
+  },
+  "duplicate_person_frames_pct": 7.56
+ },
+ "counting": {
+  "true_mean": 13.0,
+  "unique_workers_mean": 13.99,
+  "camera_sum_mean": 56.8,
+  "unique_abs_error_mean": 1.1,
+  "camera_sum_abs_error_mean": 43.8
+ },
+ "alerts": {
+  "site": {
+   "Zone check: north_walkway": {
+    "events": 53,
+    "events_alerted": 32,
+    "recall": 0.604,
+    "events_in_cooldown": 12,
+    "recall_with_cooldown": 0.83,
+    "alerts": 36,
+    "alerts_on_events": 34,
+    "false_alerts": 2,
+    "alerts_per_alerted_event": 1.06
+   },
+   "Zone check: north_door": {
+    "events": 5,
+    "events_alerted": 3,
+    "recall": 0.6,
+    "events_in_cooldown": 1,
+    "recall_with_cooldown": 0.8,
+    "alerts": 6,
+    "alerts_on_events": 4,
+    "false_alerts": 2,
+    "alerts_per_alerted_event": 1.33
+   },
+   "Zone check: fenced_staging": {
+    "events": 16,
+    "events_alerted": 16,
+    "recall": 1.0,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 1.0,
+    "alerts": 16,
+    "alerts_on_events": 16,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: pallet_block": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   }
+  },
+  "camera": {
+   "Zone check: north_walkway": {
+    "events": 53,
+    "events_alerted": 7,
+    "recall": 0.132,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.132,
+    "alerts": 60,
+    "alerts_on_events": 60,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 8.57
+   },
+   "Zone check: north_door": {
+    "events": 5,
+    "events_alerted": 3,
+    "recall": 0.6,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.6,
+    "alerts": 15,
+    "alerts_on_events": 10,
+    "false_alerts": 5,
+    "alerts_per_alerted_event": 3.33
+   },
+   "Zone check: fenced_staging": {
+    "events": 16,
+    "events_alerted": 13,
+    "recall": 0.812,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.812,
+    "alerts": 30,
+    "alerts_on_events": 30,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 2.31
+   },
+   "Zone check: pallet_block": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 11,
+    "alerts_on_events": 0,
+    "false_alerts": 11,
+    "alerts_per_alerted_event": null
+   }
+  }
+ },
+ "alerts_in_view": {
+  "site": {
+   "Zone check: north_walkway": {
+    "events": 53,
+    "events_alerted": 32,
+    "recall": 0.604,
+    "events_in_cooldown": 12,
+    "recall_with_cooldown": 0.83,
+    "alerts": 36,
+    "alerts_on_events": 34,
+    "false_alerts": 2,
+    "alerts_per_alerted_event": 1.06
+   },
+   "Zone check: north_door": {
+    "events": 5,
+    "events_alerted": 3,
+    "recall": 0.6,
+    "events_in_cooldown": 1,
+    "recall_with_cooldown": 0.8,
+    "alerts": 6,
+    "alerts_on_events": 4,
+    "false_alerts": 2,
+    "alerts_per_alerted_event": 1.33
+   },
+   "Zone check: fenced_staging": {
+    "events": 16,
+    "events_alerted": 16,
+    "recall": 1.0,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 1.0,
+    "alerts": 16,
+    "alerts_on_events": 16,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 1.0
+   },
+   "Zone check: pallet_block": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 0,
+    "alerts_on_events": 0,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": null
+   }
+  },
+  "camera": {
+   "Zone check: north_walkway": {
+    "events": 53,
+    "events_alerted": 7,
+    "recall": 0.132,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.132,
+    "alerts": 60,
+    "alerts_on_events": 60,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 8.57
+   },
+   "Zone check: north_door": {
+    "events": 5,
+    "events_alerted": 3,
+    "recall": 0.6,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.6,
+    "alerts": 15,
+    "alerts_on_events": 10,
+    "false_alerts": 5,
+    "alerts_per_alerted_event": 3.33
+   },
+   "Zone check: fenced_staging": {
+    "events": 16,
+    "events_alerted": 13,
+    "recall": 0.812,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": 0.812,
+    "alerts": 30,
+    "alerts_on_events": 30,
+    "false_alerts": 0,
+    "alerts_per_alerted_event": 2.31
+   },
+   "Zone check: pallet_block": {
+    "events": 0,
+    "events_alerted": 0,
+    "recall": null,
+    "events_in_cooldown": 0,
+    "recall_with_cooldown": null,
+    "alerts": 11,
+    "alerts_on_events": 0,
+    "false_alerts": 11,
+    "alerts_per_alerted_event": null
+   }
+  }
+ },
+ "in_view_px": 40.0,
+ "forklift_detection": {
+  "forklift_frames_visible": 0,
+  "detected": 0,
+  "rate": null
+ },
+ "forklift_distance": {
+  "pairs": 0,
+  "pairs_forklift_not_detected": 0,
+  "mae_m": null,
+  "median_abs_error_m": null,
+  "mean_signed_error_m": null
+ },
+ "note": "Ground truth never enters the pipeline. Per-camera mode = same detections and floor distances, but each camera track alerts on its own (no cross-camera identity)."
+}
