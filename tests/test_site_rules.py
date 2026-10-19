@@ -188,3 +188,15 @@ def test_coming_back_into_a_zone_is_a_new_entry_despite_the_cooldown():
     out_short = [([worker(1, 5, 5, zones=away)], [])] * 20                       # 2 s: same visit
     assert [f.track_id for f in run(engine(rule), stay + out_long + stay)] == [1, 1]
     assert [f.track_id for f in run(engine(rule), stay + out_short + stay)] == [1]
+
+
+def test_generic_robot_rule_covers_every_robot_class():
+    from sayguard.rules.model import label_matches
+    assert label_matches("humanoid_robot", "robot") and label_matches("transporter", "robots")
+    assert label_matches("mobile_robot", "Robot") and not label_matches("forklift", "robot")
+    assert not label_matches("humanoid_robot", "mobile_robot")
+    rule = Rule(name="robot", type="object_present", object="robot", min_duration_s=0.5)
+    humanoid = SiteObject("humanoid_robot", (1, 0), ["warehouse"], ["c1"])
+    assert run(engine(rule), [([], [humanoid])] * 10)
+    # the site detector already knows every member, so nothing is sent to the open-vocabulary detector
+    assert engine(rule).objects_for_site() == {"humanoid_robot", "mobile_robot", "transporter"}

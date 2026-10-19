@@ -315,3 +315,45 @@ def test_llm_simplified_name_converted_and_wrong_message_replaced():
     assert r.threshold == 1.5 and r.object == "forklift"
     assert "堆高機" in r.message and "1.5" in r.message
     assert "仓" not in r.name and "倉" in r.name
+
+
+# ---- generic object words and zones this site does not have ---------------------------
+def test_generic_robot_word(site):
+    res = parse("倉庫有機器人就提醒我", *site, llm=None)
+    assert_rule(res.rule, dict(type="object_present", object="robot", zones=["warehouse"]))
+    assert res.rule.message == "偵測到機器人" and res.problems == []
+    # the specific robot classes still win over the generic word
+    assert parse("倉庫出現人形機器人就提醒我", *site, llm=None).rule.object == "humanoid_robot"
+
+
+@pytest.mark.parametrize("text, missing", [
+    ("C區有人就提醒我", "C區"),
+    ("9區超過3個人要警告", "9區"),
+    ("Alert me if anyone enters zone D", "zone D"),
+])
+def test_unknown_zone_is_a_problem(site, text, missing):
+    res = parse(text, *site, llm=None)
+    assert res.rule is not None and len(res.problems) == 1 and missing in res.problems[0]
+
+
+@pytest.mark.parametrize("text", [
+    "B區有人就提醒我", "這一區有人就提醒我", "A區沒戴安全帽要警告", "整個區域都不能有人",
+    # quantifiers, not zone labels
+    "有人在任一區停留超過10秒", "任何一區超過5個人就通知我", "某一區有堆高機就警告", "其中一區有人就提醒我",
+    "單一區超過3個人要警告",
+    # a quantity or an article after a generic "area" / "zone"
+    "Notify me if anyone lingers in the dock area 30 seconds or longer",
+    "Alert if a worker is in the danger zone 2 m from a forklift",
+    "Warn me if anyone enters the area a forklift is working in",
+    # a configured zone written with a space or full-width letters
+    "A 區沒戴安全帽要警告", "Ｂ區超過3個人就提醒我",
+])
+def test_known_zones_and_plain_words_are_not_flagged(site, text):
+    assert parser.unknown_zones(text, *site) == []
+
+
+def test_full_width_and_spaced_zone_names_match_the_configured_zone(site):
+    assert parse("Ｂ區超過3個人就提醒我", *site, llm=None).rule.zones == ["zone_b"]
+    assert parse("A 區沒戴安全帽要警告", *site, llm=None).rule.zones == ["zone_a"]
+    assert "Ｃ區" not in parser.unknown_zones("Ｃ區有人就提醒我", *site)        # reported as the ASCII C區
+    assert parser.unknown_zones("Ｃ區有人就提醒我", *site) == ["C區"]

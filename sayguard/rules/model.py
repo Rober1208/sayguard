@@ -23,15 +23,37 @@ RULE_TYPES: dict[str, str] = {
 SITE_CLASSES = {"person", "forklift", "pallet_truck", "transporter", "mobile_robot", "humanoid_robot"}
 _SYNONYMS = {"pallet_jack": "pallet_truck", "amr": "mobile_robot", "agv": "transporter", "humanoid": "humanoid_robot",
              "fork_lift": "forklift"}
+# a generic word in a rule covers every detector class it names: "any robot" means humanoids,
+# mobile robots and transporters alike, not a YOLO-World search for the word "robot"
+CLASS_GROUPS = {"robot": frozenset({"humanoid_robot", "mobile_robot", "transporter"})}
 
 
 def canon_label(name: str | None) -> str:
     """'Pallet trucks' / 'pallet-truck' / 'AMR' -> 'pallet_truck' / 'pallet_truck' / 'mobile_robot'."""
     n = re.sub(r"[\s\-]+", "_", (name or "").strip().lower())
     n = _SYNONYMS.get(n, n)
-    if n.endswith("s") and (n[:-1] in SITE_CLASSES or _SYNONYMS.get(n[:-1], "") in SITE_CLASSES):
+    if n.endswith("s") and (n[:-1] in SITE_CLASSES or n[:-1] in CLASS_GROUPS
+                            or _SYNONYMS.get(n[:-1], "") in SITE_CLASSES):
         n = _SYNONYMS.get(n[:-1], n[:-1])
     return n
+
+
+def label_set(name: str | None) -> frozenset[str]:
+    """The canonical detector labels a rule's object stands for: itself, or every member of its group."""
+    n = canon_label(name)
+    return CLASS_GROUPS.get(n, frozenset()) | {n}
+
+
+def detector_labels(name: str | None) -> frozenset[str]:
+    """The classes a detector must look for to serve the rule object: a group's members, never the
+    group word itself (so "robot" in site mode costs no open-vocabulary search)."""
+    n = canon_label(name)
+    return CLASS_GROUPS.get(n) or frozenset({n})
+
+
+def label_matches(label: str | None, obj: str | None) -> bool:
+    """Does a detection labelled `label` count as the rule object `obj`?"""
+    return canon_label(label) in label_set(obj)
 
 
 class TimeWindow(BaseModel):

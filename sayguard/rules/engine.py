@@ -28,7 +28,7 @@ from pathlib import Path
 from pydantic import ValidationError
 
 from ..types import Detection, Person
-from .model import Rule, canon_label
+from .model import Rule, detector_labels, label_matches
 
 log = logging.getLogger("sayguard.rules")
 
@@ -306,8 +306,9 @@ class RuleEngine:
         zone is a region of the floor plan, not a camera."""
         with self._lock:
             now = time.localtime()
-            return {canon_label(r.object) for r in self.rules.values() if r.object and r.enabled
-                    and r.type.startswith("object") and (not r.time_window or r.time_window.contains(now))}
+            return {lab for r in self.rules.values() if r.object and r.enabled
+                    and r.type.startswith("object") and (not r.time_window or r.time_window.contains(now))
+                    for lab in detector_labels(r.object)}
 
     def objects_for_camera(self, cam_id: str) -> set[str]:
         cam = self.cameras[cam_id]
@@ -343,12 +344,12 @@ class RuleEngine:
                     if len(people) > (rule.threshold or 0):
                         active["cam"] = (None, None, f"{len(people)} people > {int(rule.threshold or 0)}")
                 elif rule.type == "object_present":
-                    hits = [o for o in objects if o.label == rule.object]
+                    hits = [o for o in objects if label_matches(o.label, rule.object)]
                     if hits:
                         b = tuple(int(v) for v in hits[0].xyxy)
                         active["cam"] = (None, b, f"{rule.object} x{len(hits)}")
                 elif rule.type == "object_near_person":
-                    objs = [o for o in objects if o.label == rule.object]
+                    objs = [o for o in objects if label_matches(o.label, rule.object)]
                     for p in people:
                         body = p.body_box(W, H)
                         best = None
@@ -402,7 +403,6 @@ class RuleEngine:
             for rule in rules:
                 active: dict[str, tuple[int | None, tuple | None, str]] = {}
                 subs = [w for w in workers if in_scope(rule, w.cams, w.zones)]
-                obj = canon_label(rule.object)
                 if rule.type == "person_present":
                     if per_cam and subs:
                         active[whole] = (None, None, f"{len(subs)} person(s)")
@@ -414,12 +414,12 @@ class RuleEngine:
                         active[whole] = (None, None, f"{len(subs)} people > {int(rule.threshold or 0)}")
                         res.site_scope[rule.id] = sorted({c for w in subs for c in w.cams})
                 elif rule.type == "object_present":
-                    hits = [o for o in objects if o.label == obj and in_scope(rule, o.cams, o.zones)]
+                    hits = [o for o in objects if label_matches(o.label, rule.object) and in_scope(rule, o.cams, o.zones)]
                     if hits:
                         active[whole] = (None, None, f"{rule.object} x{len(hits)}")
                         res.site_scope[rule.id] = sorted({c for o in hits for c in o.cams})
                 elif rule.type == "object_near_person":
-                    objs = [o for o in objects if o.label == obj]
+                    objs = [o for o in objects if label_matches(o.label, rule.object)]
                     for w in subs:
                         best = min(((o.dist(w.xy), o) for o in objs), default=None, key=lambda t: t[0])
                         if best and best[0] <= (rule.threshold or 0):

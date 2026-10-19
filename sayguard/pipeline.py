@@ -34,6 +34,7 @@ from .llm import LLMClient
 from .privacy import anonymise
 from .rules import CameraInfo, Rule, RuleEngine
 from .rules.engine import Fired
+from .rules.model import label_matches
 from .sources import VideoSource
 from .tracking import CameraTracker
 from .types import Detection, Event, FramePacket
@@ -255,7 +256,7 @@ class Pipeline:
             return
         self.stats["ov_ms"] = 0.8 * self.stats["ov_ms"] + 0.2 * (time.perf_counter() - t1) * 1000
         for (st, p, objs), r in zip(jobs, res):
-            st.ov_last, st.ov_ts = [d for d in r if d.label in objs], p.ts
+            st.ov_last, st.ov_ts = [d for d in r if any(label_matches(d.label, o) for o in objs)], p.ts
         if self._ov_error is not None:
             with self._ov_lock:
                 self._ov_error = None

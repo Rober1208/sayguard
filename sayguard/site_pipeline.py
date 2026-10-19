@@ -26,7 +26,7 @@ import numpy as np
 from .config import resolve
 from .pipeline import CamState, Pipeline, source_arg
 from .rules.engine import Fired, SiteObject, SiteSubject
-from .rules.model import canon_label
+from .rules.model import canon_label, label_matches
 from .site import HEAD_TOP_M, Site, foot_point, touches_bottom
 from .site_view import PlanRenderer, draw_site_tile, head_of
 from .sitetrack import Obs, SiteTracker, Worker, cluster_vehicles
@@ -325,7 +325,7 @@ class SitePipeline(Pipeline):
         st, pkt, tracked, objs, raw = per_cam.get(cam_id, (self.states[cam_id], None, [], [], []))
         dist = None
         if w is not None and rule.type == "object_near_person":
-            near = [v.distance_to(w.xy) for v in vehicles if v.label == canon_label(rule.object)]
+            near = [v.distance_to(w.xy) for v in vehicles if label_matches(v.label, rule.object)]
             dist = round(min(near), 2) if near else None
         if w is not None:
             zone = next((z for z in self.fusion.zones(w.xy) if not rule.zones or z in rule.zones), None)

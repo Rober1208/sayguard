@@ -21,7 +21,10 @@ GET  /api/health                memory headroom
 from __future__ import annotations
 
 import asyncio
+import hashlib
+import json
 import time
+import uuid
 from collections.abc import Callable
 from pathlib import Path
 
@@ -141,6 +144,10 @@ def create_app(pipe: Pipeline) -> FastAPI:
             raise HTTPException(404, "unknown camera")
         return mjpeg(lambda: (st.jpeg_seq, st.jpeg))
 
+    config_id = hashlib.sha1(json.dumps(
+        {"site_name": cfg.get("site_name", ""), "site": site_config(), "cameras": cams, "zones": zones,
+         "examples": cfg.get("examples") or []}, sort_keys=True, default=str).encode("utf-8")).hexdigest()[:12]
+
     @app.get("/api/config")
     async def config():
         return {"site_name": cfg.get("site_name", ""), "site": site_config(), "cameras": cams, "zones": zones,
@@ -149,7 +156,9 @@ def create_app(pipe: Pipeline) -> FastAPI:
                            "open_vocab": cfg.get("open_vocab", {}).get("weights")},
                 "hailo_reference": cfg.get("hailo_reference", {}), "fps_target": pipe.fps_target,
                 "privacy": {"blur_faces": pipe.blur},
-                "examples": [str(x) for x in (cfg.get("examples") or [])][:6]}
+                "examples": [str(x) for x in (cfg.get("examples") or [])][:6], "config_id": config_id}
+
+    boot_id = uuid.uuid4().hex[:12]
 
     @app.get("/api/state")
     async def state():
@@ -157,6 +166,8 @@ def create_app(pipe: Pipeline) -> FastAPI:
         s["asr"] = asr_holder["asr"].status() if "asr" in asr_holder else {"state": "idle"}
         s["llm_online"] = await run_in_threadpool(pipe.llm.available)
         s["time"] = time.time()
+        s["boot"] = boot_id          # a new id: the server restarted (rule and event versions start over)
+        s["config_id"] = config_id    # a new id: another site configuration (cameras, zones, examples)
         return s
 
     @app.get("/api/events")

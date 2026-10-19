@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import re
+import unicodedata
 from dataclasses import dataclass, field
 from functools import lru_cache
 from typing import Any
@@ -25,6 +26,8 @@ OBJECTS: list[tuple[str, str, str]] = [
     (r"移動機器人|移动机器人|自主移動機器人|搬運機器人|搬运机器人|自走車|自走车|(?<![a-z])amrs?(?![a-z])|mobile ?robots?",
      "mobile_robot", "移動機器人"),
     (r"搬運車|搬运车|無人搬運車|无人搬运车|(?<![a-z])agvs?(?![a-z])|transporters?", "transporter", "搬運車"),
+    # any robot at all: the engine matches every robot class (model.CLASS_GROUPS)
+    (r"機器人|机器人|(?<![a-z])robots?(?![a-z])", "robot", "機器人"),
     (r"堆高機|堆高机|叉車|叉车|forklift", "forklift", "堆高機"),
     (r"手推車|手推车|推車|推车|hand ?cart|trolley", "hand cart", "推車"),
     (r"梯子|爬梯|ladder", "ladder", "梯子"),
@@ -100,7 +103,9 @@ def _cn_int(s: str) -> int | None:
 
 
 def _norm(text: str) -> str:
-    t = text.strip()
+    # NFKC: full-width letters and digits from a Taiwanese IME (Ｂ區, ３公尺) read as ASCII
+    t = unicodedata.normalize("NFKC", text).strip()
+    t = re.sub(r"(?<=[A-Za-z0-9])\s+(?=[區区])", "", t)          # "A 區" is the zone A區
     t = t.translate(str.maketrans("０１２３４５６７８９：．", "0123456789:."))
 
     # decimals before a length unit: 一點五公尺 / 1點5米 / 一點二五公尺 -> 1.5 / 1.5 / 1.25.
@@ -297,6 +302,39 @@ def _without_scope_names(text: str, cameras: list[dict], zones: dict[str, dict])
     return out
 
 
+# "B區", "3區", "zone B", "area 2": a zone label left over once the configured zone names are blanked
+# out names a zone this site does not have.  Not labels: 這一區 / 任一區 / 其中一區 (quantifiers), and
+# "the dock area 30 seconds" / "the danger zone 2 m" / "the area a forklift..." (a quantity or an article)
+ZONE_LIKE_ZH = re.compile(r"(?<![A-Za-z0-9这這那每哪整同任何另某其中單单唯])"
+                          r"([A-Za-z]|\d{1,2}|[一二三四五六七八九十]{1,3})[区區](?!域)")
+ZONE_LIKE_EN = re.compile(r"(?<![A-Za-z])(?:[Zz]one|[Aa]rea|ZONE|AREA)\s+([A-Z]|[b-hj-z]|\d{1,2})(?![A-Za-z0-9])"
+                          r"(?!\s*(?:m\b|metres?|meters?|seconds?|secs?\b|minutes?|mins?\b|hours?|people|persons?|workers?|%))")
+
+
+def unknown_zones(text: str, cameras: list[dict], zones: dict[str, dict]) -> list[str]:
+    """Zone labels the sentence names that match no configured zone, as the user wrote them."""
+    rest = _without_scope_names(_norm(text), cameras, zones)
+    found = [(m.start(), _to_traditional(m.group(0))) for m in ZONE_LIKE_ZH.finditer(rest)]
+    found += [(m.start(), m.group(0).strip()) for m in ZONE_LIKE_EN.finditer(rest)]
+    out: list[str] = []
+    for _, name in sorted(found):
+        if name not in out:
+            out.append(name)
+    return out
+
+
+def unknown_zone_problems(text: str, cameras: list[dict], zones: dict[str, dict]) -> list[str]:
+    """A rule must not quietly drop a place the officer named and watch the whole site instead."""
+    missing = unknown_zones(text, cameras, zones)
+    if not missing:
+        return []
+    zh = _is_zh(text)
+    names = [z.get("zh" if zh else "en") or zid for zid, z in zones.items()]
+    if zh:
+        return [f"這個場地沒有「{'、'.join(missing)}」；可用的區域：{'、'.join(names)}"]
+    return [f"This site has no zone called {', '.join(repr(m) for m in missing)}; zones here: {', '.join(names)}"]
+
+
 def extract(text: str, cameras: list[dict], zones: dict[str, dict]) -> Evidence:
     t = _norm(text)
     ev = Evidence()
@@ -356,8 +394,8 @@ def _default_text(ev: Evidence, zh: bool, zones: dict[str, dict]) -> tuple[str, 
             "no_helmet": "No hard hat",
             "person_present": f"Person in {where_en or 'restricted area'}",
             "person_count_over": f"More than {n} people",
-            "object_present": f"{(ev.object or 'object').title()} detected",
-            "object_near_person": f"Person within {n} m of {ev.object}",
+            "object_present": f"{(ev.object or 'object').replace('_', ' ').capitalize()} detected",
+            "object_near_person": f"Person within {n} m of {(ev.object or 'object').replace('_', ' ')}",
         }.get(ev.type or "", "Safety rule triggered")
         name = (f"{where_en}: " if where_en else "") + msg
     return name.strip(), msg
@@ -508,7 +546,8 @@ def parse(text: str, cameras: list[dict], zones: dict[str, dict], llm=None) -> P
             res.notes[:0] = notes + [f"LLM output was not a valid rule ({type(e).__name__}); used the rule extractor"]
             return res
         return ParseResult(None, "failed", notes, [f"invalid rule: {e}"])
-    return ParseResult(rule, parser, notes, rule.check_complete() + scope_problems(rule, cameras))
+    return ParseResult(rule, parser, notes, rule.check_complete() + scope_problems(rule, cameras)
+                       + unknown_zone_problems(text, cameras, zones))
 
 
 USES_THRESHOLD = {"person_count_over", "object_near_person"}

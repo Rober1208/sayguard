@@ -31,6 +31,8 @@
     "crane": "吊車", "truck": "卡車", "motorcycle": "機車", "bicycle": "腳踏車", "car": "汽車",
     "safety vest": "反光背心", "cell phone": "手機", "backpack": "背包", "cigarette": "香菸",
     "knife": "刀子", "bucket": "水桶", "power drill": "電鑽", "dog": "狗",
+    "robot": "機器人", "humanoid_robot": "人形機器人", "mobile_robot": "移動機器人", "transporter": "搬運車",
+    "pallet_truck": "托板車",
   };
 
   // ------------------------------------------------------------------ i18n
@@ -618,6 +620,14 @@
     try {
       const st = await api("/api/state", { timeout: 5000 });
       if (!st || typeof st !== "object") throw new ApiError(0, "bad state");
+      // a restarted server counts rule and event versions from zero again: refetch both
+      if (st.boot && S.boot && st.boot !== S.boot) { S.rulesLoaded = false; S.eventsLoaded = false; }
+      if (st.boot) S.boot = st.boot;
+      // another site configuration (hard-hat mode <-> warehouse mode): cameras, zones and examples on
+      // this page are stale, so start over, but not while the officer is typing, recording or confirming
+      if (st.config_id && S.configId && st.config_id !== S.configId) S.siteChanged = true;
+      if (st.config_id && !S.configId) S.configId = st.config_id;
+      if (S.siteChanged && !userBusy()) { location.reload(); return; }
       S.state = st;
       S.fails = 0;
       if (isNum(st.time)) S.skewMs = st.time * 1000 - Date.now();
@@ -633,6 +643,11 @@
       pollInFlight = false;
       schedulePoll(document.hidden ? Math.max(delay, 3000) : delay);
     }
+  }
+
+  function userBusy() {
+    const draft = $("ruleText");
+    return !!(S.busy || S.proposal || S.camModal || R.phase !== "idle" || (draft && draft.value.trim()));
   }
 
   function setOffline(off) {
@@ -2180,6 +2195,7 @@
         const c = await api("/api/config", { timeout: 6000 });
         if (c && typeof c === "object") {
           S.config = c;
+          if (c.config_id) S.configId = c.config_id;
           S.site = c.site && typeof c.site === "object" ? c.site : null;
           S.cams = Array.isArray(c.cameras) ? c.cameras.filter((x) => x && x.id) : [];
           S.camMap = new Map(S.cams.map((x) => [x.id, x]));
