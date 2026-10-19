@@ -1,6 +1,9 @@
 """Memory guards.  On this Windows box the binding limit is often the commit charge
 (page-file backed), not free RAM, so check both plus free VRAM before loading a
-model, and refuse with a reason instead of crashing the whole service."""
+model, and refuse with a reason instead of crashing the whole service.
+
+And the CPU side: keep_full_speed() stops Windows from treating the service as background
+work and moving it onto the efficient cores of a hybrid CPU."""
 from __future__ import annotations
 
 import ctypes
@@ -78,6 +81,65 @@ def commit_available_gb() -> float | None:
     st.dwLength = ctypes.sizeof(MEMORYSTATUSEX)
     ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(st))
     return st.ullAvailPageFile / 1e9
+
+
+PROCESS_POWER_THROTTLING = 4              # PROCESS_INFORMATION_CLASS.ProcessPowerThrottling
+POWER_THROTTLING_EXECUTION_SPEED = 0x1    # PROCESS_POWER_THROTTLING_EXECUTION_SPEED
+
+
+class _PowerThrottling(ctypes.Structure):
+    _fields_ = [("Version", ctypes.c_ulong), ("ControlMask", ctypes.c_ulong), ("StateMask", ctypes.c_ulong)]
+
+
+def _kernel32():
+    from ctypes import wintypes
+    k32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    k32.GetCurrentProcess.restype = wintypes.HANDLE
+    for fn in (k32.SetProcessInformation, k32.GetProcessInformation):
+        fn.argtypes = [wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD]
+        fn.restype = wintypes.BOOL
+    return k32
+
+
+def keep_full_speed() -> bool:
+    """Opt this process out of Windows power throttling (EcoQoS), i.e. ask for "HighQoS".
+
+    On a hybrid CPU (this box: i5-14400, 6 performance + 4 efficient cores) Windows judges by
+    heuristics, such as having no window in the foreground, that a process is background
+    work, and moves its threads to the efficient cores when it sees fit: minutes after the
+    start, or right away.  Most of a detector batch is CPU work (letterboxing, NMS), and site
+    mode also fuses, draws and encodes 11 cameras per tick: on Warehouse_010 one tick took
+    about 120 ms on the performance cores (92-95 frames/s) and 215-290 ms on the efficient
+    ones (about 50 frames/s, the GPU idling at a third).  That was site mode "getting slower
+    the longer it runs"; a restart only helped until the next move.  Turning throttling of
+    execution speed off keeps the threads eligible for the performance cores; nothing is
+    pinned to a core.
+
+    Returns True when Windows accepted it; False elsewhere (other OS, Windows too old)."""
+    if sys.platform != "win32":
+        return False
+    try:
+        k32 = _kernel32()
+        st = _PowerThrottling(1, POWER_THROTTLING_EXECUTION_SPEED, 0)   # control: execution speed; state: off
+        return bool(k32.SetProcessInformation(k32.GetCurrentProcess(), PROCESS_POWER_THROTTLING,
+                                              ctypes.byref(st), ctypes.sizeof(st)))
+    except (AttributeError, OSError):         # no SetProcessInformation (before Windows 8)
+        return False
+
+
+def power_throttling() -> tuple[int, int] | None:
+    """(control mask, state mask) of this process's power throttling; None if unknown."""
+    if sys.platform != "win32":
+        return None
+    try:
+        k32 = _kernel32()
+        st = _PowerThrottling(1, 0, 0)
+        if not k32.GetProcessInformation(k32.GetCurrentProcess(), PROCESS_POWER_THROTTLING,
+                                         ctypes.byref(st), ctypes.sizeof(st)):
+            return None
+        return st.ControlMask, st.StateMask
+    except (AttributeError, OSError):
+        return None
 
 
 def snapshot() -> dict:

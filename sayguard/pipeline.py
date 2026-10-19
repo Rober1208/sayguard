@@ -152,6 +152,9 @@ class Pipeline:
 
     # ------------------------------------------------------------- lifecycle
     def start(self) -> None:
+        from .resources import keep_full_speed
+        if keep_full_speed():     # Windows: never moved onto the efficient cores as "background work"
+            log.info("Windows power throttling is off for this process (HighQoS)")
         for st in self.states.values():
             st.source.start()
         self.verifier.start()
