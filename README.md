@@ -6,6 +6,8 @@ English | [繁體中文](README.zh-TW.md)
 
 ASUS UGen AI League · Battlefield Lightning · Workplace AI
 
+**[▶ Watch the 3-minute demo video](https://youtu.be/SH1x9OGXXZQ)**
+
 ![SayGuard dashboard](docs/img/dashboard_en.png)
 
 ## The problem

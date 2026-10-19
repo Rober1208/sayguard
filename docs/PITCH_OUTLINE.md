@@ -330,7 +330,7 @@ stays visible to the officer instead of failing silently.
 ### 18 · close: SayGuard
 
 *On the slide:* "Every camera watched. Rules about known objects and zones, one sentence away."
-Links: code at github.com/Rober1208/sayguard, the demo video (link still to fill in) and the
+Links: code at github.com/Rober1208/sayguard, the demo video at youtu.be/SH1x9OGXXZQ and the
 team, 逼寶隊. References: the Hailo Model Zoo and GenAI Model Zoo, the ASUS UGen300 specification, Roboflow
 Hard Hats v2, NVIDIA PhysicalAI-SmartSpaces, Ultralytics YOLOv8 and YOLO-World, OpenAI Whisper
 and CLIP, Qwen2.5, TypeSafe AI's Jev as the design idea, and Mixkit stock footage.

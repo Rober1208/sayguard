@@ -6,6 +6,8 @@
 
 ASUS UGen AI League・Battlefield Lightning・Workplace AI
 
+**[▶ 觀看 3 分鐘示範影片](https://youtu.be/SH1x9OGXXZQ)**
+
 ![SayGuard 儀表板](docs/img/dashboard_zh.png)
 
 ## 要解決的問題

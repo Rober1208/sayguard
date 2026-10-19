@@ -138,6 +138,6 @@ SayGuard 跟一般只做偵測的系統不同，小型 LLM（Qwen2.5-1.5B）負�
 
 ### 18 · close: SayGuard
 
-*投影片上：* 標語「Every camera watched. Rules about known objects and zones, one sentence away.」（每支攝影機都顧得到；已知物件和區域的規則，一句話就能加）。連結：程式碼 github.com/Rober1208/sayguard、示範影片 [YouTube 連結]、團隊 逼寶隊。參考資料：Hailo Model Zoo 與 Hailo GenAI Model Zoo（Hailo-10H）、ASUS UGen300 規格、Roboflow Hard Hats v2（CC BY 4.0）、NVIDIA PhysicalAI-SmartSpaces（CC BY 4.0）、Ultralytics YOLOv8 與 YOLO-World（AGPL-3.0）、OpenAI Whisper 與 CLIP（MIT）、Qwen2.5（Apache-2.0）、TypeSafe AI Jev「System One」決策模型（設計概念）、Mixkit 素材影片（免費授權）。
+*投影片上：* 標語「Every camera watched. Rules about known objects and zones, one sentence away.」（每支攝影機都顧得到；已知物件和區域的規則，一句話就能加）。連結：程式碼 github.com/Rober1208/sayguard、示範影片 youtu.be/SH1x9OGXXZQ、團隊 逼寶隊。參考資料：Hailo Model Zoo 與 Hailo GenAI Model Zoo（Hailo-10H）、ASUS UGen300 規格、Roboflow Hard Hats v2（CC BY 4.0）、NVIDIA PhysicalAI-SmartSpaces（CC BY 4.0）、Ultralytics YOLOv8 與 YOLO-World（AGPL-3.0）、OpenAI Whisper 與 CLIP（MIT）、Qwen2.5（Apache-2.0）、TypeSafe AI Jev「System One」決策模型（設計概念）、Mixkit 素材影片（免費授權）。
 
 *講稿重點：* 謝謝大家。總結一下：SayGuard 的設計，是每個區域一台 UGen300，讓現場每一支攝影機都顧得到；已知物件和區域的規則，工安人員說一句話就能加上去。每個要 AI 做判斷的地方，答案格式都固定，程式都能檢查，所以小模型就夠用，適合 2.5 W 的晶片。簡報裡所有實測數字，背後的程式碼、評估程式和結果，以及搬上 UGen300 的 Stage II 計畫，都放在 github.com/Rober1208/sayguard，歡迎直接去看。
