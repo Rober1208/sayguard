@@ -200,3 +200,20 @@ def test_generic_robot_rule_covers_every_robot_class():
     assert run(engine(rule), [([], [humanoid])] * 10)
     # the site detector already knows every member, so nothing is sent to the open-vocabulary detector
     assert engine(rule).objects_for_site() == {"humanoid_robot", "mobile_robot", "transporter"}
+
+
+def test_site_alert_points_at_the_cameras_the_rule_names():
+    rule = Rule(name="c3 robot", type="object_present", object="humanoid_robot", cameras=["c3"], min_duration_s=0.5)
+    robot = SiteObject("humanoid_robot", (1, 0), ["warehouse"], ["c1", "c2", "c3"])
+    e = engine(rule)
+    scopes = [e.evaluate_site(i * 0.1, [], [robot], frame_dt=0.1).site_scope for i in range(10)]
+    assert {"c3 robot"} <= {r.name for r in e.rules.values()}
+    assert all(s.get(rule.id, ["c3"]) == ["c3"] for s in scopes)
+
+
+def test_best_view_prefers_the_rule_cameras():
+    import numpy as np
+    from sayguard.sitetrack import Obs, Worker
+    w = Worker(gid=1, xy=np.zeros(2), first_ts=0.0, last_ts=0.0)
+    w.members = {("c1", 1): Obs("c1", 1, (0, 0), (0, 0, 10, 300)), ("c3", 2): Obs("c3", 2, (0, 0), (0, 0, 10, 100))}
+    assert w.best_view().cam == "c1" and w.best_view(["c3"]).cam == "c3" and w.best_view(["*"]).cam == "c1"

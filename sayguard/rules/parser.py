@@ -231,9 +231,15 @@ def _match_scope(text: str, cameras: list[dict], zones: dict[str, dict]) -> tupl
         cid = f"cam{int(n):02d}"
         if cid in ids:
             cams.append(cid)
-    for c in cameras:  # camera display names ("Loading Dock")
-        if c["name"] and re.search(re.escape(c["name"]), text, re.I) and c["id"] not in cams:
-            cams.append(c["id"])
+    # camera display names ("Loading Dock"), longest first and each one blanked out once found, so
+    # "North Aisle East" names that camera only, not also the "North Aisle" camera inside it
+    rest, named = text, set()
+    for c in sorted(cameras, key=lambda c: len(c.get("name") or ""), reverse=True):
+        pat = re.escape(c.get("name") or "")
+        if c.get("name") and re.search(pat, rest, re.I):
+            named.add(c["id"])
+            rest = re.sub(pat, " ", rest, flags=re.I)
+    cams += [c["id"] for c in cameras if c["id"] in named and c["id"] not in cams]
     return cams, zs
 
 
@@ -375,9 +381,14 @@ def extract(text: str, cameras: list[dict], zones: dict[str, dict]) -> Evidence:
     return ev
 
 
-def _default_text(ev: Evidence, zh: bool, zones: dict[str, dict]) -> tuple[str, str]:
+def _default_text(ev: Evidence, zh: bool, zones: dict[str, dict],
+                  cameras: list[dict] | None = None) -> tuple[str, str]:
     where_zh = "、".join(zones.get(z, {}).get("zh", z) for z in ev.zones) or ""
     where_en = ", ".join(zones.get(z, {}).get("en", z) for z in ev.zones) or ""
+    if not ev.zones and ev.cameras and "*" not in ev.cameras:
+        names = {c["id"]: c.get("name") or c["id"] for c in cameras or []}
+        where_zh = "、".join(names.get(c, c) for c in ev.cameras)
+        where_en = ", ".join(names.get(c, c) for c in ev.cameras)
     objzh = ZH_OBJ.get(ev.object or "", ev.object or "")
     n = int(ev.threshold) if ev.threshold is not None and ev.threshold == int(ev.threshold) else ev.threshold
     if zh:
@@ -401,8 +412,9 @@ def _default_text(ev: Evidence, zh: bool, zones: dict[str, dict]) -> tuple[str, 
     return name.strip(), msg
 
 
-def rule_from_evidence(text: str, ev: Evidence, zones: dict[str, dict]) -> dict[str, Any]:
-    name, msg = _default_text(ev, _is_zh(text), zones)
+def rule_from_evidence(text: str, ev: Evidence, zones: dict[str, dict],
+                       cameras: list[dict] | None = None) -> dict[str, Any]:
+    name, msg = _default_text(ev, _is_zh(text), zones, cameras)
     d: dict[str, Any] = {
         "name": name, "type": ev.type, "cameras": ev.cameras or ["*"], "zones": ev.zones,
         "object": ev.object, "threshold": ev.threshold, "time_window": ev.time_window,
@@ -496,7 +508,7 @@ class ParseResult:
 
 def parse(text: str, cameras: list[dict], zones: dict[str, dict], llm=None) -> ParseResult:
     ev = extract(text, cameras, zones)
-    base = rule_from_evidence(text, ev, zones)
+    base = rule_from_evidence(text, ev, zones, cameras)
     notes: list[str] = []
     data, parser = None, "rules"
     if llm is not None:
@@ -533,7 +545,7 @@ def parse(text: str, cameras: list[dict], zones: dict[str, dict], llm=None) -> P
         data["source_text"] = text
         if "min_duration_s" not in data or data["min_duration_s"] is None:
             data["min_duration_s"] = base.get("min_duration_s", 2.0)
-        _sanitise(data, ev, text, zones, notes)
+        _sanitise(data, ev, text, zones, notes, cameras)
     if not data.get("type"):
         return ParseResult(None, "failed", notes, ["could not tell what to watch for"])
     data = {k: v for k, v in data.items() if v is not None or k in ("object", "threshold", "time_window")}
@@ -554,14 +566,17 @@ USES_THRESHOLD = {"person_count_over", "object_near_person"}
 USES_OBJECT = {"object_present", "object_near_person"}
 
 
-def _sanitise(data: dict, ev: Evidence, text: str, zones: dict[str, dict], notes: list[str]) -> None:
+def _sanitise(data: dict, ev: Evidence, text: str, zones: dict[str, dict], notes: list[str],
+              cameras: list[dict] | None = None) -> None:
     """Remove what the LLM invented and make the alert text match the final rule.
 
     Observed with Qwen2.5-1.5B: an all-day 00:00-23:59 window and a threshold on a
     hard-hat rule for sentences that mention neither, alert messages describing a
     different rule type, simplified characters and English/Chinese mix-ups.  The alert
     message is therefore generated from the final fields; the LLM's title is kept only
-    when it is in the user's language."""
+    when it is in the user's language and does not mangle the names the user said (a Chinese
+    title holding an English word the sentence does not contain, such as "北 aisle東" for
+    "North Aisle East")."""
     t = data.get("type")
     if t not in USES_THRESHOLD:
         data["threshold"] = None
@@ -571,12 +586,14 @@ def _sanitise(data: dict, ev: Evidence, text: str, zones: dict[str, dict], notes
         notes.append("time_window: the sentence names no time -> dropped the LLM's window")
         data["time_window"] = None
     zh = _is_zh(text)
-    final = Evidence(type=t, object=data.get("object"), threshold=data.get("threshold"), zones=data.get("zones") or [])
-    name, msg = _default_text(final, zh, zones)
+    final = Evidence(type=t, object=data.get("object"), threshold=data.get("threshold"), zones=data.get("zones") or [],
+                     cameras=data.get("cameras") or [])
+    name, msg = _default_text(final, zh, zones, cameras)
     data["message"] = msg
     llm_name = str(data.get("name") or "").strip()
+    mangled = zh and any(w not in text for w in re.findall(r"[A-Za-z]{2,}", llm_name))
     data["name"] = (_to_traditional(llm_name) if zh else llm_name) if llm_name and _is_zh(llm_name) == zh \
-        and len(llm_name) <= 40 else name
+        and len(llm_name) <= 40 and not mangled else name
 
 
 def scope_problems(rule: Rule, cameras: list[dict]) -> list[str]:

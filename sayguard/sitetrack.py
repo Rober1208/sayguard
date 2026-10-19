@@ -118,9 +118,12 @@ class Worker:
     def cams(self) -> list[str]:
         return sorted({k[0] for k in self.members})
 
-    def best_view(self) -> Obs | None:
-        """The camera track to show for this worker: tallest box with visible feet."""
+    def best_view(self, cameras: list[str] | None = None) -> Obs | None:
+        """The camera track to show for this worker: tallest box with visible feet, preferring the
+        cameras a rule names (cameras=["*"] or None: any camera)."""
         obs = list(self.members.values())
+        if cameras and "*" not in cameras:
+            obs = [o for o in obs if o.cam in cameras] or obs
         if not obs:
             return None
         return max(obs, key=lambda o: (o.feet_visible, o.box[3] - o.box[1]))

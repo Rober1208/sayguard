@@ -645,6 +645,14 @@
     }
   }
 
+  // detector class names inside an alert detail, in the UI language
+  const OBJ_KEYS = Object.keys(OBJ_ZH).sort((a, b) => b.length - a.length);   // "humanoid_robot" before "robot"
+  function detailText(d) {
+    let s = String(d);
+    if (lang === "zh") for (const k of OBJ_KEYS) s = s.split(k).join(OBJ_ZH[k]);
+    return s.replace(/_/g, " ");
+  }
+
   function userBusy() {
     const draft = $("ruleText");
     return !!(S.busy || S.proposal || S.camModal || R.phase !== "idle" || (draft && draft.value.trim()));
@@ -1917,7 +1925,7 @@
       [t("ev_severity"), sevChip(ev.severity)],
       site && site.dist != null ? [t("ev_distance"), fmtDist(site.dist)] : null,
       site && site.world ? [t("ev_world"), `x ${site.world[0].toFixed(1)} m · y ${site.world[1].toFixed(1)} m`] : null,
-      extra.detail ? [t("ev_detail"), String(extra.detail)] : null,
+      extra.detail ? [t("ev_detail"), detailText(extra.detail)] : null,
       extra.source_text ? [t("ev_spoken"), `“${extra.source_text}”`] : null,
       [t("ev_vlm"), h("div", null, verdictBadge(ev), note ? h("div", { class: "muted", style: "margin-top:6px;color:var(--text-3);font-size:12.5px", text: note }) : null)],
       ev.track_id != null && !site ? [t("ev_track"), String(ev.track_id)] : null,   // site worker ids are not shown

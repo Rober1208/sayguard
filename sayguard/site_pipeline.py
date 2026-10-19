@@ -315,7 +315,7 @@ class SitePipeline(Pipeline):
     def _emit_site(self, f: Fired, by_gid: dict[int, Worker], per_cam: dict, vehicles, scope: list[str]) -> None:
         rule = f.rule
         w = by_gid.get(f.track_id) if f.track_id is not None else None
-        best = w.best_view() if w else None
+        best = w.best_view(rule.cameras) if w else None
         if best is not None:
             cam_id = best.cam
         else:                                             # site-wide rule: a camera that sees its cause

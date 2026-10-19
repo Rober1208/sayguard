@@ -357,3 +357,24 @@ def test_full_width_and_spaced_zone_names_match_the_configured_zone(site):
     assert parse("A 區沒戴安全帽要警告", *site, llm=None).rule.zones == ["zone_a"]
     assert "Ｃ區" not in parser.unknown_zones("Ｃ區有人就提醒我", *site)        # reported as the ASCII C區
     assert parser.unknown_zones("Ｃ區有人就提醒我", *site) == ["C區"]
+
+
+# ---- camera names inside other camera names, and LLM titles that mangle them --------------
+@pytest.fixture(scope="module")
+def warehouse() -> tuple[list[dict], dict[str, dict]]:
+    cfg = yaml.safe_load((DEFAULT_CONFIG.parent / "warehouse.yaml").read_text(encoding="utf-8"))
+    return [dict(c, zones=list(cfg["zones"])) for c in cfg["cameras"]], cfg["zones"]
+
+
+def test_longest_camera_name_wins(warehouse):
+    # cam04 is "North Aisle", cam05 "North Aisle East": the sentence names cam05 only
+    res = parse("North Aisle East出現人形機器人就提醒我", *warehouse, llm=None)
+    assert res.rule.cameras == ["cam05"] and res.rule.name == "North Aisle East 偵測到人形機器人"
+    assert parse("North Aisle出現人形機器人就提醒我", *warehouse, llm=None).rule.cameras == ["cam04"]
+
+
+def test_llm_title_that_mangles_a_name_is_replaced(warehouse):
+    llm = FakeLLM({"name": "北 aisle東出現人形機器人", "type": "object_present", "cameras": ["cam04", "cam05"],
+                   "zones": [], "object": "humanoid_robot", "severity": "medium", "message": "x"})
+    res = parse("North Aisle East出現人形機器人就提醒我", *warehouse, llm=llm)
+    assert res.rule.cameras == ["cam05"] and res.rule.name == "North Aisle East 偵測到人形機器人"

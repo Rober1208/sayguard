@@ -381,6 +381,9 @@ class RuleEngine:
         place_of = (lambda w: w.box) if per_cam else (lambda w: tuple(w.xy))
         whole = "cam" if per_cam else SITE
 
+        def covers_cam(rule: Rule, cam: str) -> bool:
+            return "*" in rule.cameras or cam in rule.cameras
+
         def in_scope(rule: Rule, cams: list[str], zones: list[str]) -> bool:
             if "*" not in rule.cameras and not any(c in rule.cameras for c in cams):
                 return False
@@ -412,12 +415,12 @@ class RuleEngine:
                 elif rule.type == "person_count_over":
                     if len(subs) > (rule.threshold or 0):
                         active[whole] = (None, None, f"{len(subs)} people > {int(rule.threshold or 0)}")
-                        res.site_scope[rule.id] = sorted({c for w in subs for c in w.cams})
+                        res.site_scope[rule.id] = sorted({c for w in subs for c in w.cams if covers_cam(rule, c)})
                 elif rule.type == "object_present":
                     hits = [o for o in objects if label_matches(o.label, rule.object) and in_scope(rule, o.cams, o.zones)]
                     if hits:
                         active[whole] = (None, None, f"{rule.object} x{len(hits)}")
-                        res.site_scope[rule.id] = sorted({c for o in hits for c in o.cams})
+                        res.site_scope[rule.id] = sorted({c for o in hits for c in o.cams if covers_cam(rule, c)})
                 elif rule.type == "object_near_person":
                     objs = [o for o in objects if label_matches(o.label, rule.object)]
                     for w in subs:
