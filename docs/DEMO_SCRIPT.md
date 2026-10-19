@@ -96,7 +96,7 @@ usually gives the same draft.
 
 - Once: `python scripts/fetch_smartspaces.py train/Warehouse_010` and
   `python scripts/make_site_streams.py train/Warehouse_010`. The site detector weights must be at
-  `@work/models/site_yolov8s.pt` (training is described in [SITE_MODE.md](SITE_MODE.md)).
+  `@work/models/site_yolov8s.pt` (training steps are in [SETUP.md](SETUP.md)).
 - Stop take 1 first. Both modes listen on port 8000 by default and need the same GPU. Then start
   Ollama and run `python -m sayguard serve --config configs/warehouse.yaml`. On Windows,
   `start_demo_warehouse.cmd` does both and opens the page.

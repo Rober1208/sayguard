@@ -1,130 +1,109 @@
 English | [繁體中文](HAILO_PORT.zh-TW.md)
 
-# Stage II: moving SayGuard onto the ASUS UGen300 (Hailo-10H)
+# Porting SayGuard to the UGen300
 
-Every job in the prototype maps to a Hailo-10H model that already exists in the Hailo Model Zoo
-or the Hailo GenAI Model Zoo, so Stage II is a re-target, not a redesign. The host keeps the
-glue: decoding camera streams, tracking, floor-plan fusion (warehouse mode), the rule
-engine, the web UI.
+**Every model in SayGuard was picked because Hailo already runs it on the Hailo-10H. Stage II is
+a port, not a rebuild.**
 
-**Where it stands.** Stage I runs on the PC GPU; nothing has run on a UGen300 yet. Only the
-hard-hat detector is compiled to a HEF (not yet run on hardware). The CLIP image encoder was
-quantized but not compiled. Both were checked in Hailo's bit-exact emulator
-([below](#done-in-stage-i-with-the-hailo-toolchain-hailo)). **The
-warehouse-mode detector has no HEF yet:** `configs/warehouse.yaml` already names
-`@work/models/site_yolov8s.hef`, but that file has not been built
-([details](#warehouse-mode-detector-no-hef-yet)). Only the detector has a HailoRT backend in
-the code today (`sayguard/detectors/hailo_backend.py`); YOLO-World, Whisper and the CLIP
-encoder still run through PyTorch/transformers on the PC.
+The PC prototype and the UGen300 version share one design. A host (a mini PC) decodes the camera
+streams, tracks workers, builds the floor plan, runs the rule engine and serves the dashboard.
+The UGen300 runs the neural networks. Stage I ran everything on a PC GPU and nothing has run on a
+UGen300 yet, but the hard-hat detector and the double-check's image encoder have already been
+through Hailo's own toolchain, with their INT8 accuracy checked.
 
-| Function | PC prototype (Stage I) | UGen300 (Stage II) | Hailo reference (Hailo-10H) |
-|---|---|---|---|
-| Hard-hat detection, all cameras | YOLOv8s fine-tuned (2 classes), Ultralytics/CUDA | same weights → ONNX (opset 11) → INT8 HEF with the Hailo Dataflow Compiler (`hailo/build_helmet.py`), NMS by HailoRT on the host; `sayguard/detectors/hailo_backend.py`. **HEF built, not yet run on hardware** | yolov8s: 166 FPS (batch 1), 252 FPS (batch 8) |
-| Warehouse detection, all cameras (warehouse mode) | YOLOv8s fine-tuned (6 classes, 960 px), Ultralytics/CUDA | the same flow with its own ONNX, input size, 6-class NMS config and calibration frames → `site_yolov8s.hef`; same backend (class order from `detector.labels`). **HEF not built yet** | the yolov8s figures are for a 640 px input; nothing measured at 960 px |
-| Objects named in spoken rules | YOLO-World v2-S (Ultralytics) | `yolo_world_v2s` HEF + host-side text embeddings | 46.6 FPS |
-| Speech → text | Whisper-Small (transformers) | Whisper-Small (Hailo GenAI Model Zoo) | 10.6 tokens/s |
-| Spoken rule → rule JSON (Mandarin or English, zone names); daily report plan (picks listed issues and vetted fixes) | Qwen2.5-1.5B-Instruct via the Ollama API, a JSON-schema `format` on every call | Qwen2.5-1.5B-Instruct via **hailo-ollama** (same API: change `llm.base_url`) | 7.35 tokens/s, 0.37 s to first token |
-| Alert double-check (yes/no check) | CLIP ViT-B/32 image encoder + 2×512 linear head | `clip_vit_b_32_image_encoder` HEF (quantized and checked in the emulator; not compiled yet); the head is one host-side matrix multiply | 81.5 FPS (batch 1) |
-| Optional VLM check | Qwen2-VL-2B-Instruct (transformers) | Qwen2-VL-2B-Instruct via the HailoRT GenAI VLM API (hailo-ollama serves text LLMs only) | Hailo GenAI Model Zoo (see [results/benchmark.md](results/benchmark.md)) |
+## Why these models
 
-FPS/TPS figures: Hailo Model Zoo (public models, HAILO10H, compiled with DFC v5.4.0,
-measured over PCIe Gen3 x4) and Hailo GenAI Model Zoo. The UGen300 USB version may be
-somewhat lower than PCIe; Stage II measures it on the real device.
+| Job in SayGuard | Model | Hailo-10H reference |
+|---|---|---|
+| Find people, hard hats and vehicles on every camera | YOLOv8s, fine-tuned (hard-hat: 2 classes; warehouse: 6 classes) | 166 FPS at batch 1, 252 FPS at batch 8 |
+| Double-check every hard-hat alert | CLIP ViT-B/32 image encoder + a small yes/no head | 81.5 FPS (batch 1) |
+| Find objects named in a spoken rule (excavator, forklift…) | YOLO-World v2-S | 46.6 FPS |
+| Speech to text | Whisper-Small | 10.6 tokens/s |
+| Spoken sentence → rule; daily report plan | Qwen2.5-1.5B-Instruct | 7.35 tokens/s, first token after 0.37 s |
 
-## Budget
+Reference figures: Hailo Model Zoo and Hailo GenAI Model Zoo.
 
-**Hard-hat mode, 10 cameras.** Ten cameras at a 10 frames/s target each go through one
-batched YOLOv8s (measured on the PC: about 105 frames/s, 31-40 ms per 10-frame batch). At the
-nominal 100 frames/s that is an estimated **40 % of the batch-8 capacity (252 FPS)** (not
-measured on the device), leaving room for YOLO-World on the cameras that have
-object rules and for the alert double-check (one CLIP encoder pass per alert, 81.5 FPS at
-batch 1). Language models only run on demand (a spoken rule, a report), never per frame.
-Estimates for the UGen300 from the reference speeds ([results/benchmark.md](results/benchmark.md),
-not measured): a spoken rule → rule JSON in about 11.3 s, Whisper transcription of a 5 s rule in
-about 2.4 s. All LLM accuracy in this repository was measured with Ollama `qwen2.5:1.5b` on the
-PC GPU; the Hailo GenAI build (a different quantization) is not measured.
+- **YOLOv8s: one detector for every camera.** Frames from all streams go through one batched
+  network. Our fine-tuning only changes the number of classes, so the weights reuse Hailo's
+  own YOLOv8s build recipe.
+- **CLIP for the double-check, not a chat model.** The check only has to answer yes or no, so a
+  frozen image encoder plus one small matrix multiply on the host is enough: 15 ms per alert on
+  the PC.
+- **Qwen2.5-1.5B through the Ollama API.** On the UGen300, hailo-ollama serves the same API, so
+  moving the LLM is a change of one setting (`llm.base_url`). A small model is enough because code
+  checks every rule it drafts and does all the counting in the report.
+- **Whisper-Small** is available ready-made in the Hailo GenAI Model Zoo.
 
-The dashboard shows this estimate live ("Est. UGen300 load") from the measured per-camera
-frame rate and the yolov8s reference in the config (`hailo_reference`).
+## Already done on the Hailo toolchain
 
-**Warehouse mode.** The deployment spec is one UGen300 per area of ≤ 12 cameras, a coverage
-spec from the test scenes, not a compute figure. On the PC,
-11 cameras at 10 fps go through the 6-class site detector at 960 px in about 63-95 ms per
-11-frame batch (RTX 5060 Ti). Whether one Hailo-10H sustains 12 cameras at 960 px is **not
-measured** (planned for Stage II, week 1): the Model Zoo figures are for a 640 px input, a 960 px
-input is more work per frame, and there is no HEF to measure yet. The "Est. UGen300 load" readout in warehouse mode
-uses the same 640 px yolov8s reference (`configs/warehouse.yaml`), so it understates the load.
+We do not have the device yet, but the two vision models of hard-hat mode have gone through
+Hailo's Dataflow Compiler 5.4.0 with the Hailo Model Zoo recipes. We measured what INT8 costs in
+Hailo's emulator, which reproduces the chip's integer arithmetic bit for bit. The scripts are in
+`hailo/`.
 
-## Done in Stage I with the Hailo toolchain (`hailo/`)
+- **Hard-hat detector compiled to a HEF**, the file format the Hailo-10H runs. The fine-tuned
+  YOLOv8s was exported to ONNX, quantized to INT8 with 512 calibration images and compiled. Box
+  decoding and NMS ship inside the HEF, as in Hailo's own YOLOv8s build, and the config already
+  points to the file.
+- **INT8 costs almost nothing.** On the same 2,001 test images, the float Hailo graph scores 0.893
+  mAP50 and the INT8 version 0.889. The float graph matches the PyTorch model, so the conversion
+  itself is exact.
+- **CLIP encoder quantized.** We used the Model Zoo's `clip_vit_b_32_image_encoder`. With the
+  yes/no head retrained on INT8 features, the check stays at 95.3 % accuracy, the same as on the
+  PC.
+- **Host code written.** A HailoRT backend for the detectors (`sayguard/detectors/hailo_backend.py`)
+  is written against HailoRT 5.x; switching is `detector.backend: hailo` in the config. The rule
+  parser and the report already work with any Ollama-compatible server.
 
-No device yet, but both hard-hat-mode vision networks already went through the real Hailo
-flow: the detector was compiled to a HEF, the CLIP encoder was quantized, and both were checked in
-Hailo's bit-exact emulator; full results in
-[results/README.md](results/README.md#hailo-10h-compiled-and-checked-bit-exactly-in-hailos-emulator-hailo).
+| Emulator check (Hailo-10H) | Before | INT8 |
+|---|---|---|
+| Hard-hat detector, mAP50 on 2,001 test images | 0.893 (float) | **0.889** |
+| Hard-hat detector, mAP50-95 | 0.566 (float) | 0.560 |
+| CLIP image features vs PyTorch (cosine similarity) | 0.9999 (float) | 0.9634 |
+| Double-check accuracy (head retrained on INT8 features) | 95.3 % (PC) | **95.3 %** |
+| Real violations kept by the double-check | 94.9 % (PC) | 93.9 % |
 
-1. Environment (WSL Ubuntu 22.04, CPU only: the TensorFlow the DFC pins has no kernels for
-   RTX 50-series GPUs): `bash hailo/setup_dfc.sh` with the Dataflow Compiler 5.4.0 wheel from
-   the Hailo Developer Zone; it also clones the Hailo Model Zoo.
-2. Detector, the shipped variant (512 calibration images plus activation clipping):
-   ```bash
-   python hailo/build_helmet.py parse
-   python hailo/build_helmet.py optimize --calib 512 --tag _c512clip \
-     --extra "pre_quantization_optimization(activation_clipping, layers={*}, mode=percentile, clipping_values=[0.01, 99.99])"
-   python hailo/build_helmet.py compile --tag _c512clip --performance --install
-   ```
-   The ONNX is cut at the six YOLOv8 head convolutions and gets the Model Zoo `yolov8s`
-   model script with a 2-class NMS config; calibration is a fixed random sample (seed 0) of
-   the validation split, never the test split. `--performance` is what
-   `hailomz compile --performance` adds; `--install` copies the HEF to
-   `@work/models/helmet_yolov8s.hef`.
-3. Detector accuracy: `python hailo/eval_int8.py --har ~/hailo/build/helmet_c512clip_optimized.har`
-   (float vs bit-exact INT8 emulation on the 2,001 test images; writes `hailo_int8.json`) and
-   `python hailo/eval_pc_baseline.py` (SayGuard venv; PyTorch, same evaluator and NMS settings).
-4. CLIP encoder: `python hailo/clip_probe_int8.py dump` (SayGuard venv), then in WSL
-   `hailomz parse clip_vit_b_32_image_encoder --hw-arch hailo10h` and
-   `python hailo/clip_probe_int8.py emulate --har clip_vit_b_32_image_encoder.har`
-   (writes `clip_probe_int8.json`).
+Both detector figures use the NMS settings built into the HEF, so compare 0.889 with 0.893, not
+with the 0.939 in the README (a different evaluation).
 
-What the emulator measured (`docs/results/hailo_int8.json`, `docs/results/clip_probe_int8.json`):
+## Load on one UGen300
 
-| Check | Result |
+- **Hard-hat mode, 10 cameras.** Ten cameras at 10 frames/s each make 100 frames/s. On the PC, one
+  batched YOLOv8s analyses about 105 frames/s live. Against Hailo's reference of 252 FPS at batch
+  8, that is about **40 % of one UGen300** (estimate). The rest is left for YOLO-World on cameras
+  with object rules and for the double-check, which runs once per alert, not per frame. The
+  dashboard shows this estimate live ("Est. UGen300 load").
+- **Language models run on demand.** Whisper and Qwen2.5 only run when someone speaks a rule or a
+  report is due, so they add no steady load. From the reference speeds we estimate about 2.4 s to
+  transcribe a 5-second spoken rule, about 11.3 s to turn it into a rule, and about 48 s for a
+  daily report written entirely by the LLM. A rule takes 0.2–0.5 s on the PC, so the device is
+  slower, but an officer adds a few rules a day and confirms each one anyway.
+
+## Stage II port plan (Nov 6 – Dec 4)
+
+1. **Detectors on the chip (week 1).** Install HailoRT and the UGen300 driver on the host, run the
+   hard-hat HEF through the HailoRT backend and measure throughput over USB. Build the warehouse
+   detector's HEF with the same flow (6 classes, 960 px input, calibration frames from training
+   scenes only), check its INT8 accuracy in the emulator, and measure whether 12 cameras fit on
+   one box.
+2. **Double-check on the chip.** Compile the quantized CLIP encoder to a HEF and retrain the
+   yes/no head on the chip's own features, as already done in the emulator.
+3. **Speech and language on the chip.** Switch to the Hailo GenAI Model Zoo builds of
+   Whisper-Small and Qwen2.5-1.5B, serve Qwen2.5 through hailo-ollama and point `llm.base_url` at
+   it. Re-run the same spoken-rule and report tests on the device.
+4. **End-to-end test at the ASUS test space.** One host and one UGen300 run the whole pipeline; we
+   measure frame rate per camera, alert latency, device load and power.
+
+## Risks and how we handle them
+
+| Risk | What we do |
 |---|---|
-| Hard-hat detector, 2,001 test images: float Hailo graph → INT8 | mAP50 0.8927 → 0.889 (drop 0.0037); mAP50-95 0.5662 → 0.56 (drop 0.0062) |
-| CLIP image features vs PyTorch (cosine) | float Hailo graph 0.9999; INT8 0.9634 |
-| Yes/no check on INT8 features, head trained on PC features | accuracy 94.3 %, real violations kept 92.9 % (on PC features: 95.3 %, 94.9 %) |
-| Yes/no check on INT8 features, head retrained on INT8 features | accuracy 95.3 %; wrong flags filtered 96.8 %, real violations kept 93.9 % |
+| **The HailoRT backend has not run on hardware.** It is written against the HailoRT 5.x API. | First task of week 1. The HEF's accuracy is already known from the emulator, so only the plumbing is left to check: output format, image scaling, batching. |
+| **USB may be slower than Hailo's PCIe reference figures.** | Hard-hat mode needs about 40 % of the reference capacity, so there is headroom. If it is tight, we lower the frame rate per camera or split the cameras across two boxes. |
+| **The warehouse detector is heavier and has no HEF yet.** Its 960 px input is more work per frame than the 640 px reference, and the 12-camera limit comes from coverage in the test scenes, not from a compute measurement. | Build and measure it in week 1. If 12 cameras at 960 px do not fit, each box covers fewer cameras or the input gets smaller. |
+| **The Hailo build of Qwen2.5-1.5B is quantized differently**, so the PC accuracy (95 % and 84–88 %) may not carry over. Rule parsing also needs hailo-ollama to honour the JSON-schema `format` field. | The checker corrects numbers, times and objects whatever the LLM says. If a reply is not valid JSON, the rule parser and the report fall back to their code-only paths. We re-run the same test sentences on the device. |
+| **INT8 shifts the CLIP features** (cosine 0.9634). | Retrain the yes/no head on the chip's features: 95.3 % accuracy in the emulator. |
+| **Vision and language models share one chip.** While Qwen2.5 drafts a rule or a report, the detectors get less time. | Language models run for seconds at a time and the detectors have headroom. Stage II measures the camera frame rate while a rule is being drafted. |
 
-The detector mAP50 here (score ≥ 0.2 NMS, pycocotools) is a different evaluation from the 0.939
-of the Ultralytics validation (score ≥ 0.001): compare 0.889 only with 0.893.
-
-## Warehouse-mode detector: no HEF yet
-
-`configs/warehouse.yaml` already carries `detector.hef: "@work/models/site_yolov8s.hef"` and
-`detector.labels` (the six classes in output order; `hailo_backend.py` uses them and skips the
-helmet/head merge for any other label set). The HEF itself has not been built.
-`scripts/train_detector.py` already exports `@work/models/site_yolov8s.onnx` (opset 11), but
-`hailo/build_helmet.py` is written for the hard-hat model: the ONNX path, the 640×640 input
-and the 2-class NMS config are fixed in the script; only the calibration folder is a flag
-(`--calib-dir`). Building `site_yolov8s.hef` needs a variant of it with the site ONNX, a
-960×960 input, a 6-class NMS config and calibration frames from the training scenes (never
-an evaluation scene), followed by the same kind of float-vs-INT8 check before any warehouse
-number can be quoted for the chip.
-
-## Stage II on the UGen300
-
-1. Install HailoRT 5.x and the UGen300 USB/PCIe driver on the host (Windows 11 or Linux).
-2. Hard-hat mode: in `configs/site.yaml` set `detector.backend: hailo` (`detector.hef` already
-   points to `@work/models/helmet_yolov8s.hef`). Warehouse mode: the same in
-   `configs/warehouse.yaml`, once `site_yolov8s.hef` exists.
-3. Validate `sayguard/detectors/hailo_backend.py` (written against HailoRT 5.x, not yet run
-   on hardware): NMS output format, letterbox scaling, batch-8 throughput.
-4. Double-check on the chip: run the CLIP image-encoder HEF through HailoRT and retrain the
-   2×512 head on the chip's own INT8 features (in the emulator this gives 95.3 % accuracy, with
-   93.9 % of real violations kept).
-5. Start hailo-ollama with Qwen2.5-1.5B and set `llm.base_url` to it. Check that it honours
-   the JSON-schema `format` field: the rule parser (`sayguard/rules/parser.py`) and the
-   report's action menu (`sayguard/report.py`) send one with every request. Whisper-Small
-   from the Hailo GenAI Model Zoo.
-6. Measure: per-camera fps, end-to-end alert latency, device load, power; the accuracy and
-   latency of the Hailo GenAI Qwen2.5-1.5B on the rule-parsing and report tests; in warehouse mode
-   (week 1), also whether 12 cameras at 960 px fit on one device.
+Every number and how it was measured: [docs/results](results/README.md). To rebuild the Hailo
+files yourself, see [SETUP.md](SETUP.md#rebuild-the-hailo-files).
