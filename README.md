@@ -26,8 +26,8 @@ people stop reading them.
   anyone is within 3 m of a forklift"* or *"七號走道有人停留超過5秒就通知我"*. SayGuard turns the
   sentence into a rule, shows it for confirmation, and it is live seconds later. No data
   collection, no retraining.
-- **Raises alerts people can trust.** A violation must persist before it counts, and a second
-  model double-checks every hard-hat alert before anyone is paged. In warehouse mode a worker
+- **Raises alerts people can trust.** A violation must persist before it counts, and a fast
+  yes/no model double-checks every hard-hat alert before anyone is paged. In warehouse mode a worker
   seen by three cameras gets one alert, not three.
 - **Writes the daily safety report.** The numbers come straight from the alert log; the
   language model picks the issues that matter most and a vetted fix for each.
@@ -57,6 +57,12 @@ replaced.
   person's position is taken from where they stand, positions from all cameras are fused into
   one worker, and vehicles are placed where their wheels touch the ground. Zones are drawn
   once on the plan and rules are written in metres.
+- **Decisions, not chat (inspired by Jev).** TypeSafe AI's Jev made the case that most of what
+  software asks an AI is a decision, such as yes or no, a choice or a filled-in form, not prose.
+  Jev is only available as a cloud API, so SayGuard rebuilds the idea from small models that Hailo
+  supports on the UGen300. The alert double-check is a CLIP image encoder with a 512→2 decision head
+  instead of a generative vision-language model: **18× faster** (15 ms vs 283 ms per alert) and
+  more accurate (95.3 % vs 91.7 %).
 - **The LLM proposes, code checks, the officer confirms.** Speech goes through Whisper; the
   small LLM drafts the rule as structured JSON; a deterministic checker corrects every number,
   time and object it finds in the sentence; the officer approves. For the report, code does all
@@ -75,7 +81,7 @@ Measured on a PC GPU with the same networks that will run on the Hailo-10H.
 | Hard-hat detector | **0.939 mAP50** on 2,001 images it never saw |
 | Ten cameras, one detector | about **105 frames/s** analysed; about 40 % of one UGen300 (estimate) |
 | Spoken rule → exactly right rule | **95 %** (construction site) and **84–88 %** (warehouse), against 16–40 % for the LLM alone |
-| Alert double-check | **95.3 %** correct on held-out crops, 15 ms per alert |
+| Alert double-check (Jev-style yes/no model) | **95.3 %** correct on held-out crops in **15 ms**; a generative VLM: 91.7 % in 283 ms |
 | Warehouse mode, six synthetic test warehouses the detector never trained on | head count off by **0.05–1.7 people** (summing cameras: up to 60); door and dock zones covered **100 %** of entries with **no false alerts**; forklift 3 m rule covered **92 %** of events |
 | Daily report plan | actions aimed at the wrong problem: **20 % → 0 %** (blind AI judges) |
 | Hailo-10H INT8 build | **0.889** mAP50 vs 0.893 in float (Hailo's emulator) |

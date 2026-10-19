@@ -165,3 +165,6 @@ Roles: test = W010, W013, W015, W018, W019, W022 (never trained or tuned on, dis
 - NOT in any result file (older notes only, do not quote as measured): YOLO-World 12 ms per frame, Whisper-Small 0.4-0.8 s per rule. Tables show '-' for these.
 - CLIP yes/no check latency: 15.2 ms mean per crop (p95 24.7 ms), probe_train.json — use this, not the older 13.6/14 ms.
 - The zones of the evaluation scenes (configs/eval/*.yaml) were drawn by AI agents that saw only each scene's coverage map, before any result.
+- Jev-style alert check vs a generative VLM: 15.2 ms (probe_train.json) vs 283 ms (vlm_check.json) per crop, one crop at a time on the same PC GPU = 18.6×, written as "18×". Accuracy 95.3 % vs 91.7 % on the same 193 crops.
+- Jev: TypeSafe AI's "System One" decision model (early access 2026-09-15); returns typed answers (yes/no "noul", choice, score) instead of text; hosted API only, no on-prem or weights. Design inspiration only; SayGuard does not call Jev.
+- Hailo GenAI Model Zoo, Hailo-10H: Qwen2-VL-2B-Instruct 1.02 s to first token, 7.04 tokens/s, vision encoder (336×336) 3.00 FPS, so about 1 s per crop; CLIP ViT-B/32 image encoder 81.5 FPS.

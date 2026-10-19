@@ -1,43 +1,28 @@
-<section id="detector" data-transition="fade" style="background:#F3F0E8;color:#171B21;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<section id="detector" data-transition="fade" style="background:#F3F0E8;color:#171B21;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
 <div style="display:flex;flex-direction:column;gap:16px">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8A5A00;letter-spacing:2px">EVIDENCE · DETECTORS</p>
-<h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">Detectors trained where it matters</h2>
+<h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">Trained detectors, plus words for the rest</h2>
 </div>
-<div style="display:flex;flex-direction:column;gap:24px">
 <div style="display:flex;gap:32px">
-<div style="flex:1;display:flex;gap:28px;background:#FBFAF6;padding:32px 36px;border:1px solid #DDD7CB;border-radius:20px">
-<div style="width:260px;display:flex;flex-direction:column;gap:8px">
-<p style="font-family:Rubik, Arial, sans-serif;font-size:88px;font-weight:700;line-height:1;color:#171B21">0.939</p>
-<p style="font-size:24px;line-height:1.35;color:#4A5260">mAP50 on 2,001 test images it never saw</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FBFAF6;padding:32px 36px;border:2px solid #C98A00;border-radius:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8A5A00;letter-spacing:2px">HARD HATS</p>
+<p style="font-family:Rubik, Arial, sans-serif;font-size:88px;font-weight:700;line-height:1">0.939</p>
+<p style="font-size:26px;line-height:1.4;color:#4A5260">mAP50 on 2,001 test images it never saw. YOLOv8s, already compiled for Hailo-10H: INT8 0.889 vs float 0.893 in Hailo’s emulator.</p>
 </div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FBFAF6;padding:32px 36px;border:1px solid #DDD7CB;border-radius:20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8A5A00;letter-spacing:2px">WAREHOUSE OBJECTS</p>
+<p style="font-family:Rubik, Arial, sans-serif;font-size:88px;font-weight:700;line-height:1">6 <span style="font-size:44px;color:#8A5A00">classes</span></p>
+<p style="font-size:26px;line-height:1.4;color:#4A5260">People, vehicles and robots. YOLOv8s trained on 8,000 frames from five synthetic buildings.</p>
+</div>
+</div>
+<div style="display:flex;gap:36px;align-items:center;background:#FBFAF6;padding:28px 36px;border:1px solid #DDD7CB;border-radius:20px">
+<img src="/_blob/ec106fd7a5afe0264564bea466676db1" alt="Alert snapshot from an excavation site: an orange box around an excavator found by the open-vocabulary detector, and a red box around a worker nearby with the face pixelated" style="width:400px;height:225px;object-fit:cover;border-radius:12px;border:1px solid #DDD7CB">
 <div style="flex:1;display:flex;flex-direction:column;gap:10px">
-<h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600">Hard hats</h3>
-<p style="font-size:26px;line-height:1.4;color:#4A5260">YOLOv8s fine-tuned on Roboflow Hard Hats v2 (CC BY 4.0). Hailo-10H HEF compiled, not yet run on hardware. Hailo’s emulator, a separate evaluation: 0.889 INT8 vs 0.893 float.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8A5A00;letter-spacing:2px">ANYTHING ELSE A RULE NAMES</p>
+<h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2">“Warn me if anyone is near the excavator”</h3>
+<p style="font-size:26px;line-height:1.4;color:#4A5260">YOLO-World finds objects from the word itself, so a rule can name things no detector was trained on. Classes a site depends on every day still get a trained detector.</p>
 </div>
 </div>
-<div style="flex:1;display:flex;gap:28px;background:#FBFAF6;padding:32px 36px;border:1px solid #DDD7CB;border-radius:20px">
-<div style="width:300px;display:flex;flex-direction:column;gap:8px">
-<p style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;color:#171B21;white-space:nowrap">12–99 <span style="color:#8A5A00">%</span></p>
-<p style="font-size:24px;line-height:1.35;color:#4A5260">of forklift frames found: 99&nbsp;% W010, 79&nbsp;% W022, 17&nbsp;% W018, 12&nbsp;% W019</p>
-</div>
-<div style="flex:1;display:flex;flex-direction:column;gap:10px">
-<h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600">Warehouse objects</h3>
-<p style="font-size:26px;line-height:1.4;color:#4A5260">YOLOv8s, 6 classes of people, vehicles and robots, fine-tuned on 8,000 frames from 8 scenes in 5 synthetic buildings. Causes of the forklift misses not yet established.</p>
-</div>
-</div>
-</div>
-<div style="display:flex;gap:36px;align-items:center;background:#FBFAF6;padding:32px 36px;border:2px solid #C98A00;border-radius:20px">
-<img src="/_blob/ec106fd7a5afe0264564bea466676db1" alt="Alert snapshot from an excavation site: an orange box around an excavator found by the open-vocabulary detector, and a red box around a worker nearby with the face pixelated" style="width:360px;height:203px;object-fit:cover;border-radius:12px;border:1px solid #DDD7CB">
-<div style="width:340px;display:flex;flex-direction:column;gap:8px">
-<p style="font-family:Rubik, Arial, sans-serif;font-size:80px;font-weight:700;line-height:1;color:#171B21">0 <span style="color:#8A5A00">of</span> 30</p>
-<p style="font-size:24px;line-height:1.35;color:#4A5260">labelled forklifts found on Warehouse_010</p>
-</div>
-<div style="flex:1;display:flex;flex-direction:column;gap:10px">
-<h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600">Anything else a rule names</h3>
-<p style="font-size:26px;line-height:1.4;color:#4A5260">YOLO-World v2-S finds objects from the word itself, as in the excavator alert on the left (a demo; accuracy not measured). On Warehouse_010 it found none of the forklifts, so site-critical classes get a trained detector.</p>
-</div>
-</div>
-</div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">SayGuard · Stage I proposal · 13 · docs/results/detector_metrics.json, hailo_int8.json, site_eval*.json; scripts/prepare_site_dataset.py</p>
-<aside>We train a detector for every class a site depends on. The hard-hat model is scored on test images it never saw, and it is already compiled for Hailo-10H, though not yet run on hardware; in Hailo’s emulator INT8 barely changes its accuracy compared with the float model in the same Hailo toolchain, which is a different evaluation from our PC score. The warehouse model learned from eight synthetic scenes in five buildings; it found almost every forklift on Warehouse_010, our demo scene, but far fewer in two other test buildings, and we have not yet established why. For anything else a spoken rule names, YOLO-World works from the word alone, as the excavator demo shows, though we have not measured its accuracy; it missed every forklift in that same warehouse, which is why site-critical classes get a trained model.</aside>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">SayGuard · Stage I proposal · 11 · docs/results/detector_metrics.json, hailo_int8.json · Roboflow Hard Hats v2 (CC BY 4.0)</p>
+<aside>Each class a site depends on gets a trained detector. The hard-hat model scores 0.939 mAP50 on test images it never saw, and it is already compiled for Hailo-10H, where INT8 barely changes its accuracy in Hailo's emulator. The warehouse model knows six classes of people, vehicles and robots. For anything else a spoken rule names, like the excavator here, YOLO-World works from the word alone; this is a demo and its accuracy is not measured yet, and in our warehouse tests it was no substitute for the trained forklift detector, which is why everyday classes get a trained model.</aside>
 </section>

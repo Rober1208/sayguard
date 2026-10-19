@@ -102,7 +102,11 @@ Source: `rule_parsing.json`, `rule_parsing_site.json`, `rule_parsing_site_v1_fir
 
 ## Alert double-check
 
-"Is this person wearing a hard hat?" has two answers, so SayGuard asks a classifier, not a chatbot.
+"Is this person wearing a hard hat?" has two answers, so SayGuard asks for a decision, not a chat.
+The design follows the "System One" idea of TypeSafe AI's Jev: return a typed answer instead of
+generating text. Jev itself is only a hosted API, so we built a model in the same style from parts
+Hailo supports on the Hailo-10H: a frozen CLIP image encoder and a 512→2 decision head. It replaced our first
+double-check, the generative Qwen2-VL-2B, and is 18× faster per alert and more accurate.
 Four methods on the same 193 held-out crops (94 wearing, 99 bare heads), cut the way an alert crop
 is cut:
 

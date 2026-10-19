@@ -8,11 +8,11 @@
 <div style="flex:1;display:flex;flex-direction:column;gap:22px">
 <div style="display:flex;flex-direction:column;gap:4px;padding-left:24px;border-left:6px solid #F2B233">
 <h3 style="font-family:Rubik, Arial, sans-serif;font-size:32px;font-weight:600">Each worker counted once, not once per camera</h3>
-<p style="font-size:26px;line-height:1.35;color:#A7B0BC">Warehouse_010, people on average: 24.97 present, 26.56 counted, 51.64 if cameras are summed</p>
+<p style="font-size:26px;line-height:1.35;color:#A7B0BC">Demo warehouse, 11 cameras: 25 people present, 26.6 counted; summing cameras gives 51.6</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:4px;padding-left:24px;border-left:6px solid #5AA2E6">
 <h3 style="font-family:Rubik, Arial, sans-serif;font-size:32px;font-weight:600">Zones drawn on the plan</h3>
-<p style="font-size:26px;line-height:1.35;color:#A7B0BC">Distances to forklifts in metres; median error 0.2 m on Warehouse_010</p>
+<p style="font-size:26px;line-height:1.35;color:#A7B0BC">Distances to forklifts in metres, positions within about 0.2 m</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:4px;padding-left:24px;border-left:6px solid #5AA2E6">
 <h3 style="font-family:Rubik, Arial, sans-serif;font-size:32px;font-weight:600">One alert per worker per entry, not one per camera</h3>
@@ -24,6 +24,6 @@
 </div>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7D8794">SayGuard · Stage I proposal · 10 · docs/results/site_eval.json · synthetic warehouses: NVIDIA PhysicalAI-SmartSpaces (CC BY 4.0)</p>
-<aside>This is warehouse mode, running on Warehouse_010, the synthetic warehouse we use as our demo scene. Instead of judging each camera on its own, SayGuard places every detection on one floor plan, so a worker seen by several cameras is one dot and one count, not one per camera, and each entry into a zone raises one alert, not one per camera. Summing cameras counts many workers twice or more; the floor plan stays close to the truth. Zones are drawn once on the plan, forklift distances are measured in metres, and the officer can speak a rule using the zone names the site already uses.</aside>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7D8794">SayGuard · Stage I proposal · 9 · docs/results/site_eval.json · synthetic warehouses: NVIDIA PhysicalAI-SmartSpaces (CC BY 4.0)</p>
+<aside>This is warehouse mode, running on a synthetic eleven-camera warehouse we use as our demo scene. Instead of judging each camera on its own, SayGuard places every detection on one floor plan, so a worker seen by several cameras is one dot and one count, not one per camera, and each entry into a zone raises one alert, not one per camera. Summing cameras counts many workers twice or more; the floor plan stays close to the truth. Zones are drawn once on the plan, forklift distances are measured in metres, and the officer can speak a rule using the zone names the site already uses.</aside>
 </section>

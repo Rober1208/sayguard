@@ -1,21 +1,70 @@
 {
   "v": 4,
-  "createdOnFiles": {"v": 1, "at": "2026-10-18T05:45:00Z"},
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-18T05:45:00Z"
+  },
   "lists": "css",
   "title": "SayGuard — Stage I proposal",
-  "order": ["cover", "problem", "idea", "demo", "llm", "voice", "accuracy", "report", "falsealarm", "site", "siteevidence", "sitelimits", "detector", "privacy", "hardware", "models", "business", "stage2", "risks", "close"],
+  "order": [
+    "cover",
+    "problem",
+    "idea",
+    "demo",
+    "llm",
+    "falsealarm",
+    "voice",
+    "report",
+    "site",
+    "siteevidence",
+    "detector",
+    "privacy",
+    "hardware",
+    "models",
+    "business",
+    "stage2",
+    "risks",
+    "close"
+  ],
   "sections": {
-    "s1": {"description": "Why sites need help watching the cameras they already have", "start": "cover"},
-    "s2": {"description": "SayGuard: one UGen300 per site area, every camera, rules you can say", "start": "idea"},
-    "s3": {"description": "The local LLM's two jobs, rules and the report plan: it proposes, code checks, the officer confirms each rule", "start": "llm"},
-    "s4": {"description": "Evidence: double-checked alerts, and warehouse mode on six test buildings the detector never trained on", "start": "falsealarm"},
-    "s5": {"description": "Detectors, privacy, hardware and the model map onto the UGen300", "start": "detector"},
-    "s6": {"description": "Business model, Stage II plan and risks", "start": "business"}
+    "s1": {
+      "description": "Why sites need help watching the cameras they already have",
+      "start": "cover"
+    },
+    "s2": {
+      "description": "The product: one box next to the recorder watches every camera",
+      "start": "idea"
+    },
+    "s3": {
+      "description": "Jev-style AI: every model returns a typed decision, so it is fast and checkable on the edge",
+      "start": "llm"
+    },
+    "s4": {
+      "description": "Warehouse mode, detectors and privacy",
+      "start": "site"
+    },
+    "s5": {
+      "description": "How it plugs into an existing site and maps onto the UGen300",
+      "start": "hardware"
+    },
+    "s6": {
+      "description": "Business model, Stage II plan and limits",
+      "start": "business"
+    }
   },
   "faces": {
-    "rubik": {"family": "Rubik", "href": "https://fonts.googleapis.com/css2?family=Rubik:wght@400..700&display=swap"},
-    "ibm-plex-sans": {"family": "IBM Plex Sans", "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap"},
-    "jetbrains-mono": {"family": "JetBrains Mono", "href": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap"}
+    "rubik": {
+      "family": "Rubik",
+      "href": "https://fonts.googleapis.com/css2?family=Rubik:wght@400..700&display=swap"
+    },
+    "ibm-plex-sans": {
+      "family": "IBM Plex Sans",
+      "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap"
+    },
+    "jetbrains-mono": {
+      "family": "JetBrains Mono",
+      "href": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap"
+    }
   },
   "designSystems": []
 }

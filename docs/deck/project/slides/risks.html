@@ -1,17 +1,17 @@
 <section id="risks" data-transition="fade" style="background:#F3F0E8;color:#171B21;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
 <div style="display:flex;flex-direction:column;gap:16px">
-<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8A5A00;letter-spacing:2px">FEASIBILITY · RISKS</p>
-<h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">What could go wrong, and the plan</h2>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8A5A00;letter-spacing:2px">FEASIBILITY · LIMITS AND RISKS</p>
+<h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">What it cannot do yet, and the plan</h2>
 </div>
 <table style="font-size:28px;color:#171B21;background:#FBFAF6;border:1px solid #DDD7CB;border-radius:16px">
-<tr><th style="width:40%;text-align:left">Risk</th><th style="width:60%;text-align:left">Mitigation</th></tr>
-<tr><td>USB throughput below the PCIe reference; warehouse-mode load not measured yet</td><td>Measure both in week 1; batch 8; 5 fps per camera if needed</td></tr>
-<tr><td>The small LLM misreads a rule, or is offline</td><td>Rule extractor overrides the numbers, times and objects it finds; officer confirms; extractor alone: 90 % hard-hat mode, 68 % fresh warehouse set</td></tr>
-<tr><td>The yes/no check filters a real violation (5 % in the PC test)</td><td>Filtered alerts are kept and shown dimmed</td></tr>
-<tr><td>Forklifts missed in some buildings (12–17 % found in two test scenes)</td><td>Fine-tune on the customer’s vehicles (amount of data to be measured in Stage&nbsp;II)</td></tr>
-<tr><td>Large halls, far cameras</td><td>Coverage spec: ≤ 12 cameras per box, zones seen by 2+ cameras</td></tr>
-<tr><td>Detector and GenAI share one accelerator</td><td>GenAI only on demand; HailoRT scheduler load measured in week 3</td></tr>
+<tr><th style="width:44%;text-align:left">Limit or risk</th><th style="width:56%;text-align:left">Plan</th></tr>
+<tr><td>The detector missed most forklifts in two of the six test warehouses</td><td>Fine-tune on the customer’s own vehicles</td></tr>
+<tr><td>A worker’s ID can change within tens of seconds</td><td>The dashboard counts and alerts; it never shows IDs</td></tr>
+<tr><td>Large halls with distant cameras</td><td>Coverage spec: up to 12 cameras per box, every watched zone seen by 2+ cameras</td></tr>
+<tr><td>Nothing has run on a UGen300 yet: USB throughput and warehouse-mode load</td><td>Measure both in week 1; batch 8; 5 fps per camera if needed</td></tr>
+<tr><td>The small LLM misreads a rule, or is offline</td><td>Code checks every rule and the officer confirms it; code alone still parses 68–90 % of rules</td></tr>
+<tr><td>The double-check filters a real violation (5 % in our test)</td><td>Filtered alerts stay in the feed, dimmed</td></tr>
 </table>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">SayGuard · Stage I proposal · 19 · test rates: docs/results/probe_train.json, rule_parsing*.json, site_eval_warehouse_018/019.json</p>
-<aside>We tested what we could on the PC and in Hailo’s emulator. The open risks are about the device itself, including the load of warehouse mode, and about sites that look different from our test scenes. Each one has a measurement planned in Stage II and a fallback that keeps the officer in control; for unfamiliar forklifts the plan is fine-tuning on the customer’s vehicles, and we have not yet measured how much data that needs.</aside>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">SayGuard · Stage I proposal · 17 · docs/results/</p>
+<aside>These are the limits we know of today, each with a plan. The biggest is forklifts in unfamiliar buildings: in two of the six test warehouses the detector missed most of them, so we plan a short fine-tune on each customer's own vehicles. Worker IDs change too often to show, so the dashboard counts and alerts without them. Large halls need the coverage spec. Nothing has run on the UGen300 yet, so throughput over USB and the load of warehouse mode are the first measurements of Stage II. And because every AI answer is typed and checked, a misread rule or a filtered alert stays visible to the officer instead of failing silently.</aside>
 </section>

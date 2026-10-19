@@ -1,37 +1,40 @@
 <section id="idea" data-transition="fade" style="background:#12161C;color:#F3F0E8;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
 <div style="display:flex;flex-direction:column;gap:16px">
-<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F2B233;letter-spacing:2px">THE IDEA</p>
-<h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">One box next to the recorder. Every camera covered.</h2>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F2B233;letter-spacing:2px">THE PRODUCT</p>
+<h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">One box watches every camera on site</h2>
 </div>
-<div style="display:flex;align-items:center;gap:24px">
-<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#1B212A;padding:32px 36px;border:1px solid #333D4A;border-radius:20px">
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;flex:1">
+<div style="display:flex;flex-direction:column;gap:12px;background:#1B212A;padding:28px 32px;border:1px solid #333D4A;border-radius:20px">
 <x-icon name="Globe" style="color:#5AA2E6;width:44px;height:44px"></x-icon>
-<h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.15">Existing cameras</h3>
-<p style="font-size:26px;line-height:1.4;color:#A7B0BC">RTSP streams the site already has, plus a camera where a watched zone is seen by fewer than two. No cloud.</p>
+<h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.15">Every camera, live</h3>
+<p style="font-size:26px;line-height:1.4;color:#A7B0BC">All streams go through one detector. In a warehouse, all cameras become one live floor plan.</p>
 </div>
-<x-shape kind="arrow-right" style="width:72px;height:36px;background:#F2B233"></x-shape>
-<div style="flex:1.25;display:flex;flex-direction:column;gap:12px;background:#1B212A;padding:32px 36px;border:2px solid #F2B233;border-radius:20px">
-<x-icon name="Lightning" style="color:#F2B233;width:44px;height:44px"></x-icon>
-<h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.15">Host + ASUS UGen300</h3>
-<p style="font-size:26px;line-height:1.4;color:#A7B0BC">Batched detectors, a CLIP yes/no check, Whisper and Qwen2.5 — all on site: PC GPU today, UGen300 in Stage&nbsp;II.</p>
+<div style="display:flex;flex-direction:column;gap:12px;background:#1B212A;padding:28px 32px;border:2px solid #F2B233;border-radius:20px">
+<x-icon name="Chat" style="color:#F2B233;width:44px;height:44px"></x-icon>
+<h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.15">Rules you can say</h3>
+<p style="font-size:26px;line-height:1.4;color:#A7B0BC">Say a rule in Mandarin or English, confirm it, and it is live in seconds. No data, no retraining.</p>
 </div>
-<x-shape kind="arrow-right" style="width:72px;height:36px;background:#F2B233"></x-shape>
-<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#1B212A;padding:32px 36px;border:1px solid #333D4A;border-radius:20px">
-<x-icon name="Users" style="color:#5AA2E6;width:44px;height:44px"></x-icon>
-<h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.15">Safety officer</h3>
-<p style="font-size:26px;line-height:1.4;color:#A7B0BC">Checked alerts, a live floor plan, a daily report, new rules by voice.</p>
+<div style="display:flex;flex-direction:column;gap:12px;background:#1B212A;padding:28px 32px;border:1px solid #333D4A;border-radius:20px">
+<x-icon name="Warning" style="color:#5AA2E6;width:44px;height:44px"></x-icon>
+<h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.15">Alerts people trust</h3>
+<p style="font-size:26px;line-height:1.4;color:#A7B0BC">A fast yes/no model double-checks each hard-hat alert. One worker gets one alert, not one per camera.</p>
 </div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#1B212A;padding:28px 32px;border:1px solid #333D4A;border-radius:20px">
+<x-icon name="Database" style="color:#5AA2E6;width:44px;height:44px"></x-icon>
+<h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.15">A daily safety report</h3>
+<p style="font-size:26px;line-height:1.4;color:#A7B0BC">Counts come from the alert log; the LLM picks the top problems and a vetted fix for each.</p>
 </div>
-<div style="display:flex;gap:32px">
-<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#1E252F;padding:24px 32px;border-radius:16px;border-left:8px solid #F2B233">
-<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F2B233;letter-spacing:2px">HARD-HAT MODE</p>
-<p style="font-size:28px;line-height:1.35">Construction sites: hard hats on every camera</p>
+<div style="display:flex;flex-direction:column;gap:12px;background:#1B212A;padding:28px 32px;border:1px solid #333D4A;border-radius:20px">
+<x-icon name="Lock" style="color:#5AA2E6;width:44px;height:44px"></x-icon>
+<h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.15">Video stays on site</h3>
+<p style="font-size:26px;line-height:1.4;color:#A7B0BC">Every model runs locally. Faces are pixelated on screen and in saved snapshots.</p>
 </div>
-<div style="flex:1.4;display:flex;flex-direction:column;gap:8px;background:#1E252F;padding:24px 32px;border-radius:16px;border-left:8px solid #5AA2E6">
-<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#5AA2E6;letter-spacing:2px">WAREHOUSE MODE</p>
-<p style="font-size:28px;line-height:1.35">All cameras fused on one floor plan — zones and forklift distances in metres</p>
+<div style="display:flex;flex-direction:column;gap:14px;background:#1E252F;padding:28px 32px;border-radius:20px;border-left:8px solid #F2B233">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#F2B233;letter-spacing:2px">TWO MODES TODAY</p>
+<p style="font-size:26px;line-height:1.4"><b>Hard-hat mode</b> for construction sites</p>
+<p style="font-size:26px;line-height:1.4"><b>Warehouse mode</b> with zones and forklift distances in metres</p>
 </div>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7D8794">SayGuard · Stage I proposal · 3</p>
-<aside>This is the whole product in one picture. The site's existing cameras, plus a camera wherever a watched zone is seen by fewer than two, feed one small box next to the recorder, and every model runs locally, on site: on a PC GPU in today's prototype, on a host with an ASUS UGen300 in Stage II. The safety officer gets double-checked alerts, a live floor plan, a daily report, and adds rules by voice. It works in two modes today: hard-hat mode for construction sites, and warehouse mode, where all cameras are fused onto one floor plan.</aside>
+<aside>This is the product. One small box sits next to the site's video recorder and watches every camera at once. The safety officer adds rules by simply saying them, hard-hat alerts are double-checked before anyone is paged, a daily safety report is written automatically, and no video ever leaves the site. Today it runs in two modes: hard-hat mode for construction sites, and warehouse mode, where all cameras are fused into one live floor plan with zones and forklift distances in metres.</aside>
 </section>
