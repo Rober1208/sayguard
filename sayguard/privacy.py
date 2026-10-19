@@ -35,6 +35,45 @@ def pixelate(img: np.ndarray, box: tuple[int, int, int, int], blocks: int = 6) -
     img[y1:y2, x1:x2] = cv2.resize(small, (x2 - x1, y2 - y1), interpolation=cv2.INTER_NEAREST)
 
 
+# a detector misses a head now and then for a few frames (0.1-0.5 s on the demo clips); a face must
+# not show in those frames, so each camera keeps masking where a face was for HOLD_S after its last
+# detection, the box grown HOLD_GROW on each side because the head may have moved meanwhile
+HOLD_S = 1.0
+HOLD_GROW = 0.15
+_SAME_IOU = 0.3
+
+
+def _iou(a: tuple, b: tuple) -> float:
+    ix = max(0.0, min(a[2], b[2]) - max(a[0], b[0]))
+    iy = max(0.0, min(a[3], b[3]) - max(a[1], b[1]))
+    inter = ix * iy
+    union = (a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - inter
+    return inter / union if union > 0 else 0.0
+
+
+def _grow(b: tuple, f: float) -> tuple:
+    w, h = b[2] - b[0], b[3] - b[1]
+    return (b[0] - f * w, b[1] - f * h, b[2] + f * w, b[3] + f * h)
+
+
+class FaceHold:
+    """One camera's recent face boxes: update() returns this frame's boxes plus the ones seen in the
+    last HOLD_S that no current box covers, so a detector miss of a few frames shows no face."""
+
+    def __init__(self, hold_s: float = HOLD_S, grow: float = HOLD_GROW):
+        self.hold_s, self.grow = hold_s, grow
+        self._seen: list[tuple[float, tuple, bool]] = []     # (last seen, box, wearing_helmet)
+
+    def update(self, ts: float, boxes: list[tuple[tuple, bool]]) -> list[tuple[tuple, bool]]:
+        current = [(tuple(float(v) for v in b), bool(h)) for b, h in boxes]
+        if self._seen and ts < max(t for t, _, _ in self._seen):
+            self._seen = []                                   # the clock went back (a restarted source)
+        held = [(t, b, h) for t, b, h in self._seen
+                if ts - t <= self.hold_s and not any(_iou(b, c) >= _SAME_IOU for c, _ in current)]
+        self._seen = [(ts, b, h) for b, h in current] + held
+        return current + [(_grow(b, self.grow), h) for _, b, h in held]
+
+
 def anonymise(img: np.ndarray, heads: list[tuple[tuple, bool]]) -> np.ndarray:
     """heads: [(xyxy, wearing_helmet)] in img coordinates. Modifies img in place."""
     H, W = img.shape[:2]

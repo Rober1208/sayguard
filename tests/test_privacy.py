@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from sayguard.privacy import anonymise, face_region
+from sayguard.privacy import FaceHold, anonymise, face_region
 
 
 def test_hard_hat_box_covers_the_face_below_the_hat():
@@ -32,3 +32,28 @@ def test_anonymise_changes_the_pixels_under_the_face():
     anonymise(img, [((80, 40, 120, 69), True)])
     assert not np.array_equal(img[75:105, 85:115], before[75:105, 85:115])   # the face under the hat
     assert np.array_equal(img[150:, :], before[150:, :])                      # far below: untouched
+
+
+def test_face_stays_masked_through_a_short_detector_miss():
+    hold = FaceHold(hold_s=1.0, grow=0.15)
+    head = ((100.0, 100.0, 140.0, 129.0), True)
+    assert hold.update(0.0, [head]) == [head]
+    held = hold.update(0.3, [])                       # missed for 0.3 s: still masked, a little larger
+    assert len(held) == 1 and held[0][1] is True
+    (x1, y1, x2, y2), _ = held[0]
+    assert x1 < 100 and y1 < 100 and x2 > 140 and y2 > 129
+    assert hold.update(1.2, []) == []                 # gone for more than a second: no longer held
+
+
+def test_a_new_detection_replaces_the_held_box():
+    hold = FaceHold()
+    hold.update(0.0, [((100, 100, 140, 129), False)])
+    moved = ((104, 101, 144, 130), False)             # the same head, found again nearby
+    assert hold.update(0.2, [moved]) == [moved]
+
+
+def test_a_restarted_clock_clears_the_hold():
+    hold = FaceHold()
+    hold.update(50.0, [((100, 100, 140, 129), False)])
+    assert hold.update(1.0, []) == []
+

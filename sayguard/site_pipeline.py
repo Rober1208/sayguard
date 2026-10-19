@@ -268,6 +268,8 @@ class SitePipeline(Pipeline):
             cid = st.info.id
             st.people = len(fr.tracked.get(cid, []))
             per_cam[cid] = (st, pkt, fr.tracked.get(cid, []), fr.objs.get(cid, []), fr.raw.get(cid, []))
+            # every person box this frame plus where one was in the last second (detector misses)
+            st.blur_now = [b for b, _ in st.face_hold.update(pkt.ts, [(x.xyxy, False) for x in fr.raw.get(cid, [])])]
         fps = np.median([st.fps for st, _ in batch if st.fps > 0.5]) if any(st.fps > 0.5 for st, _ in batch) else 0
         res = self.engine.evaluate_site(tick, subjects, objects, frame_dt=1.0 / fps if fps else None)
         by_gid = {w.gid: w for w in workers}
@@ -284,7 +286,7 @@ class SitePipeline(Pipeline):
                 people = [(b.xyxy, gid_of.get((cam_id, b.track_id)), b.conf) for b in tracked]
                 tile = draw_site_tile(pkt.frame, st.title, people, [(o.xyxy, o.label) for o in objs], res.active,
                                       rule_types, st.fps, blur=self.blur, out_width=self.tile_w,
-                                      blur_boxes=[b.xyxy for b in raw])
+                                      blur_boxes=st.blur_now)
                 ok, buf = cv2.imencode(".jpg", tile, [cv2.IMWRITE_JPEG_QUALITY, 72])
                 if ok:
                     st.jpeg, st.jpeg_seq = buf.tobytes(), st.jpeg_seq + 1
@@ -339,17 +341,17 @@ class SitePipeline(Pipeline):
                           "cameras": w.cams if w else (scope or sorted(per_cam)), "distance_m": dist,
                           "world": [round(float(w.xy[0]), 2), round(float(w.xy[1]), 2)] if w else None})
         if pkt is not None:
-            ev.snapshot = self._snapshot_site(ev, pkt.frame, raw, objs)
+            ev.snapshot = self._snapshot_site(ev, pkt.frame, st.blur_now, objs)
         self.store.add(ev)
         log.info("ALERT site %s W-%s %s (%s)", rule.name, f.track_id, f.detail, ", ".join(ev.extra["cameras"]))
 
-    def _snapshot_site(self, ev: Event, frame: np.ndarray, raw: list[Detection], objs: list[Detection]) -> str | None:
+    def _snapshot_site(self, ev: Event, frame: np.ndarray, blur_boxes: list[tuple], objs: list[Detection]) -> str | None:
         try:
             H, W = frame.shape[:2]
             snap = frame.copy()
             if self.blur:
                 from .privacy import anonymise
-                anonymise(snap, [(head_of(b.xyxy), False) for b in raw])
+                anonymise(snap, [(head_of(b), False) for b in blur_boxes])
             lw = max(2, W // 320)
             for o in objs:
                 cv2.rectangle(snap, tuple(map(int, o.xyxy[:2])), tuple(map(int, o.xyxy[2:])), (0, 160, 255), lw)

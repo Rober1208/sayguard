@@ -31,7 +31,7 @@ from .config import resolve
 from .detectors import make_detector
 from .events import EventStore
 from .llm import LLMClient
-from .privacy import anonymise
+from .privacy import FaceHold, anonymise
 from .rules import CameraInfo, Rule, RuleEngine
 from .rules.engine import Fired
 from .rules.model import label_matches
@@ -92,6 +92,8 @@ class CamState:
     ov_ts: float = 0.0
     people: int = 0
     no_helmet: int = 0
+    face_hold: FaceHold = field(default_factory=FaceHold)   # keeps faces masked through detector misses
+    blur_now: list = field(default_factory=list)            # site mode: this frame's boxes to pixelate
 
 
 class Pipeline:
@@ -354,9 +356,11 @@ class Pipeline:
         H, W = pkt.frame.shape[:2]
         frame_dt = 1.0 / st.fps if st.fps > 0.5 else None    # None until this camera's rate is known
         res = self.engine.evaluate(st.info.id, pkt.ts, people, objects, (W, H), frame_dt=frame_dt)
-        # anonymise every head the detector saw in this frame: the tracker leaves out
-        # low-confidence and unmatched boxes, and those faces must not be shown either
-        blur_boxes = [(x.xyxy, x.label == "helmet") for x in d if x.label in ("helmet", "head")]
+        # anonymise every head the detector saw in this frame (the tracker leaves out low-confidence
+        # and unmatched boxes, and those faces must not be shown either), plus where a face was in
+        # the last second: a detector miss of a few frames must not show a face
+        blur_boxes = st.face_hold.update(pkt.ts, [(x.xyxy, x.label == "helmet") for x in d
+                                                  if x.label in ("helmet", "head")])
         for f in res.fired:
             try:
                 self._emit(st, pkt, f, heads, objects, blur_boxes)
