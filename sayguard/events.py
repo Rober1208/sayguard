@@ -55,7 +55,12 @@ class EventStore:
         d = self.snap_dir / day
         d.mkdir(parents=True, exist_ok=True)   # parents: the snapshots folder itself may have been cleared
         p = d / f"{ev.id}.jpg"
-        cv2.imwrite(str(p), img, [cv2.IMWRITE_JPEG_QUALITY, 80])
+        # imencode + write_bytes instead of cv2.imwrite: imwrite cannot open a non-ASCII Windows path
+        # (a work dir under a Chinese user name) and reports failure only as a False nobody checked
+        ok, buf = cv2.imencode(".jpg", img, [cv2.IMWRITE_JPEG_QUALITY, 80])
+        if not ok:
+            raise ValueError("snapshot could not be encoded as JPEG")
+        p.write_bytes(buf.tobytes())
         return str(p)
 
     def add(self, ev: Event) -> None:

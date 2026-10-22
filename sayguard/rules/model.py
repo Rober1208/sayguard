@@ -65,7 +65,7 @@ class TimeWindow(BaseModel):
     def _hhmm(cls, v: str) -> str:
         h, m = (v.split(":") + ["0"])[:2]
         h, m = int(h), int(m)
-        if not (0 <= h <= 24 and 0 <= m < 60):
+        if not (0 <= h <= 23 and 0 <= m < 60) and (h, m) != (24, 0):   # 24:00 = midnight; 24:30 is no time
             raise ValueError(f"bad time {v}")
         return f"{h % 24:02d}:{m:02d}"
 
@@ -87,8 +87,8 @@ class Rule(BaseModel):
     object: str | None = Field(default=None, description="English class name for object_* rules, e.g. forklift")
     threshold: float | None = Field(default=None, description="people count or metres")
     time_window: TimeWindow | None = None
-    min_duration_s: float = 2.0
-    cooldown_s: float = 30.0
+    min_duration_s: float = Field(default=2.0, ge=0)
+    cooldown_s: float = Field(default=30.0, ge=0)
     severity: Literal["low", "medium", "high"] = "medium"
     message: str = ""
     enabled: bool = True
@@ -99,6 +99,21 @@ class Rule(BaseModel):
     @classmethod
     def _obj(cls, v: str | None) -> str | None:
         return v.strip().lower() if v else v
+
+    @field_validator("cameras")
+    @classmethod
+    def _cams(cls, v: list[str]) -> list[str]:
+        # one meaning for "no camera list": every camera (the dashboard has always shown it that way)
+        return v or ["*"]
+
+    @field_validator("name", "message", "source_text", "object")
+    @classmethod
+    def _utf8(cls, v: str | None) -> str | None:
+        # a lone surrogate ("\ud83d" from a crafted request) cannot be saved as UTF-8 and would leave
+        # the rule live but unsaved; reject it up front
+        if v is not None:
+            v.encode("utf-8")
+        return v
 
     def covers(self, cam_id: str, zone: str) -> bool:
         """Camera/zone scope only (not enabled or time_window).

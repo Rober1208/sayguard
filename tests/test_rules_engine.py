@@ -525,3 +525,53 @@ def test_track_id_switch_at_same_place_does_not_realert():
     assert len(fired) >= 1                     # more people violating than at the last alert -> alert
     fired = eng.evaluate("cam01", 1040.0, [bare(9)], [], (1280, 720)).fired
     assert len(fired) == 1                     # after the cooldown the same spot alerts again
+
+# ---- a failed save changes nothing; values that cannot be saved are refused ---------------
+def test_failed_save_leaves_the_running_rules_unchanged(tmp_path, monkeypatch):
+    eng = make_engine(Rule(name="hat", type="no_helmet"), path=tmp_path / "rules.json")
+    before, version = dict(eng.rules), eng.version
+    hat = eng.list()[0]
+
+    def full_disk(path, data):
+        raise OSError("no space left")
+    monkeypatch.setattr(engine_mod, "_atomic_write", full_disk)
+    with pytest.raises(OSError):
+        eng.add(Rule(name="crowd", type="person_count_over", threshold=3))
+    with pytest.raises(OSError):
+        eng.remove(hat.id)
+    with pytest.raises(OSError):
+        eng.set_enabled(hat.id, False)
+    assert eng.rules == before and eng.version == version and hat.enabled
+
+
+def test_lone_surrogate_is_refused_before_it_can_break_saving():
+    with pytest.raises(ValueError):
+        Rule(name="bad \ud83d", type="no_helmet")
+
+
+def test_empty_camera_list_means_every_camera():
+    assert Rule(name="x", type="no_helmet", cameras=[]).cameras == ["*"]
+
+
+@pytest.mark.parametrize("hhmm, ok", [("24:00", True), ("23:59", True), ("24:30", False), ("25:00", False)])
+def test_time_window_hours(hhmm, ok):
+    if ok:
+        TimeWindow(start="22:00", end=hhmm)
+    else:
+        with pytest.raises(ValueError):
+            TimeWindow(start="22:00", end=hhmm)
+
+
+def test_negative_durations_are_refused():
+    with pytest.raises(ValueError):
+        Rule(name="x", type="no_helmet", min_duration_s=-1)
+    with pytest.raises(ValueError):
+        Rule(name="x", type="no_helmet", cooldown_s=-1)
+
+
+def test_incomplete_rule_in_the_file_is_loaded_switched_off(tmp_path):
+    path = tmp_path / "rules.json"
+    path.write_text(json.dumps([{"name": "crowd", "type": "person_count_over"}]), encoding="utf-8")
+    eng = RuleEngine(CAMS, path)
+    eng.load()
+    assert len(eng.list()) == 1 and eng.list()[0].enabled is False

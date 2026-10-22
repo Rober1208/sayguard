@@ -36,6 +36,7 @@ from starlette.concurrency import run_in_threadpool
 
 from . import resources
 from .config import ROOT, resolve
+from .netguard import LocalGuard
 from .pipeline import Pipeline
 from .rules import Rule
 from .rules import parser as rule_parser
@@ -89,8 +90,13 @@ def mjpeg(frame: Callable[[], tuple[int, bytes | None]]) -> StreamingResponse:
     return StreamingResponse(gen(), media_type="multipart/x-mixed-replace; boundary=frame")
 
 
+MAX_AUDIO_BYTES = 8_000_000
+
+
 def create_app(pipe: Pipeline) -> FastAPI:
     app = FastAPI(title="SayGuard", docs_url="/api/docs")
+    # only the dashboard may use the API: no other site's page, no DNS-rebound name (netguard.py)
+    app.add_middleware(LocalGuard, allowed_hosts=pipe.cfg.get("server", {}).get("allowed_hosts", []))
     app.mount("/static", StaticFiles(directory=str(WEB)), name="static")
     cfg = pipe.cfg
     # site mode: "zones" = the floor-plan zones a camera sees (set by SitePipeline), without which the
@@ -237,9 +243,11 @@ def create_app(pipe: Pipeline) -> FastAPI:
 
     @app.post("/api/asr")
     async def speech(audio: UploadFile = File(...), lang: str | None = Form(None)):
-        data = await audio.read()
+        data = await audio.read(MAX_AUDIO_BYTES + 1)
         if not data:
             raise HTTPException(400, "empty audio")
+        if len(data) > MAX_AUDIO_BYTES:     # a 30 s browser recording is well under 1 MB
+            raise HTTPException(413, f"audio larger than {MAX_AUDIO_BYTES // 1_000_000} MB")
         try:
             return await run_in_threadpool(asr().transcribe, data, audio.filename or "audio.webm", lang or None)
         except resources.ResourceError as e:

@@ -378,3 +378,58 @@ def test_llm_title_that_mangles_a_name_is_replaced(warehouse):
                    "zones": [], "object": "humanoid_robot", "severity": "medium", "message": "x"})
     res = parse("North Aisle East出現人形機器人就提醒我", *warehouse, llm=llm)
     assert res.rule.cameras == ["cam05"] and res.rule.name == "North Aisle East 偵測到人形機器人"
+
+# ---- numbered places and cameras this site does not have; impossible times ----------------
+@pytest.mark.parametrize("text, missing", [
+    ("三號走道有人就通知我", "3號走道"),          # was read as camera 3 (North Aisle West)
+    ("九號走道有人停留超過5秒就通知我", "9號走道"),
+    ("Tell me if an AMR enters aisle 3", "aisle 3"),   # was the whole site, no problem
+    ("Warn me if a forklift is at door two", "door two"),
+])
+def test_unknown_numbered_place_is_a_problem_not_a_camera(warehouse, text, missing):
+    res = parse(text, *warehouse, llm=None)
+    assert res.rule.cameras == ["*"] and any(missing in p for p in res.problems)
+
+
+@pytest.mark.parametrize("text", ["七號走道有人就通知我", "7號走道有人停留超過八秒就跟我說",
+                                  "Alert me if anyone enters aisle seven.", "Tell me whenever an AMR shows up on the loading dock."])
+def test_configured_places_are_not_flagged(warehouse, text):
+    assert parser.unknown_zones(text, *warehouse) == [] and parser.unknown_cameras(text, *warehouse) == []
+
+
+@pytest.mark.parametrize("text, number", [("11號攝影機沒戴安全帽要警告", "11"), ("camera 15: warn about missing hard hats", "15")])
+def test_camera_the_site_does_not_have_is_a_problem(site, text, number):
+    res = parse(text, *site, llm=None)
+    assert any(number in p for p in res.problems)
+
+
+def test_camera_numbers_still_name_cameras(site):
+    assert parse("5號攝影機有人沒戴安全帽超過十秒就警告", *site, llm=None).rule.cameras == ["cam05"]
+    assert parse("3號有人沒戴安全帽", *site, llm=None).rule.cameras == ["cam03"]   # a bare N號 is still a camera
+    assert parse("第3支攝影機有人沒戴安全帽", *site, llm=None).rule.cameras == ["cam03"]
+
+
+@pytest.mark.parametrize("text", ["25點到26點倉庫不能有人", "99點以後倉庫不能有人",
+                                  "after 30 alert me if anyone is in the warehouse", "10:75到11點入口不能有人"])
+def test_impossible_time_is_a_problem_not_wrapped(site, text):
+    res = parse(text, *site, llm=None)
+    assert res.rule.time_window is None and any("時間" in p or "time" in p for p in res.problems)
+
+
+def test_midnight_as_24_still_parses(site):
+    assert parse("晚上10點到24點倉庫不能有人", *site, llm=None).rule.time_window.model_dump() == \
+        {"start": "22:00", "end": "00:00"}
+
+
+@pytest.mark.parametrize("bad", ["three", "3.5x", [3], float("nan"), -2])
+def test_llm_threshold_that_is_no_number_does_not_crash(site, bad):
+    llm = FakeLLM({"name": "人太多", "type": "person_count_over", "cameras": ["*"], "zones": [],
+                   "threshold": bad, "severity": "medium", "message": "x"})
+    res = parse("人太多要提醒我", *site, llm=llm)       # used to raise ValueError -> HTTP 500
+    assert res.rule is None or res.rule.threshold is None or res.rule.threshold >= 0
+
+
+def test_negative_llm_duration_is_dropped(site):
+    llm = FakeLLM({"name": "倉庫有人", "type": "person_present", "cameras": ["*"], "zones": ["warehouse"],
+                   "min_duration_s": -5, "severity": "medium", "message": "x"})
+    assert parse("倉庫有人就通知我", *site, llm=llm).rule.min_duration_s >= 0

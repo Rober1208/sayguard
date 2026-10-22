@@ -542,6 +542,8 @@ def _llm_actions(llm: LLMClient, stats: dict, lang: str) -> tuple[list[str] | No
         picks = json.loads(raw)["actions"]
     except Exception as e:  # offline, timeout, not JSON
         return None, f"LLM actions unavailable ({type(e).__name__})"
+    if not _list_of_objects(picks):
+        return None, "LLM actions were not a list of objects"
     t = TEXT[_lang(lang)]
     cams = {x["camera"] for x in issues}
     out, seen, replaced = [], set(), []
@@ -599,6 +601,11 @@ def menu_prompt(s: dict, lang: str) -> tuple[list[dict], list[dict], dict]:
     return msgs, issues, schema
 
 
+def _list_of_objects(picks) -> bool:
+    """Ollama enforces the schema; a backend that ignores `format` may send anything."""
+    return isinstance(picks, list) and all(isinstance(p, dict) for p in picks)
+
+
 def _llm_menu_actions(llm: LLMClient, stats: dict, lang: str) -> tuple[list[str] | None, str]:
     if not stats["violations"]:
         return None, "no violations: template actions"
@@ -609,6 +616,8 @@ def _llm_menu_actions(llm: LLMClient, stats: dict, lang: str) -> tuple[list[str]
         picks = json.loads(llm.chat(msgs, fmt=schema, temperature=0.2, max_tokens=120))["actions"]
     except Exception as e:  # offline, timeout, not JSON
         return None, f"LLM plan unavailable ({type(e).__name__})"
+    if not _list_of_objects(picks):
+        return None, "LLM plan was not a list of objects"
     t = TEXT[_lang(lang)]
     sep, colon = ("・", "：") if lang == "zh" else (" · ", ": ")
     out, seen = [], set()

@@ -270,17 +270,19 @@ class Pipeline:
     def _loop(self) -> None:
         period = 1.0 / self.fps_target
         every_n = max(1, int(self.cfg.get("open_vocab", {}).get("every_n_frames", 3)))
-        next_tick = time.time()
+        # the grid runs on the monotonic clock: a wall-clock step (time sync, someone setting the
+        # clock back) must not freeze every camera for the size of the step
+        next_grid = time.monotonic()
         while not self._stop.is_set():
-            next_tick += period
-            delay = next_tick - time.time()
+            next_grid += period
+            delay = next_grid - time.monotonic()
             if delay > 0:
-                time.sleep(delay)
+                self._stop.wait(delay)
             elif delay < -period:      # a slow batch left us over a period behind: restart the grid
-                next_tick = time.time()
+                next_grid = time.monotonic()
             if self._stop.is_set():
                 break
-            tick = next_tick
+            tick = time.time()         # wall clock: alert timestamps and rule time windows
             self._maybe_purge(tick)
             batch: list[tuple[CamState, FramePacket]] = []
             for st in self.states.values():
@@ -321,14 +323,15 @@ class Pipeline:
         """Per-camera rate and frame bookkeeping, done before anything that can fail so no error
         can freeze a camera's counters; returns the cameras due for open-vocabulary detection."""
         ov_due: list[tuple[CamState, FramePacket]] = []
+        mono = time.monotonic()        # rates and staleness on the monotonic clock (see _loop)
         for st, pkt in batch:
-            gap = tick - st.last_proc
+            gap = mono - st.last_proc
             if st.last_proc and gap <= self.stale_s:
                 inst = 1.0 / max(1e-3, gap)
                 st.fps = inst if st.fps <= 0 else 0.85 * st.fps + 0.15 * inst
             else:
                 st.fps = 0.0           # first frame, or back from an outage: measure afresh
-            st.last_idx, st.last_proc = pkt.index, tick
+            st.last_idx, st.last_proc = pkt.index, mono
             if st.n_proc % every_n == 0:
                 ov_due.append((st, pkt))
             st.n_proc += 1
@@ -443,8 +446,9 @@ class Pipeline:
 
     # ---------------------------------------------------------------- status
     def _stale(self, st: CamState, now: float) -> bool:
-        """No frame of this camera processed recently (source down, or not started)."""
-        return now - st.last_proc > self.stale_s
+        """No frame of this camera processed recently (source down, or not started).  `now` is the
+        caller's wall time, kept for the signature; last_proc is on the monotonic clock."""
+        return not st.last_proc or time.monotonic() - st.last_proc > self.stale_s
 
     def hailo_estimate(self) -> dict:
         """Demand against Hailo's published YOLOv8s speeds.  Those are for a 640 px input; a detector

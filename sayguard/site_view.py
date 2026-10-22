@@ -17,12 +17,16 @@ WORKER = (90, 200, 90)
 
 
 def head_of(box: tuple) -> tuple[float, float, float, float]:
-    """Head region of a standing person box (top ~16 %, centred), for face pixelation."""
+    """Head region of a person box, centred at the top, for face pixelation.  For a standing person
+    the head is the top ~16 % of the box; a box cut off by the frame edge or a shelf, or a crouching
+    worker, is squat, and there the head is sized from the box width (about 0.6 of it) instead, so
+    the mouth and chin are covered too.  Erring large only hides some neck or shoulder."""
     x1, y1, x2, y2 = box
     w, h = x2 - x1, y2 - y1
-    hw = min(w, 0.42 * w + 0.06 * h)
+    hw = min(w, max(0.42 * w + 0.06 * h, 0.55 * w))
+    hh = min(h, max(0.16 * h, 0.6 * w))
     cx = (x1 + x2) / 2
-    return cx - hw / 2, y1, cx + hw / 2, y1 + 0.16 * h
+    return cx - hw / 2, y1, cx + hw / 2, y1 + hh
 
 
 def draw_site_tile(frame: np.ndarray, title: str, people: list[tuple[tuple, int | None, float]],

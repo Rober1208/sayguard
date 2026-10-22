@@ -1,0 +1,31 @@
+name: tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SAYGUARD_WORK: ${{ runner.temp }}/work   # the unit tests need no work directory, models or GPU
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: .github/workflows/tests.yml
+      - name: ffmpeg (tests/test_asr_decode.py)
+        run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends ffmpeg
+      - name: CPU-only test dependencies (no torch, no models)
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy opencv-python-headless pyyaml "pydantic>=2" pillow httpx opencc-python-reimplemented pytest
+      - name: Unit tests
+        run: python -m pytest -q -p no:cacheprovider tests

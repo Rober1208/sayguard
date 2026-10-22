@@ -193,16 +193,19 @@ class RuleEngine:
         self.version = 0
 
     # ---- rule management -------------------------------------------------
+    # Every change is written to rules.json first and goes live only once it is saved: a failed save
+    # (disk full, a locked file) raises and leaves the running rules exactly as they were, instead of
+    # a rule that is live but would vanish at the next restart.
     def add(self, rule: Rule) -> Rule:
         with self._lock:
-            self.rules[rule.id] = rule
-            self._changed()
+            self._commit({**self.rules, rule.id: rule})
         return rule
 
     def remove(self, rule_id: str) -> bool:
         with self._lock:
-            ok = self.rules.pop(rule_id, None) is not None
+            ok = rule_id in self.rules
             if ok:
+                self._commit({k: r for k, r in self.rules.items() if k != rule_id})
                 for k in [k for k in self._hits if k[0] == rule_id]:
                     del self._hits[k]
                 for k in [k for k in self._last_fire if k[0] == rule_id]:
@@ -212,31 +215,39 @@ class RuleEngine:
                 for k in [k for k in self._cam_fire if k[0] == rule_id]:
                     del self._cam_fire[k]
                 self._site_fired.pop(rule_id, None)
-                self._changed()
             return ok
 
     def set_enabled(self, rule_id: str, enabled: bool) -> Rule | None:
         with self._lock:
             r = self.rules.get(rule_id)
             if r:
-                r.enabled = enabled
-                self._changed()
+                old, r.enabled = r.enabled, enabled
+                try:
+                    self._commit(dict(self.rules))
+                except BaseException:
+                    r.enabled = old
+                    raise
             return r
 
     def list(self) -> list[Rule]:
         with self._lock:
             return sorted(self.rules.values(), key=lambda r: r.created_at)
 
-    def _changed(self) -> None:
-        self.version += 1
-        self.save()
+    def _commit(self, rules: dict[str, Rule]) -> None:
+        with self._lock:
+            self._write(rules)      # raises on failure, before anything changes
+            self.rules = rules
+            self.version += 1
 
     def save(self) -> None:
+        self._write(self.rules)
+
+    def _write(self, rules: dict[str, Rule]) -> None:
         if not self.rules_path:
             return
         with self._lock:   # one writer at a time: they share the .tmp file
             self.rules_path.parent.mkdir(parents=True, exist_ok=True)
-            data = [r.model_dump() for r in self.list()]
+            data = [r.model_dump() for r in sorted(rules.values(), key=lambda r: r.created_at)]
             _atomic_write(self.rules_path, json.dumps(data, ensure_ascii=False, indent=1))
 
     def _set_aside(self, reason: str) -> None:
@@ -277,12 +288,20 @@ class RuleEngine:
                             str(e).replace("\n", " "))
                 skipped += 1
                 continue
+            problems = r.check_complete()
+            if problems and r.enabled:     # a hand-edited rule the dashboard would refuse: kept, but off
+                log.warning("rule %r is incomplete (%s); loaded switched off", r.name, "; ".join(problems))
+                r.enabled = False
             rules[r.id] = r
         if skipped and saved is not None:
             self._set_aside(f"{skipped} invalid rule(s) skipped")   # the save below drops them from rules.json
         with self._lock:
+            try:
+                self._write(rules)
+            except OSError:            # a read-only or full disk must not stop the cameras
+                log.exception("could not save %s; running with the rules loaded", self.rules_path)
             self.rules = rules
-            self._changed()
+            self.version += 1
 
     # ---- queries ---------------------------------------------------------
     def applies(self, rule: Rule, cam: CameraInfo, ts: float | None = None) -> bool:

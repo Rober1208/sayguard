@@ -111,3 +111,13 @@ def test_purge_keeps_the_cutoff_day_folder(store, tmp_path):
     add_with_snapshot(store, e)
     assert store.purge_older_than(at(18, 12)) == 1
     assert (tmp_path / "snaps" / "20261018").is_dir()               # may still receive today's snapshots
+
+
+def test_snapshot_is_written_under_a_non_ascii_folder(tmp_path):
+    # cv2.imwrite cannot open such a path on Windows and only returned False; the event then
+    # pointed at a file that did not exist
+    import cv2
+    s = EventStore(tmp_path / "db" / "events.db", tmp_path / "工安快照")
+    p = s.save_snapshot(ev(1, at(20, 9)), np.full((48, 64, 3), 127, np.uint8))
+    img = cv2.imdecode(np.fromfile(p, np.uint8), cv2.IMREAD_COLOR)
+    assert img is not None and img.shape == (48, 64, 3)

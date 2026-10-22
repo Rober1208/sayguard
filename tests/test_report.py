@@ -291,3 +291,9 @@ def test_a_plan_with_a_repeated_or_unknown_issue_falls_back_to_the_template(stor
     assert build_report(store, SeqLLM(plan((0, 0), (0, 1), (1, 2))), CAMS, "en", now=NOW)["generator"] == "template"
     assert build_report(store, SeqLLM(plan((0, 0), (1, 5), (2, 1))), CAMS, "en", now=NOW)["generator"] == "template"
     assert build_report(store, SeqLLM("not json"), CAMS, "en", now=NOW)["generator"] == "template"
+
+
+@pytest.mark.parametrize("bad", ['{"actions": "three actions"}', '{"actions": [1, 2, 3]}', '{"actions": {"a": 1}}'])
+def test_a_plan_that_is_not_a_list_of_objects_falls_back_to_the_template(store, bad):
+    # a backend that ignores the JSON schema used to raise AttributeError/TypeError -> HTTP 500
+    assert build_report(store, SeqLLM(bad), CAMS, "en", now=NOW)["generator"] == "template"

@@ -9,6 +9,7 @@ confirmation before it is activated.  Without an LLM the extractor alone is used
 from __future__ import annotations
 
 import json
+import math
 import re
 import unicodedata
 from dataclasses import dataclass, field
@@ -150,6 +151,7 @@ class Evidence:
     severity: str | None = None
     cameras: list[str] = field(default_factory=list)
     zones: list[str] = field(default_factory=list)
+    time_error: str | None = None     # a time the sentence gives that is no time of day ("25點")
 
 
 @lru_cache(maxsize=1)
@@ -207,6 +209,19 @@ def _name_pattern(name: str) -> str:
     return out + ("(?:[區区])?" if optional_qu else "")
 
 
+# "3號走道" / "3號門" name a place, not camera 3: a bare N號 is a camera only when no place noun follows
+PLACE_NOUN_ZH = r"走道|通道|走廊|閘門|闸门|大門|大门|門|门|出口|入口|碼頭|码头|月台|貨架|货架|倉庫|仓库|區|区|道|線|线|棟|栋|樓|楼"
+CAMERA_NUMBER = re.compile(
+    r"(?:cam(?:era)?\s*0?(\d{1,2}))|"
+    rf"(?:(\d{{1,2}})\s*[號号]\s*(?:攝影機|摄影机|鏡頭|镜头|相機|相机)?(?!\s*(?:{PLACE_NOUN_ZH})))|"
+    r"(?:第\s*(\d{1,2})\s*(?:支|台|個|个)?\s*(?:攝影機|摄影机|鏡頭|镜头))", re.I)
+
+
+def _camera_numbers(ftext: str) -> list[str]:
+    """Camera ids a (zone-blanked, folded) sentence names by number, configured or not."""
+    return [f"cam{int(next(g for g in m.groups() if g)):02d}" for m in CAMERA_NUMBER.finditer(ftext)]
+
+
 def _match_scope(text: str, cameras: list[dict], zones: dict[str, dict]) -> tuple[list[str], list[str]]:
     zs: list[str] = []
     ftext = _fold(text)
@@ -225,10 +240,7 @@ def _match_scope(text: str, cameras: list[dict], zones: dict[str, dict]) -> tupl
                 ftext = re.sub(_name_pattern(c), " ", ftext, flags=re.I)
     cams: list[str] = []
     ids = {c["id"] for c in cameras}
-    for m in re.finditer(r"(?:cam(?:era)?\s*0?(\d{1,2}))|(?:(\d{1,2})\s*[號号]\s*(?:攝影機|摄影机|鏡頭|镜头|相機|相机)?)|"
-                         r"(?:第\s*(\d{1,2})\s*(?:支|台|個|个)?\s*(?:攝影機|摄影机|鏡頭|镜头))", ftext, re.I):
-        n = next(g for g in m.groups() if g)
-        cid = f"cam{int(n):02d}"
+    for cid in _camera_numbers(ftext):
         if cid in ids:
             cams.append(cid)
     # camera display names ("Loading Dock"), longest first and each one blanked out once found, so
@@ -272,6 +284,8 @@ def _time_window(text: str) -> dict | None:
         # each end uses its own am/pm word; a bare hour borrows the other end's afternoon/evening
         # word only when that keeps the range in order ("1 to 5pm", "下午1點到5點", not "10 to 6pm")
         h1, h2 = int(m["h1"]), int(m["h2"])
+        if _bad_clock(h1, m["m1"]) or _bad_clock(h2, m["m2"]):
+            return {"error": m.group(0).strip()}
         c1, c2 = m["p1"] + _ampm(m["a1"]), m["p2"] + _ampm(m["a2"])
         if h1 < h2 and not c1 and re.search(PM, c2, re.I):
             c1 = c2
@@ -285,9 +299,13 @@ def _time_window(text: str) -> dict | None:
     if not m:
         m2 = re.search(rf"after\s+(\d{{1,2}})(?::(\d{{2}}))?\s*({AMPM})?", text, re.I)
         if m2:
+            if _bad_clock(int(m2.group(1)), m2.group(2)):
+                return {"error": m2.group(0).strip()}
             h = to24(int(m2.group(1)), _ampm(m2.group(3)))
             return {"start": f"{h % 24:02d}:{int(m2.group(2) or 0):02d}", "end": "06:00"}
     if m:
+        if _bad_clock(int(m.group(2)), m.group(3)):
+            return {"error": m.group(0).strip()}
         h = to24(int(m.group(2)), m.group(1))
         mm = 30 if m.group(3) == "半" else int(m.group(3) or 0)
         return {"start": f"{h % 24:02d}:{mm:02d}", "end": "06:00"}
@@ -296,6 +314,12 @@ def _time_window(text: str) -> dict | None:
     if _has(r"半夜|深夜|夜間|夜间|overnight|at night", text):
         return {"start": "22:00", "end": "06:00"}
     return None
+
+
+def _bad_clock(h: int, mm: str | None) -> bool:
+    """An hour/minute that is no time of day (25點, 99點以後, 10:75): reported, never wrapped round."""
+    m = 30 if mm == "半" else int(mm or 0)
+    return not (0 <= h <= 24 and 0 <= m < 60) or (h == 24 and m)
 
 
 def _without_scope_names(text: str, cameras: list[dict], zones: dict[str, dict]) -> str:
@@ -315,13 +339,22 @@ ZONE_LIKE_ZH = re.compile(r"(?<![A-Za-z0-9这這那每哪整同任何另某其�
                           r"([A-Za-z]|\d{1,2}|[一二三四五六七八九十]{1,3})[区區](?!域)")
 ZONE_LIKE_EN = re.compile(r"(?<![A-Za-z])(?:[Zz]one|[Aa]rea|ZONE|AREA)\s+([A-Z]|[b-hj-z]|\d{1,2})(?![A-Za-z0-9])"
                           r"(?!\s*(?:m\b|metres?|meters?|seconds?|secs?\b|minutes?|mins?\b|hours?|people|persons?|workers?|%))")
+# numbered places ("3號走道", "aisle 3", "door two"): left over after the configured names are blanked
+# out, they name an aisle or door this site does not have (or did not name as a zone)
+PLACE_LIKE_ZH = re.compile(rf"\d{{1,2}}\s*[號号]\s*(?:{PLACE_NOUN_ZH})")
+EN_NUMBER_WORD = r"one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve"
+PLACE_LIKE_EN = re.compile(rf"\b(?:aisle|door|dock|gate|bay|lane|row|exit)\s+(?:no\.?\s*)?(?:\d{{1,2}}|(?-i:[A-Z])|{EN_NUMBER_WORD})\b"
+                           r"(?!\s*(?:m\b|metres?|meters?|seconds?|secs?\b|minutes?|mins?\b|hours?|people|persons?|workers?|%))",
+                           re.I)
 
 
 def unknown_zones(text: str, cameras: list[dict], zones: dict[str, dict]) -> list[str]:
-    """Zone labels the sentence names that match no configured zone, as the user wrote them."""
+    """Zone labels and numbered places the sentence names that match no configured zone, as written."""
     rest = _without_scope_names(_norm(text), cameras, zones)
     found = [(m.start(), _to_traditional(m.group(0))) for m in ZONE_LIKE_ZH.finditer(rest)]
+    found += [(m.start(), _to_traditional(re.sub(r"\s+", "", m.group(0)))) for m in PLACE_LIKE_ZH.finditer(rest)]
     found += [(m.start(), m.group(0).strip()) for m in ZONE_LIKE_EN.finditer(rest)]
+    found += [(m.start(), m.group(0).strip()) for m in PLACE_LIKE_EN.finditer(rest)]
     out: list[str] = []
     for _, name in sorted(found):
         if name not in out:
@@ -329,16 +362,33 @@ def unknown_zones(text: str, cameras: list[dict], zones: dict[str, dict]) -> lis
     return out
 
 
+def unknown_cameras(text: str, cameras: list[dict], zones: dict[str, dict]) -> list[str]:
+    """Camera numbers the sentence names that are not configured ("camera 15" on a 10-camera site)."""
+    ftext = _fold(_norm(text))
+    for zid, names in zones.items():
+        for c in (names.get("en", ""), names.get("zh", "")):
+            if c:
+                ftext = re.sub(_name_pattern(c), " ", ftext, flags=re.I)
+    ids = {c["id"] for c in cameras}
+    return list(dict.fromkeys(cid for cid in _camera_numbers(ftext) if cid not in ids))
+
+
 def unknown_zone_problems(text: str, cameras: list[dict], zones: dict[str, dict]) -> list[str]:
-    """A rule must not quietly drop a place the officer named and watch the whole site instead."""
+    """A rule must not quietly drop a place or camera the officer named and watch the whole site instead."""
     missing = unknown_zones(text, cameras, zones)
-    if not missing:
-        return []
+    missing_cams = unknown_cameras(text, cameras, zones)
     zh = _is_zh(text)
-    names = [z.get("zh" if zh else "en") or zid for zid, z in zones.items()]
-    if zh:
-        return [f"這個場地沒有「{'、'.join(missing)}」；可用的區域：{'、'.join(names)}"]
-    return [f"This site has no zone called {', '.join(repr(m) for m in missing)}; zones here: {', '.join(names)}"]
+    out = []
+    if missing:
+        names = [z.get("zh" if zh else "en") or zid for zid, z in zones.items()]
+        out.append(f"這個場地沒有「{'、'.join(missing)}」；可用的區域：{'、'.join(names)}" if zh else
+                   f"This site has no zone called {', '.join(repr(m) for m in missing)}; zones here: {', '.join(names)}")
+    if missing_cams:
+        nums = [str(int(c[3:])) for c in missing_cams]
+        have = ", ".join(c["id"] for c in cameras)
+        out.append(f"這個場地沒有{'、'.join(n + '號' for n in nums)}攝影機；攝影機：{have}" if zh else
+                   f"This site has no camera {', '.join(nums)}; cameras here: {have}")
+    return out
 
 
 def extract(text: str, cameras: list[dict], zones: dict[str, dict]) -> Evidence:
@@ -366,7 +416,10 @@ def extract(text: str, cameras: list[dict], zones: dict[str, dict]) -> Evidence:
         ev.type, ev.object = "object_present", obj[0]
     if obj and ev.type in ("object_present", "object_near_person"):
         ev.object = obj[0]
-    ev.time_window = _time_window(t)
+    tw = _time_window(t)
+    if tw and "error" in tw:
+        ev.time_error, tw = tw["error"], None
+    ev.time_window = tw
     d = re.search(r"(?:超過|超过|持續|持续|連續|连续|for|over|more than|longer than)\s*(\d+(?:\.\d+)?)\s*"
                   r"(?:(?P<min>分鐘|分钟|minutes?|mins?\b)|秒|s\b|sec|seconds?)", t, re.I)
     if d is None:
@@ -495,7 +548,18 @@ def _clean_llm(d: dict, cameras: list[dict], zones: dict[str, dict]) -> dict:
         d["object"] = hit
     if d.get("type") not in RULE_TYPES:
         d["type"] = None
+    # a backend that ignores the JSON schema (e.g. "threshold": "three") must not crash the parse
+    for k in ("threshold", "min_duration_s"):
+        d[k] = _non_negative(d.get(k))
     return {k: v for k, v in d.items() if k in LLM_FIELDS}
+
+
+def _non_negative(v) -> float | None:
+    try:
+        f = float(v)
+    except (TypeError, ValueError):
+        return None
+    return f if math.isfinite(f) and f >= 0 else None
 
 
 @dataclass
@@ -559,7 +623,14 @@ def parse(text: str, cameras: list[dict], zones: dict[str, dict], llm=None) -> P
             return res
         return ParseResult(None, "failed", notes, [f"invalid rule: {e}"])
     return ParseResult(rule, parser, notes, rule.check_complete() + scope_problems(rule, cameras)
-                       + unknown_zone_problems(text, cameras, zones))
+                       + unknown_zone_problems(text, cameras, zones) + time_problems(ev, text))
+
+
+def time_problems(ev: Evidence, text: str) -> list[str]:
+    if not ev.time_error:
+        return []
+    return [f"「{ev.time_error}」不是有效的時間（0–23 點）" if _is_zh(text) else
+            f"{ev.time_error!r} is not a valid time of day (hours 0-23)"]
 
 
 USES_THRESHOLD = {"person_count_over", "object_near_person"}

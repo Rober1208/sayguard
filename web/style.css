@@ -421,6 +421,9 @@ button:disabled { cursor: not-allowed; }
 .sys-item dt { font-size: 11px; text-transform: uppercase; letter-spacing: 0.7px; color: var(--text-3); white-space: nowrap; }
 .sys-item dd { margin: 0; font-size: 12.5px; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sys-item dd .muted { color: var(--text-3); }
+/* AGPL-3.0 section 13: the network service offers its source */
+.src-link { font-size: 11px; color: var(--text-3); white-space: nowrap; text-decoration: none; }
+.src-link:hover { color: var(--text-1); text-decoration: underline; }
 .state-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; background: var(--text-3); vertical-align: 1px; }
 .state-dot.ok { background: var(--good-hi); }
 .state-dot.busy { background: var(--accent-hi); }

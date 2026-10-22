@@ -129,9 +129,9 @@ def main() -> None:
     ap.add_argument("--min-px", type=float, default=10.0)
     ap.add_argument("--name", default="site", help="dataset folder under @work/datasets (replaced)")
     a = ap.parse_args()
-    # scripts/eval_site.py scenes, never trained on: Warehouse_020 picks the site-mode settings,
-    # Warehouse_010 and Warehouse_018 only measure them
-    held_out = {"Warehouse_010", "Warehouse_018", "Warehouse_020"}
+    # every scene scripts/eval_site.py uses, never trained on: validation W012/W020 (settings), test
+    # W010/W013/W015/W018/W019/W022, and development scenes W009/W017 (twins of training/test rooms)
+    held_out = {f"Warehouse_{n:03d}" for n in (9, 10, 12, 13, 15, 17, 18, 19, 20, 22)}
     for s in a.train + a.val:
         if Path(parse_scene(s)[0]).name in held_out:
             sys.exit(f"{s}: {sorted(held_out)} are site-mode evaluation scenes; keep them out of training")

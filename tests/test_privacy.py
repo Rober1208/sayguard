@@ -57,3 +57,12 @@ def test_a_restarted_clock_clears_the_hold():
     hold.update(50.0, [((100, 100, 140, 129), False)])
     assert hold.update(1.0, []) == []
 
+
+def test_warehouse_head_region_covers_cut_off_and_crouching_people():
+    from sayguard.site_view import head_of
+    x1, y1, x2, y2 = head_of((0, 0, 100, 400))          # standing, whole body in view
+    assert y2 - y1 == 64                                 # the top 16 %
+    x1, y1, x2, y2 = head_of((0, 0, 100, 140))          # cut off at the hips by the frame or a shelf
+    assert y2 - y1 >= 0.4 * 140                          # the head is ~25-35 % of such a box: chin covered
+    x1, y1, x2, y2 = head_of((0, 0, 120, 110))          # crouching
+    assert y2 - y1 >= 0.6 * 110 and x2 - x1 >= 0.55 * 120
