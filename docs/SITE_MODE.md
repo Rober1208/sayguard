@@ -103,7 +103,7 @@ on the PC prototype (RTX 5060 Ti).
 | Forklift 3 m rule | **56/61** events covered (92 %), 1 of 26 alerts false |
 | Lanes and aisles · work areas | **83 %** · **96 %** of entries covered; 4 % · 7 % of alerts false |
 | Same detections, alerting camera by camera | far fewer zone entries covered: demo warehouse dock 36.4 % instead of 100 % |
-| Spoken warehouse rules, exactly right | **84–88 %** on held-out sentences, against 16–24 % for the LLM alone |
+| Warehouse rule sentences (typed), exactly right | **84–88 %** on held-out sentences, against 16–24 % for the LLM alone |
 
 *Covered* means the entry got its own alert, or the same worker had just been alerted for that
 rule and the cooldown held back a repeat.
@@ -143,8 +143,10 @@ rules and dashboard, none of which needs another model.
   but IDs are not shown, and a worker who walks into another area gets a new one.
 - **Repeats in busy open areas.** On the demo warehouse's open floor, an entry that raised an
   alert raised 2.93 on average.
-- **Not on the UGen300 yet.** The warehouse detector is not yet compiled for Hailo-10H, so the load
-  of 12 cameras on one box will be measured in Stage II ([HAILO_PORT.md](HAILO_PORT.md)).
+- **Not on the UGen300 yet.** The warehouse detector is compiled to Hailo-10H HEFs (960×960 and
+  544×960, accuracy checked in Hailo's INT8 emulator) but has not run on the device. Its throughput
+  and the load of 12 cameras on one box will be measured in week 1 of Stage II
+  ([HAILO_PORT.md](HAILO_PORT.md)).
 
 To run the warehouse demo or reproduce these numbers, see [SETUP.md](SETUP.md). Warehouse
 scenes: NVIDIA PhysicalAI-SmartSpaces (CC BY 4.0).

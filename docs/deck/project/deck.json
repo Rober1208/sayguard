@@ -22,9 +22,12 @@
     "hardware",
     "models",
     "business",
+    "outcomes",
     "stage2",
     "risks",
-    "close"
+    "close",
+    "appendix_hailo",
+    "appendix_refs"
   ],
   "sections": {
     "s1": {
@@ -50,6 +53,10 @@
     "s6": {
       "description": "Business model, Stage II plan and limits",
       "start": "business"
+    },
+    "s7": {
+      "description": "Appendix: how the models share one Hailo-10H, and references",
+      "start": "appendix_hailo"
     }
   },
   "faces": {

@@ -2,6 +2,12 @@ English | [繁體中文](DEMO_SCRIPT.zh-TW.md)
 
 # 3-minute demo video: script and shot list (Stage I)
 
+This was the recording plan. The published video (https://youtu.be/SH1x9OGXXZQ) follows it
+loosely; its chapters are in the video description. The 2:31 narration was written before the
+warehouse detector was compiled: both detectors now have Hailo-10H HEFs, and in Hailo's INT8
+emulator the warehouse model scores 0.947 mAP50, the same as float (960×960; 0.951 at 544×960,
+float 0.948).
+
 Target length 2:50 with English narration (competition rule §6.1); the hard limit is 3:00.
 Record the dashboard at 1920×1080 (OBS, display capture, browser in full screen) and add the
 voice-over afterwards, so the narration can follow what actually happened in each take.
@@ -33,7 +39,7 @@ prototype in the video runs on a PC GPU: say "locally" or "on site" for what it 
 | 0:13–0:37 | Hard-hat mode | Camera wall. Point at the KPI strip ("Frames analysed / s", "Est. UGen300 load"). A tile with a bare head (House Frame in our footage) shows the red "NO HARD HAT" box, then the alert card appears and its badge changes from "Checking…" to "Confirmed by double-check". Zoom in on a pixelated face. Caption 1. | "In hard-hat mode, ten cameras with a ten-frames-a-second target share one batched YOLOv8s detector, which analyses all 100 frames a second. That is an estimated 40 % of one UGen300. A bare head must persist for two seconds. Then a CLIP yes-or-no check looks at the crop and confirms the alert or marks it as a false alarm. Faces are pixelated locally." |
 | 0:37–1:12 | Spoken rule (the LLM's first job) | (1) Hold the mic button and say "Alert me if more than two people are at the site gate after 10 pm." The transcript appears, then the "Proposed rule" card with the badge "LLM + checker". "When" reads 22:00–06:00. Open "Checker notes", which shows the LLM's time window and the one the checker used. Click "Cancel". (2) Type "A區有人靠近挖土機三公尺內要立刻警告" and click "Check". The card reads "Person within 3 m of an excavator", Zone A, severity High. Click "Activate rule". (3) On the Excavation Pit tile, an orange "excavator" box, a red distance line in metres and the alert appear. Caption 2. | "This is the LLM's first special job. A new rule about known objects, zones, distances, counts or times is one sentence. Whisper transcribes it, Qwen2.5-1.5B drafts structured JSON, and deterministic code checks the numbers, times and objects it finds in what was said. Here the model ended 'after 10 pm' at midnight; the checker applied the stated convention, 22:00 to 06:00, and shows the correction. Mandarin works the same way, and the confirmed excavator rule is live within seconds on this PC. An open-vocabulary detector finds the excavator from the word alone." |
 | 1:12–1:44 | Warehouse mode | Cut to the warehouse take. The floor-plan tile is labelled "Floor plan · each worker counted once" and shows workers, zones and vehicles. The KPI "Workers on site" shows the unique count, with camera detections beneath it. An alert "Worker within 3 m of a forklift": the worker turns red on the plan and in every camera tile that sees them, and the alert card lists the cameras ("seen by …") and the distance in metres. Then hold the mic and say "Alert me if anyone enters the dock." On the card, "Where" reads Dock. Click "Activate rule". Caption 3. | "Warehouse mode is the multi-camera version, shown here on a synthetic warehouse. Eleven calibrated cameras are fused on one floor plan, so each worker is counted once, not once per camera. Adding up the cameras would roughly double the head count. Zones are drawn once on the plan, distances to forklifts are measured in metres, and each worker raises one alert per entry, not one per camera, lit in every camera that sees them. Rules still come by voice, with zone names as people say them." |
-| 1:44–2:10 | The daily report (the LLM's second job) | Back to the hard-hat take, after at least 15 minutes of history. Click "Daily safety report". The modal shows "Writing the report with the on-device LLM…". The report then shows the summary, the per-camera table and three "Recommended actions" in the form **camera** · problem: fix. Zoom in on the footer: "numbers and tables computed by SayGuard, actions drafted by on-device LLM (qwen2.5:1.5b)". Caption 4. | "The LLM's second job is the daily report, but code computes every number and table. The model only plans: from the problems that really happened, it picks the three that matter and a vetted fix for each, as numbered choices. So it cannot blame the wrong camera or invent a figure. Two blind AI judges found the wrong problem in 20 % of freely written actions, and in none of these." |
+| 1:44–2:10 | The daily report (the LLM's second job) | Back to the hard-hat take, after at least 15 minutes of history. Click "Daily safety report". The modal shows "Writing the report with the local LLM…". The report then shows the summary, the per-camera table and three "Recommended actions" in the form **camera** · problem: fix. Zoom in on the footer: "numbers and tables computed by SayGuard, actions drafted by the local LLM (qwen2.5:1.5b)". Caption 4. | "The LLM's second job is the daily report, but code computes every number and table. The model only plans: from the problems that really happened, it picks the three that matter and a vetted fix for each, as numbered choices. So it cannot blame the wrong camera or invent a figure. Two blind AI judges found the wrong problem in 20 % of freely written actions, and in none of these." |
 | 2:10–2:31 | Numbers | Full-screen results card (caption 5). | "Every number is measured or labelled as an estimate, and the scripts are in the repo. On typed held-out sentences in hard-hat mode, the checker lifts the small model from 40 to 95 % of rules exactly right. On six test buildings the detector never trained on, after two alert-logic fixes, warehouse mode covered all 53 door and dock events, 52 with an alert of their own." |
 | 2:31–2:50 | Ask | Model map (job · model · Hailo-10H reference), then the closing card "SayGuard · github.com/Rober1208/sayguard". Caption 6. | "Every job maps to a published Hailo-10H model, and our hard-hat detector is already compiled for it: in Hailo's emulator, INT8 scores 0.889 mAP50 against 0.893 in float. In Stage II we move every model onto one 2.5-watt UGen300 per site area and measure it there. We are asking for that chance, on a real site." |
 
@@ -89,7 +95,7 @@ usually gives the same draft.
   - Wait for the first hard-hat alert. This loads the CLIP yes/no check.
   - Activate and then delete any object rule. YOLO-World loads the first time a rule names an
     object and stays loaded afterwards.
-- The KPI "On-device LLM" must read Online. If it does not, the rule card shows the badge
+- The KPI "Local LLM" must read Online. If it does not, the rule card shows the badge
   "Rule extractor" instead of "LLM + checker", and the LLM shots cannot be recorded.
 
 ### Take 2: warehouse mode
@@ -111,8 +117,7 @@ usually gives the same draft.
 
 - Stop other GPU-heavy programs, such as training jobs, so that every camera stays at 10 fps.
 - Honesty checks: call the warehouse footage synthetic, and call the UGen300 load an estimate.
-  The dashboard's "on-device LLM" labels name the design target; in the narration say "locally",
-  because the demo runs on the PC. Worker ids are never drawn in warehouse mode, because they
+  Worker ids are never drawn in warehouse mode, because they
   change within tens of seconds (10.7 ids per person in the 5-minute Warehouse_010 clip); do not
   describe them as stable identities. The excavator is found by open-vocabulary detection, and the
   distance line in hard-hat mode is estimated from head size; neither accuracy is measured, so do

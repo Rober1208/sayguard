@@ -7,12 +7,12 @@
 <div style="display:flex;flex-direction:column;gap:14px;background:#1B212A;padding:32px;border-radius:20px;border-top:8px solid #F2B233">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;color:#F2B233">WEEK 1</p>
 <h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600">Detectors on device</h3>
-<p style="font-size:26px;line-height:1.4;color:#A7B0BC">Run the hard-hat HEF, validate HailoRT, measure batch-8 FPS over USB, compile the warehouse detector HEF and measure warehouse-mode load</p>
+<p style="font-size:26px;line-height:1.4;color:#A7B0BC">Run both detector HEFs through HailoRT, measure FPS and latency over USB at batch 1 and 8, warehouse load at 960 and 544×960</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:14px;background:#1B212A;padding:32px;border-radius:20px;border-top:8px solid #F2B233">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;color:#F2B233">WEEK 2</p>
 <h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600">GenAI on device</h3>
-<p style="font-size:26px;line-height:1.4;color:#A7B0BC">Jev-style yes/no check on the chip (head retrained on device features), Qwen2.5 on hailo-ollama with the rule tests re-run, Whisper, YOLO-World HEF</p>
+<p style="font-size:26px;line-height:1.4;color:#A7B0BC">Compile CLIP to a HEF and retrain the Jev-style yes/no head on device features, Qwen2.5 on hailo-ollama with the rule tests re-run, Whisper, YOLO-World HEF</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:14px;background:#1B212A;padding:32px;border-radius:20px;border-top:8px solid #F2B233">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;color:#F2B233">WEEK 3</p>
@@ -25,7 +25,7 @@
 <p style="font-size:26px;line-height:1.4;color:#A7B0BC">GitHub with README and benchmarks, demo video, final deck</p>
 </div>
 </div>
-<p style="font-size:28px;line-height:1.4;color:#A7B0BC"><b style="color:#F3F0E8">Already done in Stage I (on the PC GPU):</b> both detectors trained, hard-hat HEF compiled (INT8 checked in Hailo’s emulator, not yet run on hardware), full pipeline and dashboard, warehouse mode tested on six buildings the detector never trained on, 301 unit tests, every evaluation script in the repo.</p>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7D8794">SayGuard · Stage I proposal · 16 · Stage II: Nov 6 – Dec 4, 2026</p>
-<aside>Stage II moves a system that works on a PC today onto the UGen300. The hard-hat detector is already compiled for Hailo-10H and its INT8 accuracy checked in Hailo’s emulator, but nothing has run on the device yet. Week one runs the detectors on the UGen300 and measures the load of warehouse mode, week two the yes/no check and the language models, with the rule tests re-run on the device build, week three a real test space with a calibrated floor plan, and week four the finals deliverables.</aside>
+<p style="font-size:28px;line-height:1.4;color:#A7B0BC"><b style="color:#F3F0E8">Already done in Stage I:</b> both detectors trained and compiled to HEFs (INT8 within 0.004 mAP50 of float in Hailo’s emulator), not yet run on hardware; full pipeline and dashboard on the PC GPU; warehouse mode tested on six buildings the detector never trained on; 353 unit tests; every evaluation script in the repo.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#7D8794">SayGuard · Stage I proposal · 17 · Stage II: Nov 6 – Dec 4, 2026</p>
+<aside>Stage II moves a system that works on a PC today onto the UGen300. Both detectors are compiled for Hailo-10H and their INT8 accuracy stays within 0.004 mAP50 of float in Hailo’s emulator, but nothing has run on the device yet. Week one runs the detectors on the UGen300 and measures the load of warehouse mode, week two compiles the CLIP encoder for the yes/no check and brings up the language models, with the rule tests re-run on the device build, week three a real test space with a calibrated floor plan, and week four the finals deliverables.</aside>
 </section>

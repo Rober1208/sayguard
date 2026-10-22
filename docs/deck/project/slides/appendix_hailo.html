@@ -1,0 +1,25 @@
+<section id="appendix_hailo" data-transition="fade" style="background:#F3F0E8;color:#171B21;font-family:'IBM Plex Sans', Arial, sans-serif;padding:112px 128px 150px;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8A5A00;letter-spacing:2px">APPENDIX A1 · HARDWARE INTEGRATION</p>
+<h2 style="font-family:Rubik, Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1">How the models share one Hailo-10H</h2>
+</div>
+<table style="font-size:25px;color:#171B21;background:#FBFAF6;border:1px solid #DDD7CB;border-radius:16px">
+<tr><th style="width:20%;text-align:left">When it runs</th><th style="width:30%;text-align:left">Model</th><th style="width:50%;text-align:left">Budget on the chip</th></tr>
+<tr><td>Always</td><td>YOLOv8s detector, every camera, batch 8</td><td>≈ 40&nbsp;% for 10 cameras × 10 fps at 640 px (estimate from Hailo's 252 FPS)</td></tr>
+<tr><td>Per alert</td><td>CLIP image encoder + 512→2 head</td><td>81.5 FPS on the chip (Hailo) ≈ 12 ms per crop; the head runs on the host</td></tr>
+<tr><td>Per object rule</td><td>YOLO-World v2-S, cameras that need it, every 3rd frame</td><td>46.6 FPS (Hailo)</td></tr>
+<tr><td>On demand</td><td>Whisper-Small, then Qwen2.5-1.5B</td><td>One after the other; 3.4 s / 5.2 s to load when not resident (Hailo)</td></tr>
+</table>
+<div style="display:flex;gap:40px;flex:1">
+<ul style="flex:1;font-size:25px;line-height:1.42;color:#4A5260">
+<li>One shared HailoRT device group: vision and GenAI models may share the chip; two GenAI models may not run at the same time (Hailo hailo-apps guide). hailo-ollama joins through <b style="color:#171B21">HAILO_OLLAMA_VDEVICE_GROUP_ID</b>.</li>
+<li>Video over USB: 10 cameras × 10 fps at 640×640 ≈ 1 Gb/s of the 10 Gb/s USB-C link (estimate).</li>
+</ul>
+<ul style="flex:1;font-size:25px;line-height:1.42;color:#4A5260">
+<li>Warehouse detector HEFs at 960×960 (3 contexts) and at the cameras' 16:9 shape, 544×960 (4 contexts): in Hailo's emulator the 16:9 build keeps its accuracy (INT8 0.951 mAP50) with 43&nbsp;% fewer pixels, about 1.28× the work of a 640×640 frame.</li>
+<li>Not known until the device arrives: warehouse fps at both shapes and with 12 cameras, context and model switching cost, and detector fps while the LLM drafts a rule (weeks 1–2).</li>
+</ul>
+</div>
+<p style="position:absolute;left:128px;bottom:56px;width:1664px;font-size:24px;color:#6B7280">SayGuard · appendix (not counted in the 20 pages) · estimates assume ideal time-slicing · Hailo figures are their published numbers · docs/results/</p>
+<aside>How the models share one Hailo-10H. The detector runs on every frame of every camera; for ten hard-hat cameras that is about forty percent of the chip by Hailo's reference speed. The CLIP encoder runs only when an alert needs checking, YOLO-World only on cameras whose rules name an object it alone knows, and the two language models only when someone speaks a rule or the daily report is due, one after the other, because Hailo's guide says vision and generative models can share the device but two generative models cannot run at once. Video over USB takes about a tenth of the link. The warehouse detector is already compiled for the chip at both shapes, in 3 and 4 parts because the network is too large for one context; fed frames in the cameras' 16:9 shape it keeps its accuracy in Hailo's emulator with 43 percent fewer pixels and operations. Hailo's profiler gives no throughput for multi-context builds, so what we cannot know before the device arrives is how fast the warehouse detector runs at either shape and whether one box carries twelve warehouse cameras, the cost of switching between those parts and between models, and how much the detector slows while the language model works; those are the first measurements of Stage II.</aside>
+</section>

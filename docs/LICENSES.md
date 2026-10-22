@@ -6,6 +6,8 @@ The competition rules require entrants to hold the rights to every image, video,
 and dataset they use. Everything below is used under its published license; nothing
 restricted is redistributed in this repository.
 
+SayGuard itself: Copyright (C) 2026 逼寶隊, released under the GNU AGPL-3.0 ([LICENSE](../LICENSE)).
+
 ## Data
 
 | Item | Source | License | Use |
@@ -16,8 +18,16 @@ restricted is redistributed in this repository.
 
 Faces are pixelated locally, on site (today the PC prototype; the UGen300 in Stage II), in every
 dashboard tile and saved snapshot (`sayguard/privacy.py`): from each detected head in hard-hat mode,
-and from the top of each detected person box in warehouse mode. A face the detector misses is not
-pixelated; how often that happens is not measured.
+and from the top of each detected person box in warehouse mode (taller for a box cut off at the
+bottom or a crouching worker). A face the detector misses is not pixelated; how often that
+happens is not measured.
+
+### Hard Hats v2
+
+Credit: "Hard Hats v2, Roboflow Universe (https://universe.roboflow.com/roboflow-universe-projects/hard-hats-fhbh5),
+CC BY 4.0", used through its Hugging Face mirror https://huggingface.co/datasets/keremberke/hard-hat-detection.
+Changes: classes renamed `helmet` / `head` and labels converted from COCO to YOLO format
+(`scripts/prepare_dataset.py`).
 
 ### NVIDIA PhysicalAI-SmartSpaces: scenes used
 
@@ -65,7 +75,10 @@ Ultralytics (AGPL-3.0), FastAPI/Starlette (MIT), Uvicorn (BSD-3),
 OpenCV (Apache-2.0), PyTorch (BSD-3), Transformers (Apache-2.0), Ollama (MIT),
 opencc-python-reimplemented (Apache-2.0), huggingface_hub (Apache-2.0, `scripts/fetch_smartspaces.py`),
 motmetrics (MIT, `scripts/eval_site.py`), pycocotools (BSD-2-Clause, `hailo/eval_int8.py`),
-Hailo Model Zoo (MIT); Hailo Dataflow Compiler and HailoRT (Hailo license, downloaded from the
+NumPy (BSD-3), PyYAML (MIT), Pydantic (MIT), HTTPX (BSD-3), psutil (BSD-3), Accelerate (Apache-2.0),
+Pillow (MIT-CMU), python-multipart (Apache-2.0), ftfy (Apache-2.0), regex (Apache-2.0), the Ultralytics
+CLIP fork (MIT), pytest (MIT), onnxruntime (MIT, `hailo/eval_same_nms.py`), edge-tts (LGPL-3.0, only
+`scripts/eval_spoken_rules.py`), Hailo Model Zoo (MIT); Hailo Dataflow Compiler and HailoRT (Hailo license, downloaded from the
 Hailo Developer Zone, not redistributed here). FFmpeg (LGPL or GPL depending on the build) is
 run as a separate program by the stream and dataset scripts and is not redistributed.
 

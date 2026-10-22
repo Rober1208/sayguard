@@ -7,22 +7,22 @@
 <div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FBFAF6;padding:32px 36px;border:2px solid #C98A00;border-radius:20px">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8A5A00;letter-spacing:2px">HARD HATS</p>
 <p style="font-family:Rubik, Arial, sans-serif;font-size:88px;font-weight:700;line-height:1">0.939</p>
-<p style="font-size:26px;line-height:1.4;color:#4A5260">mAP50 on 2,001 test images it never saw. YOLOv8s, already compiled for Hailo-10H: INT8 0.889 vs float 0.893 in Hailo’s emulator.</p>
+<p style="font-size:26px;line-height:1.4;color:#4A5260">mAP50 on 2,001 unseen test images. YOLOv8s, compiled for Hailo-10H. Re-scored with the HEF’s NMS in Hailo’s emulator: INT8 0.889, float 0.893.</p>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FBFAF6;padding:32px 36px;border:1px solid #DDD7CB;border-radius:20px">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8A5A00;letter-spacing:2px">WAREHOUSE OBJECTS</p>
 <p style="font-family:Rubik, Arial, sans-serif;font-size:88px;font-weight:700;line-height:1">6 <span style="font-size:44px;color:#8A5A00">classes</span></p>
-<p style="font-size:26px;line-height:1.4;color:#4A5260">People, vehicles and robots. YOLOv8s trained on 8,000 frames from five synthetic buildings.</p>
+<p style="font-size:26px;line-height:1.4;color:#4A5260">People, vehicles and robots. YOLOv8s trained on 8,000 frames from five synthetic buildings; compiled for Hailo-10H, emulator INT8 mAP50 0.947 = float.</p>
 </div>
 </div>
 <div style="display:flex;gap:36px;align-items:center;background:#FBFAF6;padding:28px 36px;border:1px solid #DDD7CB;border-radius:20px">
-<img src="/_blob/ec106fd7a5afe0264564bea466676db1" alt="Alert snapshot from an excavation site: an orange box around an excavator found by the open-vocabulary detector, and a red box around a worker nearby with the face pixelated" style="width:400px;height:225px;object-fit:cover;border-radius:12px;border:1px solid #DDD7CB">
+<img src="/_blob/55dd9358d4e7d6fd0b445790cd80c0a5" alt="An excavator on an excavation site with an orange box drawn by the open-vocabulary detector, found from the word excavator alone" style="width:400px;height:225px;object-fit:cover;border-radius:12px;border:1px solid #DDD7CB">
 <div style="flex:1;display:flex;flex-direction:column;gap:10px">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8A5A00;letter-spacing:2px">ANYTHING ELSE A RULE NAMES</p>
 <h3 style="font-family:Rubik, Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2">“Warn me if anyone is near the excavator”</h3>
 <p style="font-size:26px;line-height:1.4;color:#4A5260">YOLO-World finds objects from the word itself, so a rule can name things no detector was trained on. Classes a site depends on every day still get a trained detector.</p>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">SayGuard · Stage I proposal · 11 · docs/results/detector_metrics.json, hailo_int8.json · Roboflow Hard Hats v2 (CC BY 4.0)</p>
-<aside>Each class a site depends on gets a trained detector. The hard-hat model scores 0.939 mAP50 on test images it never saw, and it is already compiled for Hailo-10H, where INT8 barely changes its accuracy in Hailo's emulator. The warehouse model knows six classes of people, vehicles and robots. For anything else a spoken rule names, like the excavator here, YOLO-World works from the word alone; this is a demo and its accuracy is not measured yet, and in our warehouse tests it was no substitute for the trained forklift detector, which is why everyday classes get a trained model.</aside>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">SayGuard · Stage I proposal · 11 · docs/results/: detector_metrics, hailo_int8, site_same_nms, site_hef · Roboflow Hard Hats v2 (CC BY 4.0)</p>
+<aside>Each class a site depends on gets a trained detector. The hard-hat model scores 0.939 mAP50 on test images it never saw, and it is already compiled for Hailo-10H. In Hailo's INT8 emulator we re-score it with the NMS built into the HEF, a separate evaluation from the 0.939; there INT8 scores 0.889 against 0.893 for float, so quantization costs almost nothing. The warehouse model knows six classes of people, vehicles and robots, and it is compiled for the chip too, with INT8 matching float in Hailo's emulator. Neither has run on hardware yet. For anything else a spoken rule names, like the excavator here, YOLO-World works from the word alone; this is a demo and its accuracy is not measured yet, and in our warehouse tests it was no substitute for the trained forklift detector, which is why everyday classes get a trained model.</aside>
 </section>

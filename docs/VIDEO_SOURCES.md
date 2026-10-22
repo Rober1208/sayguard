@@ -61,7 +61,7 @@ listed with its role in [LICENSES.md](LICENSES.md#nvidia-physicalai-smartspaces-
 | `train/Warehouse_009` | development only (twin of training scene W008) | 12 | 3000 | `configs/eval/warehouse_009.yaml` |
 | `train/Warehouse_017` | development only (twin of test scene W018) | 3 | 3000 | `configs/eval/warehouse_017.yaml` |
 
-Test scenes were never trained or tuned on and are buildings distinct from the training scenes.
+The detector never trained on a test scene, the settings were chosen on the validation scenes, and the test buildings differ from the training ones. Two test scenes are not blind: W010 is the demo scene the tracker was developed on, and W018 shares its room with development scene W017.
 The detector-training scenes are not turned into streams: `scripts/prepare_site_dataset.py`
 samples frames straight from the downloaded videos.
 

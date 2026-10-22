@@ -8,7 +8,14 @@ ASUS UGen AI League · Battlefield Lightning · Workplace AI
 
 **[▶ Watch the 3-minute demo video](https://youtu.be/SH1x9OGXXZQ)**
 
+> **Stage I status:** the prototype runs end to end on a PC with an NVIDIA GPU. Both detectors are
+> compiled to HEFs for the Hailo-10H, with their INT8 accuracy checked in Hailo's emulator; running
+> on the UGen300 itself is the Stage II work.
+
 ![SayGuard dashboard](docs/img/dashboard_en.png)
+
+<sub>Live dashboard, hard-hat mode. Captured on a cloud GPU machine with a slower CPU than our PC, so a few
+streams show under 10 fps; the measured figures below are from the PC unless marked otherwise.</sub>
 
 ## The problem
 
@@ -26,11 +33,12 @@ people stop reading them.
   forklifts are measured in metres.
 - **Takes new rules by voice.** The safety officer says, in Mandarin or English, *"Warn me if
   anyone is within 3 m of a forklift"* or *"七號走道有人停留超過5秒就通知我"*. SayGuard turns the
-  sentence into a rule, shows it for confirmation, and it is live seconds later. No data
-  collection, no retraining.
+  sentence into a rule, shows it for confirmation, and it is live seconds later. For objects,
+  zones, distances, counts and times it already knows, there is no data to collect and nothing
+  to retrain.
 - **Raises alerts people can trust.** A violation must persist before it counts, and a fast
-  yes/no model double-checks every hard-hat alert before anyone is paged. In warehouse mode a worker
-  seen by three cameras gets one alert, not three.
+  yes/no model double-checks every hard-hat alert before it reaches the officer. In warehouse mode
+  a worker seen by three cameras gets one alert, not three.
 - **Writes the daily safety report.** The numbers come straight from the alert log; the
   language model picks the issues that matter most and a vetted fix for each.
 - **Keeps video on site.** Every model runs locally and faces are pixelated in the dashboard and
@@ -38,20 +46,44 @@ people stop reading them.
 
 ![Warehouse mode: eleven cameras on one floor plan](docs/img/warehouse_en.png)
 
+<sub>Warehouse mode on the synthetic Warehouse 010 scene, captured on the same cloud machine (its CPU
+keeps the streams near 6–7 fps here; about 10 fps on our PC).</sub>
+
 ## How it fits together
 
 SayGuard works with the cameras a site already has. A mini PC reads their existing RTSP streams,
 and a UGen300 connected to it over USB runs the neural networks. No camera or recorder is
 replaced.
 
+```mermaid
+flowchart LR
+  CAM["IP cameras / NVR<br/>existing RTSP streams"]
+  subgraph HOST["Host mini PC"]
+    DEC["Decode + batch<br/>10 fps per camera"]
+    TRK["Tracking<br/>warehouse: floor-plan fusion in metres"]
+    RUL["Rule engine<br/>persistence, zones, cooldown"]
+    PRIV["Face pixelation"]
+    LOG[("Alert log<br/>+ snapshots, 14 days")]
+    CHK["Rule checker<br/>(code)"]
+    REP["Report numbers<br/>(code)"]
+    UI["Dashboard"]
+  end
+  subgraph UGEN["ASUS UGen300 · Hailo-10H"]
+    DET["YOLOv8s detector<br/>+ YOLO-World for named objects"]
+    YN["CLIP encoder + 512→2<br/>yes/no check"]
+    STT["Whisper-Small"]
+    LLM["Qwen2.5-1.5B<br/>(hailo-ollama)"]
+  end
+  CAM --> DEC --> DET --> TRK --> RUL
+  RUL -- "hard-hat alert crop" --> YN --> LOG
+  RUL --> LOG
+  TRK --> PRIV --> UI
+  LOG --> UI
+  UI -- "spoken rule" --> STT --> LLM -- "typed rule form" --> CHK -- "officer confirms" --> RUL
+  LOG --> REP --> LLM -- "picks issues and vetted fixes" --> UI
 ```
- IP cameras / NVR ──►  Host (mini PC)                         ◄──►  ASUS UGen300 (Hailo-10H)
-  existing RTSP        decode · tracking · floor-plan fusion          detectors (YOLOv8s)
-  streams              rule engine · alert log · dashboard            CLIP yes/no check
-                                       │                              Whisper (speech)
-                                       ▼                              Qwen2.5-1.5B (rules, report)
-                               Safety officer: live dashboard, alerts, daily report, voice rules
-```
+
+In the Stage I prototype the host's NVIDIA GPU runs the networks shown on the UGen300.
 
 - **One detector for all cameras.** Frames from every stream are batched through a single
   YOLOv8s, so adding a camera adds load, not another model.
@@ -71,22 +103,34 @@ replaced.
   the counting and the LLM only chooses among issues that really happened and fixes we vetted.
   A 1.5-billion-parameter model is enough because it is never trusted on its own.
 - **Built for the UGen300 from day one.** Every model has a Hailo-10H counterpart in the Hailo
-  Model Zoo. The hard-hat detector is already compiled for Hailo-10H, and the LLM is called
-  through the Ollama API, which hailo-ollama serves on the device.
+  Model Zoo. Both detectors are already compiled to HEFs for Hailo-10H, with INT8 accuracy nearly
+  matching float, and the LLM is called through the Ollama API, which hailo-ollama serves on the
+  device.
+
+| Model | Job | Hailo-10H build | Licence |
+|---|---|---|---|
+| YOLOv8s, fine-tuned (2 and 6 classes) | hard hats; warehouse people and vehicles | both compiled to HEFs; INT8 checked in Hailo's emulator | AGPL-3.0 |
+| YOLO-World v2-S | objects a spoken rule names | Hailo Model Zoo | AGPL-3.0 |
+| CLIP ViT-B/32 image encoder + 512→2 head | alert double-check | Hailo Model Zoo encoder; head retrained on INT8 features | MIT |
+| Whisper-Small | speech to text | Hailo GenAI Model Zoo | MIT |
+| Qwen2.5-1.5B-Instruct | rule form, report plan | Hailo GenAI Model Zoo (hailo-ollama) | Apache-2.0 |
 
 ## Results from the Stage I prototype
 
-Measured on a PC GPU with the same networks that will run on the Hailo-10H.
+Measured on a PC GPU with the same networks that will run on the Hailo-10H; the spoken-rule test
+ran on a cloud GPU. The last row comes from Hailo's INT8 emulator (run on a CPU and a cloud T4),
+not from a UGen300.
 
 | | |
 |---|---|
 | Hard-hat detector | **0.939 mAP50** on 2,001 images it never saw |
 | Ten cameras, one detector | every frame analysed, **100 frames/s** (10 cameras × 10 fps); about 40 % of one UGen300 (estimate) |
-| Spoken rule → exactly right rule | **95 %** (construction site) and **84–88 %** (warehouse), against 16–40 % for the LLM alone |
+| Rule sentence → exactly right rule (typed held-out sentences) | **95 %** (construction site) and **84–88 %** (warehouse), against 16–40 % for the LLM alone |
+| The same sentences spoken (synthetic Taiwan Mandarin and US English voices, with site noise) | **90 %** (construction site) and **74–86 %** (warehouse) |
 | Alert double-check (Jev-style yes/no model) | **95.3 %** correct on held-out crops in **15 ms**; a generative VLM: 91.7 % in 283 ms |
-| Warehouse mode, six synthetic test warehouses the detector never trained on | head count off by **0.05–1.7 people** (summing cameras: up to 60); door and dock zones covered **100 %** of entries with **no false alerts**; forklift 3 m rule covered **92 %** of events |
+| Warehouse mode, six synthetic test warehouses the detector never trained on | head count off by **0.05–1.7 people** (summing cameras: up to 60); door and dock zones covered **100 %** of entries with **no false alerts**; forklift 3 m rule covered **92 %** of events (after two alert-logic fixes; the run frozen before them: 94 % and 89 %) |
 | Daily report plan | actions aimed at the wrong problem: **20 % → 0 %** (blind AI judges) |
-| Hailo-10H INT8 build | **0.889** mAP50 vs 0.893 in float (Hailo's emulator) |
+| Hailo-10H INT8 builds (Hailo's emulator, one evaluator for float and INT8) | hard-hat detector **0.889** vs 0.893 mAP50; warehouse detector **0.947** vs 0.947, and **0.951** at the cameras' 16:9 shape (544×960) |
 
 The full numbers, how each was measured and the known limits are in
 [docs/results](docs/results/README.md).
@@ -94,7 +138,8 @@ The full numbers, how each was measured and the known limits are in
 ## Why it is feasible
 
 - **Cheap hardware.** One UGen300 (NT$6,380 retail, 2.5 W) next to the existing recorder covers a
-  site area of up to 12 cameras; larger sites add a box per area.
+  site area of up to 12 cameras (our coverage spec; the warehouse-mode load on the chip is measured
+  in Stage II); larger sites add a box per area.
 - **A port, not a rebuild.** The networks were chosen because Hailo-10H builds already exist.
   Stage II moves the detectors, the yes/no check, Whisper and Qwen2.5 onto the UGen300; the host
   keeps decoding and the dashboard.
@@ -108,10 +153,14 @@ The full numbers, how each was measured and the known limits are in
 - A worker's ID can change within tens of seconds, so the dashboard counts and alerts without
   showing IDs.
 - Large halls with distant cameras need more cameras or another box per area.
+- Alerts appear on the dashboard with a snapshot; phone and site-alarm outputs are not built yet.
+- Spoken rules are measured with synthetic voices, not real officers; Whisper still mishears some
+  Mandarin words (「B區」 as 「比區」), which the officer catches when confirming the rule.
 
 ## Stage II plan (Nov 6 – Dec 4)
 
-1. Compile and run both detectors on the UGen300 and measure throughput over USB.
+1. Run both detector HEFs on the UGen300 through HailoRT and measure FPS and latency over USB at
+   batch 1 and 8, including the 12-camera warehouse load at 960×960 and 544×960.
 2. Move the yes/no check, Whisper and Qwen2.5 (hailo-ollama) onto the device.
 3. Test at the ASUS test space: calibrate a multi-camera floor plan, tune thresholds, measure
    alert latency and power.
@@ -127,5 +176,6 @@ The full numbers, how each was measured and the known limits are in
 | [docs/SETUP.md](docs/SETUP.md) | run the prototype and reproduce the numbers |
 
 Licence: [GNU AGPL-3.0](LICENSE). Data and model licences: [docs/LICENSES.md](docs/LICENSES.md).
-Warehouse scenes: NVIDIA PhysicalAI-SmartSpaces (CC BY 4.0). Construction-site demo footage:
-Mixkit free clips, not redistributed.
+Hard-hat training data: Roboflow Universe Hard Hats v2 (CC BY 4.0). Warehouse scenes: NVIDIA
+PhysicalAI-SmartSpaces (CC BY 4.0). Construction-site demo footage: Mixkit free clips, not
+redistributed; the dashboard screenshots show frames of them under the Mixkit licence.

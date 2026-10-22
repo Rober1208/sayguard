@@ -480,8 +480,8 @@ Source: `hailo_int8.json`, `pc_baseline.json`, `hailo_int8_c512.json`, `site_sam
 
 - **Not on the chip yet.** Nothing has run on a UGen300 or any other Hailo hardware; the INT8
   figures come from Hailo's emulator. UGen300 load and latency figures are estimates from Hailo's
-  reference speeds. All LLM accuracy was measured with Ollama's qwen2.5:1.5b on the PC
-  GPU, not with the Hailo GenAI build, which is quantized differently.
+  reference speeds. All LLM accuracy was measured with Ollama's qwen2.5:1.5b on the PC GPU (the
+  spoken-rule test on a Colab L4), not with the Hailo GenAI build, which is quantized differently.
 - **Test inputs.** Rule accuracy is measured on typed sentences and on synthetic speech, not on real
   officers' voices. The double-check's 94 hard-hat crops are
   labelled dataset crops standing in for the detector's real false flags. The report test uses 20
@@ -511,7 +511,7 @@ Source: `hailo_int8.json`, `pc_baseline.json`, `hailo_int8_c512.json`, `site_sam
   alert latency.
 - The warehouse detector on the chip: throughput of its HEF and load at 12 cameras (the 12-camera
   limit is a coverage spec, not a measured compute limit).
-- Speech-to-text accuracy on recorded speech.
+- Speech-to-text accuracy on real officers' voices on a real site.
 - Open-vocabulary detection and the head-size distance estimate in hard-hat mode; how often face
   pixelation misses a face.
 - Worker identity across cameras whose views do not overlap.

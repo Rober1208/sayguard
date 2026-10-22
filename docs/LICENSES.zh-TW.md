@@ -4,6 +4,8 @@
 
 競賽規則要求參賽者對作品用到的每張圖片、每段影片、每個模型和資料集都要有使用權。以下項目都依各自公開的授權條款使用，這個 repo 也沒有再散布任何受限制的內容。
 
+SayGuard 本身：Copyright (C) 2026 逼寶隊，以 GNU AGPL-3.0 授權釋出（[LICENSE](../LICENSE)）。
+
 ## 資料
 
 | 項目 | 來源 | 授權 | 用途 |
@@ -12,7 +14,11 @@
 | 工地模式的示範畫面 | Mixkit（見 `docs/VIDEO_SOURCES.zh-TW.md`） | Mixkit Stock Video Free License | 模擬監視器串流；影片**不放**在 repo 裡，需從列出的頁面手動下載（`scripts/fetch_videos.py list` / `check`） |
 | NVIDIA PhysicalAI-SmartSpaces，MTMC_Tracking_2026（合成倉庫：時間同步、已校正的多鏡頭影片，附校正參數、平面圖和 2D/3D 標準答案） | [huggingface.co/datasets/nvidia/PhysicalAI-SmartSpaces](https://huggingface.co/datasets/nvidia/PhysicalAI-SmartSpaces) | CC BY 4.0（需標示出處） | 倉庫模式的示範畫面、評估，以及倉庫偵測模型的訓練資料；用到的每個場景及用途列在下方。不放在 repo 裡；`scripts/fetch_smartspaces.py` 一次下載一個場景 |
 
-所有儀表板畫面和存檔快照裡的人臉，都在現場打上馬賽克（`sayguard/privacy.py`；目前在 PC 原型上執行，Stage II 改在 UGen300 上）：工地模式遮住偵測到的頭部，倉庫模式遮住每個人員框的上緣區域。偵測模型漏掉的人臉不會打上馬賽克，漏掉的比例尚未量測。
+所有儀表板畫面和存檔快照裡的人臉，都在現場打上馬賽克（`sayguard/privacy.py`；目前在 PC 原型上執行，Stage II 改在 UGen300 上）：工地模式遮住偵測到的頭部，倉庫模式遮住每個人員框的上緣區域（人員框下半被畫面或貨架切掉、或人蹲著時，遮得更高）。偵測模型漏掉的人臉不會打上馬賽克，漏掉的比例尚未量測。
+
+### Hard Hats v2
+
+出處標示："Hard Hats v2, Roboflow Universe (https://universe.roboflow.com/roboflow-universe-projects/hard-hats-fhbh5), CC BY 4.0"，透過 Hugging Face 鏡像 https://huggingface.co/datasets/keremberke/hard-hat-detection 取得。修改內容：類別改名為 `helmet` / `head`，標註從 COCO 格式轉成 YOLO 格式（`scripts/prepare_dataset.py`）。
 
 ### NVIDIA PhysicalAI-SmartSpaces：用到的場景
 
@@ -48,6 +54,6 @@
 
 ## 程式相依套件
 
-Ultralytics（AGPL-3.0）、FastAPI/Starlette（MIT）、Uvicorn（BSD-3）、OpenCV（Apache-2.0）、PyTorch（BSD-3）、Transformers（Apache-2.0）、Ollama（MIT）、opencc-python-reimplemented（Apache-2.0）、huggingface_hub（Apache-2.0，`scripts/fetch_smartspaces.py`）、motmetrics（MIT，`scripts/eval_site.py`）、pycocotools（BSD-2-Clause，`hailo/eval_int8.py`）、Hailo Model Zoo（MIT）；Hailo Dataflow Compiler 與 HailoRT（Hailo 授權，需從 Hailo Developer Zone 下載，本專案不再散布）。FFmpeg（依建置方式為 LGPL 或 GPL）由串流與資料集腳本當作獨立程式呼叫，同樣不再散布。
+Ultralytics（AGPL-3.0）、FastAPI/Starlette（MIT）、Uvicorn（BSD-3）、OpenCV（Apache-2.0）、PyTorch（BSD-3）、Transformers（Apache-2.0）、Ollama（MIT）、opencc-python-reimplemented（Apache-2.0）、huggingface_hub（Apache-2.0，`scripts/fetch_smartspaces.py`）、motmetrics（MIT，`scripts/eval_site.py`）、pycocotools（BSD-2-Clause，`hailo/eval_int8.py`）、NumPy（BSD-3）、PyYAML（MIT）、Pydantic（MIT）、HTTPX（BSD-3）、psutil（BSD-3）、Accelerate（Apache-2.0）、Pillow（MIT-CMU）、python-multipart（Apache-2.0）、ftfy（Apache-2.0）、regex（Apache-2.0）、Ultralytics 的 CLIP 分支（MIT）、pytest（MIT）、onnxruntime（MIT，`hailo/eval_same_nms.py`）、edge-tts（LGPL-3.0，只有 `scripts/eval_spoken_rules.py` 使用）、Hailo Model Zoo（MIT）；Hailo Dataflow Compiler 與 HailoRT（Hailo 授權，需從 Hailo Developer Zone 下載，本專案不再散布）。FFmpeg（依建置方式為 LGPL 或 GPL）由串流與資料集腳本當作獨立程式呼叫，同樣不再散布。
 
 偵測模型的程式用到 Ultralytics（AGPL-3.0），因此本專案也以 AGPL-3.0 釋出（見 `LICENSE`），讓整體授權保持相容。另外，競賽的智慧財產條款（得獎者授權 ASUS/Intel/Hailo 使用參賽作品）不影響第三方授權。

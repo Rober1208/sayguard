@@ -1,7 +1,7 @@
 <section id="siteevidence" data-transition="fade" style="background:#F3F0E8;color:#171B21;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:16px">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8A5A00;letter-spacing:2px">EVIDENCE · WAREHOUSE MODE</p>
-<h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">Tested on six warehouses it has never seen</h2>
+<h2 style="font-family:Rubik, Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1">Tested on six synthetic warehouses the detector never trained on</h2>
 </div>
 <div style="display:flex;gap:32px">
 <div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#FBFAF6;padding:28px 32px;border:2px solid #C98A00;border-radius:20px">
@@ -27,7 +27,7 @@
 <tr><td>Work areas</td><td style="text-align:right">323 of 338 (96 %)</td><td style="text-align:right">26 of 362 (7 %)</td></tr>
 <tr><td>Narrow aisles</td><td style="text-align:right">98 of 118 (83 %)</td><td style="text-align:right">3 of 77 (4 %)</td></tr>
 </table>
-<p style="font-size:24px;line-height:1.4;color:#6B7280">Alerted: the worker got an alert, or was inside its cooldown. Strict numbers in docs/results.</p>
+<p style="font-size:24px;line-height:1.4;color:#6B7280">Alerted: an alert, or inside its cooldown. After two alert-logic fixes; the frozen run: doors 94&nbsp;%, forklift 89&nbsp;%.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">SayGuard · Stage I proposal · 10 · docs/results/site_by_zone_kind.json · NVIDIA PhysicalAI-SmartSpaces (CC BY 4.0)</p>
-<aside>We tested warehouse mode on six synthetic warehouses the detector never trained on, with every setting chosen on a separate validation scene. Fusing all cameras on one floor plan keeps the head count within about two people of the truth, where simply summing the cameras can be off by sixty. Every entry through a door or dock zone was alerted with no false alerts, and the forklift rule caught ninety-two percent of close calls. An event counts as alerted when the worker got an alert or was still inside the cooldown of one; the strict numbers and a run with the settings frozen before any fix are in the results folder of the repository.</aside>
+<aside>We tested warehouse mode on six synthetic warehouses the detector never trained on, with every setting chosen on a separate validation scene. One of them, Warehouse 010, is our demo scene, which the tracker was developed on, so it is not a blind test. Fusing all cameras on one floor plan keeps the head count within about two people of the truth, where simply summing the cameras can be off by sixty. Every entry through a door or dock zone was alerted with no false alerts, and the forklift rule caught ninety-two percent of close calls. An event counts as alerted when the worker got an alert or was still inside the cooldown of one; the strict numbers and a run with the settings frozen before any fix are in the results folder of the repository.</aside>
 </section>
