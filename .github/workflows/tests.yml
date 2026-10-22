@@ -12,8 +12,6 @@ jobs:
   unit:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    env:
-      SAYGUARD_WORK: ${{ runner.temp }}/work   # the unit tests need no work directory, models or GPU
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -28,4 +26,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install numpy opencv-python-headless pyyaml "pydantic>=2" pillow httpx opencc-python-reimplemented pytest
       - name: Unit tests
+        env:
+          SAYGUARD_WORK: ${{ runner.temp }}/work   # the unit tests need no work directory, models or GPU
         run: python -m pytest -q -p no:cacheprovider tests
