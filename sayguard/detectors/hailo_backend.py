@@ -1,12 +1,13 @@
 """UGen300 backend (Stage II): the same YOLOv8s compiled to a HEF for Hailo-10H,
 run through HailoRT's InferModel API.
 
-The HEF comes from hailo/build_helmet.py (Hailo Dataflow Compiler 5.4, the Hailo Model Zoo
-yolov8s recipe with 2 classes): the network runs on the chip in INT8; the box decoding and
+The HEFs come from hailo/build_helmet.py (hard hats, 2 classes) and hailo/build_site.py (warehouse,
+6 classes), both Hailo Dataflow Compiler 5.4 with the Hailo Model Zoo yolov8s recipe: the network
+runs on the chip in INT8; the box decoding and
 per-class NMS (score >= 0.2, IoU 0.7, <= 100 boxes per class) are embedded in the HEF and run
 by HailoRT on the host CPU (`nms_postprocess(..., engine=cpu)`), as in the Model Zoo build.
 
-STATUS: the HEF is built and its INT8 accuracy checked in the DFC emulator, but this
+STATUS: both HEFs are built and their INT8 accuracy checked in the DFC emulator, but this
 module is written against the HailoRT 5.x Python API and NOT yet run on hardware (the
 accelerator is shipped to Stage II teams).
 """

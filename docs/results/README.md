@@ -2,11 +2,14 @@ English | [繁體中文](README.zh-TW.md)
 
 # Stage I results
 
-The measurements behind the [README](../../README.md). Everything here was measured on the PC
-prototype (NVIDIA GeForce RTX 5060 Ti, 18–19 October 2026) with the same networks that will run
-on the Hailo-10H, unless it is marked **reference** (Hailo's published figures) or **estimate**
-(derived from them). The raw JSON files sit next to this page, [FACTS.md](../FACTS.md) lists every
-published number, and [SETUP.md](../SETUP.md) shows how to re-run them.
+The measurements behind the [README](../../README.md). Unless marked otherwise, everything here was
+measured on the PC prototype (NVIDIA GeForce RTX 5060 Ti, 18–19 October 2026) with the same networks
+that will run on the Hailo-10H. Two sections are exceptions and say so: the
+[Hailo-10H build](#hailo-10h-build) (Hailo's compiler and emulator, on the PC's CPU under WSL and on
+a Colab T4, 18–22 October) and the [spoken-rule test](#spoken-not-typed-synthetic-speech) (a Colab
+L4). Figures marked **reference** are Hailo's published figures; **estimate** means derived from
+them. The raw JSON files sit next to this page, [FACTS.md](../FACTS.md) lists every published
+number, and [SETUP.md](../SETUP.md) shows how to re-run them.
 
 ## At a glance
 
@@ -14,12 +17,12 @@ published number, and [SETUP.md](../SETUP.md) shows how to re-run them.
 |---|---|
 | [Hard-hat detector](#hard-hat-detector) | **0.939 mAP50** on 2,001 test images it never saw |
 | [Ten cameras, one detector](#ten-cameras-one-detector) | every frame analysed, **100 frames/s**; about **40 %** of one UGen300 (estimate) |
-| [Spoken rules](#spoken-rules) | exactly right rule: **95 %** in hard-hat mode, **84 %** and **88 %** on two held-out warehouse sets, against 16–40 % for the LLM alone; mean 347–395 ms per rule on the PC |
+| [Spoken rules](#spoken-rules) | exactly right rule, typed: **95 %** in hard-hat mode, **84 %** and **88 %** on two held-out warehouse sets, against 16–40 % for the LLM alone; spoken (synthetic voices, site noise): **90 %** and **74–86 %**; mean 347–395 ms per rule on the PC |
 | [Alert double-check](#alert-double-check) | **95.3 %** correct on 193 held-out crops in **15.2 ms**; a generative VLM: 91.7 % in 283 ms |
 | [Daily report actions](#daily-report-actions) | actions aimed at the wrong problem: **20 % → 0 %** (free text vs menu, two blind AI judges) |
 | [Warehouse mode: people](#test-scenes-people-and-positions) | six unseen buildings: head count off by **0.05–1.74** people on average (summing cameras: up to 60.09); mean position error 0.173–0.26 m |
 | [Warehouse mode: alerts](#test-scenes-alerts-by-zone-kind) | door and dock zones: **53 of 53** entries covered, **0** false of 52 alerts; forklift 3 m rule: **92 %** covered, 1 false of 26; aisles 83 %, work areas 96 % |
-| [Hailo-10H INT8](#hailo-10h-build) | detector **0.889** mAP50 vs 0.8927 in float; double-check **95.3 %** with its head retrained on INT8 features (Hailo emulator) |
+| [Hailo-10H INT8](#hailo-10h-build) | hard-hat detector **0.889** mAP50 vs 0.8927 in float; warehouse detector **0.9472** vs 0.9474 (960 px) and **0.9512** vs 0.9475 (544×960); double-check **95.3 %** with its head retrained on INT8 features (Hailo emulator, one evaluator for float and INT8) |
 
 ## Hard-hat detector
 
@@ -56,7 +59,8 @@ The officer's sentence goes to Qwen2.5-1.5B, which drafts the rule as JSON. A ch
 deterministic rule extractor) reads the same sentence and overrides every number, distance, time
 and object it finds stated there. The officer then confirms. A rule counts as correct only if every
 stated field is right: type, object, count or distance, time window, duration, and the cameras or
-floor zones it applies to. Test sentences are typed, in Mandarin and English.
+floor zones it applies to. The test sentences below are typed, in Mandarin and English; the same
+sentences spoken are at the end of this section.
 
 **Hard-hat mode** (rules over a set of cameras):
 
@@ -99,6 +103,31 @@ the PC GPU. On the UGen300 the rule JSON is estimated at about 11.3 s and Whispe
 for a 5 s sentence (estimates from Hailo's reference speeds, `benchmark.md`).
 
 Source: `rule_parsing.json`, `rule_parsing_site.json`, `rule_parsing_site_v1_first_run.json`.
+
+### Spoken, not typed (synthetic speech)
+
+The same held-out sentences, spoken and passed through the shipped speech step (Whisper-Small with the
+site's zone and camera names as decoder prompt) before the parser. The voices are synthetic: two
+Taiwan Mandarin and two US English Microsoft neural voices (edge-tts), each sentence in both voices of
+its language, once clean and once mixed with synthetic site noise (pink noise, engine hum, impacts) at
+10 dB SNR. The typed sentences were parsed again in the same run (Ollama qwen2.5:1.5b, the same model
+file as on the PC), and reproduce the published typed scores.
+
+| Held-out set | Typed | Spoken, clean | Spoken, site noise | Transcript CER |
+|---|---|---|---|---|
+| Hard-hat mode (20 sentences, 40 recordings each) | 95 % | **92.5 %** | **90 %** | 4–5 % |
+| Warehouse v1 (25, seen since its first run) | 100 % | 86 % | 86 % | 6 % |
+| **Warehouse v2 (25, fresh)** | 88 % | **76 %** | **74 %** | 5 % |
+
+English held up best (hard-hat mode: every spoken English rule right). What the speech step loses is
+specific: Whisper writes 「B區」 as 「比區」, 「人形機器人」 as 「人行」, 「托板車」 as 「脫板車」 and 「不准」 as
+「不準」; English times come out as "2200 hours and 530" or "6 o'clock and 8 o'clock", which the
+checker does not read. Each of these is fixable (letter-zone homophones, the variant character, spoken
+time formats), but they were found on held-out sentences, so they are left for Stage II with a new dev
+set and a fresh test set; nothing was changed for these numbers. Real officers' voices on a real site
+are not measured yet.
+
+Source: `rule_parsing_spoken.json`, script `scripts/eval_spoken_rules.py` (run on a Colab L4 GPU).
 
 ## Alert double-check
 
@@ -360,13 +389,14 @@ Source: `site_eval*.json` (final run), `frozen/` (frozen run), `site_by_zone_kin
 
 ## Hailo-10H build
 
-With no device yet, Stage I took both hard-hat-mode vision networks through Hailo's real toolchain
+With no device yet, Stage I took the vision networks through Hailo's real toolchain
 (Dataflow Compiler 5.4.0 with Hailo Model Zoo recipes) and measured the cost of INT8 in the
-compiler's emulator, which reproduces the chip's integer arithmetic bit for bit. The hard-hat
-detector is compiled to a HEF (`helmet_yolov8s.hef`, highest optimization level); the CLIP image
-encoder of the double-check is quantized and checked in the emulator. The compiler does not support
-RTX 50-series GPUs, so everything ran on the CPU, without the GPU-only fine-tuning steps of
-quantization.
+compiler's quantized emulator, which models the chip's INT8 arithmetic; figures from the chip itself
+come in Stage II. Both detectors are compiled to HEFs (`helmet_yolov8s.hef` and `site_yolov8s.hef`,
+highest optimization level); the CLIP image encoder of the double-check is quantized and checked in
+the emulator, and compiling it to a HEF is Stage II work. The compiler does not support RTX 50-series
+GPUs, so the hard-hat build and the CLIP quantization ran on the CPU and the warehouse builds on a
+cloud T4, all without the GPU-only fine-tuning steps of quantization.
 
 **Hard-hat detector**, on the same 2,001 test images, scored with pycocotools using the NMS settings
 built into the HEF (score ≥ 0.2, IoU 0.7):
@@ -375,7 +405,7 @@ built into the HEF (score ≥ 0.2, IoU 0.7):
 |---|---|---|---|---|
 | PC, PyTorch fp32 | 0.8927 | 0.5663 | 0.9035 | 0.8819 |
 | Hailo graph, float | 0.8927 | 0.5662 | 0.9035 | 0.8819 |
-| **Hailo INT8 (what the chip computes)** | **0.889** | 0.56 | 0.9008 | 0.8772 |
+| **Hailo INT8 (emulator)** | **0.889** | 0.56 | 0.9008 | 0.8772 |
 
 The float Hailo graph matches PyTorch, so the conversion is exact; INT8 costs 0.0037 mAP50. The
 numbers here are lower than in the first table because the HEF's built-in NMS drops boxes scoring
@@ -402,10 +432,45 @@ calibrated on 64 site crops and tested on the same 193 crops as above.
 | **Hailo INT8 → head retrained on INT8 features** | **95.3 %** | 96.8 % | 93.9 % |
 
 INT8 features keep a cosine similarity of 0.9634 to PyTorch's (float Hailo graph: 0.9999). Reusing
-the PC head loses a point; retraining the small head on the chip's own features recovers it, so
+the PC head loses a point; retraining the small head on the emulator's INT8 features recovers it, so
 Stage II retrains it on device features.
 
-Source: `hailo_int8.json`, `pc_baseline.json`, `hailo_int8_c512.json`,
+**Warehouse detector** (YOLOv8s, 6 classes), quantized with the same recipe as the hard-hat detector
+(512 calibration images, here a fixed random sample of the 8,000 training images, activations clipped
+to the 0.01–99.99 percentiles; nothing chosen on any evaluation scene). Scored on its 200 held-out
+validation frames (Warehouse_016 cameras 9 and 10, never trained on but from a training building, so
+this measures what quantization costs, not how the detector generalizes), with one evaluator for all
+three rows: the same letterbox input, the HEF's NMS settings and pycocotools.
+
+| Input | PC float (ONNX) | Hailo graph, float | **Hailo INT8** | mAP50-95 float → INT8 |
+|---|---|---|---|---|
+| 960×960 (as the PC prototype runs it) | 0.9474 | 0.9474 | **0.9472** | 0.8393 → 0.8367 |
+| 544×960 (the cameras' 16:9 shape) | 0.9475 | 0.9475 | **0.9512** | 0.8333 → 0.8313 |
+
+INT8 costs nothing measurable at either size, and the 16:9 input loses no accuracy while it needs 43 %
+fewer pixels than 960×960 (about 1.28 times the work of a 640×640 frame instead of 2.25 times), which
+is what makes 12 warehouse cameras per chip plausible. The emulator ran on a cloud GPU (Colab T4); the
+compiler pins TensorFlow 2.19, which supports that GPU.
+
+Both sizes are compiled to HEFs. The network needs 96 layer controllers and one context on the chip
+holds 80, so the compiler splits it into contexts that the chip runs in turn for every batch:
+
+| Warehouse HEF | Contexts | HEF size | Compute per frame | Compile time |
+|---|---|---|---|---|
+| 960×960 | 3 | 17.2 MB | 64.0 GOPs | 109 min |
+| 544×960 | 4 | 18.1 MB | 36.3 GOPs | 112 min |
+
+Hailo's profiler gives no throughput for a multi-context model without measurements from the device,
+so the speed of both builds, and whether the 16:9 one is faster despite its extra context switching,
+is a Stage II measurement.
+
+The hard-hat detector was re-scored the same way: the PC prototype's float ONNX gives 0.8927,
+exactly the Hailo float graph, so the gap between 0.939 and 0.8927 comes from the evaluation (the
+HEF's NMS drops boxes scoring below 0.2), not the conversion; INT8 itself costs a further 0.0037
+(0.8927 → 0.889).
+
+Source: `hailo_int8.json`, `pc_baseline.json`, `hailo_int8_c512.json`, `site_same_nms.json`,
+`site_r544_same_nms.json`, `site_hef.json`, `helmet_onnx_same_nms.json`,
 `helmet_c64_optimized_int8.json`, `clip_probe_int8.json`; the build flow is in
 [HAILO_PORT.md](../HAILO_PORT.md).
 
@@ -413,10 +478,12 @@ Source: `hailo_int8.json`, `pc_baseline.json`, `hailo_int8_c512.json`,
 
 **Limits of these results**
 
-- **PC only.** Nothing has run on a UGen300 yet. UGen300 load and latency figures are estimates
-  from Hailo's reference speeds. All LLM accuracy was measured with Ollama's qwen2.5:1.5b on the PC
+- **Not on the chip yet.** Nothing has run on a UGen300 or any other Hailo hardware; the INT8
+  figures come from Hailo's emulator. UGen300 load and latency figures are estimates from Hailo's
+  reference speeds. All LLM accuracy was measured with Ollama's qwen2.5:1.5b on the PC
   GPU, not with the Hailo GenAI build, which is quantized differently.
-- **Test inputs.** Rule sentences are typed, not spoken. The double-check's 94 hard-hat crops are
+- **Test inputs.** Rule accuracy is measured on typed sentences and on synthetic speech, not on real
+  officers' voices. The double-check's 94 hard-hat crops are
   labelled dataset crops standing in for the detector's real false flags. The report test uses 20
   synthetic days, scored by AI judges rather than safety officers.
 - **Synthetic warehouses.** No real warehouse has been measured yet; real cameras need their own
@@ -442,7 +509,7 @@ Source: `hailo_int8.json`, `pc_baseline.json`, `hailo_int8_c512.json`,
 
 - On the UGen300: HEF throughput and latency over USB, hailo-ollama latency, power and end-to-end
   alert latency.
-- The warehouse detector on Hailo: HEF build, INT8 accuracy and load at 12 cameras (the 12-camera
+- The warehouse detector on the chip: throughput of its HEF and load at 12 cameras (the 12-camera
   limit is a coverage spec, not a measured compute limit).
 - Speech-to-text accuracy on recorded speech.
 - Open-vocabulary detection and the head-size distance estimate in hard-hat mode; how often face

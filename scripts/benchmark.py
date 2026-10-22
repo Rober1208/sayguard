@@ -32,15 +32,18 @@ GENAI_SOURCE = "Hailo Model Zoo (GenAI / vision), Hailo-10H"
 GENAI_REFERENCE = [
     {"model": "Whisper-Small", "role": "speech-to-text for spoken rules", "tps": 10.61, "ttft_s": None},
     {"model": "Qwen2.5-1.5B-Instruct", "role": "rule parsing, daily safety report", "tps": 7.35, "ttft_s": 0.37},
-    {"model": "Qwen2-VL-2B-Instruct", "role": "VLM double-check of alerts", "tps": 7.04, "ttft_s": 1.02},
+    {"model": "Qwen2-VL-2B-Instruct", "role": "optional VLM backend for the double-check (not the default)",
+     "tps": 7.04, "ttft_s": 1.02},
 ]
+CLIP_REFERENCE = {"model": "CLIP ViT-B/32 image encoder",
+                  "role": "alert double-check (shipped; 512->2 yes/no head on the host)", "fps": 81.5}
 YOLO_WORLD_REFERENCE = {"model": "yolo_world_v2s", "role": "open-vocabulary objects (forklift, ...)",
                         "fps": 46.6}
 # Typical output lengths in SayGuard, used only for the derived latency estimates.
 TOKEN_ASSUMPTIONS = [
     ("Whisper-Small", "transcribe a ~5 s spoken rule", 25),
     ("Qwen2.5-1.5B-Instruct", "spoken rule -> rule JSON", 80),
-    ("Qwen2-VL-2B-Instruct", "verify one alert (short yes/no + reason)", 16),
+    ("Qwen2-VL-2B-Instruct", "optional VLM backend: verify one alert (short yes/no + reason)", 16),
     ("Qwen2.5-1.5B-Instruct", "daily safety report", 350),
 ]
 
@@ -220,12 +223,13 @@ def render_md(rep: dict) -> str:
     L += table(["Model", "Used for", "Throughput", "Time to first token"],
                [[r["model"], r["role"], f"{r['tps']} tokens/s", f"{r['ttft_s']} s" if r["ttft_s"] else "-"]
                 for r in GENAI_REFERENCE]
-               + [[YOLO_WORLD_REFERENCE["model"], YOLO_WORLD_REFERENCE["role"], f"{YOLO_WORLD_REFERENCE['fps']} FPS",
-                   "-"]])
+               + [[v["model"], v["role"], f"{v['fps']} FPS", "-"] for v in (CLIP_REFERENCE, YOLO_WORLD_REFERENCE)])
     L += ["", "Rough latency per task on the UGen300 (estimate = TTFT + output tokens / tokens per s; "
           "prompt/image encoding beyond the published TTFT is not modelled):", ""]
     L += table(["Model", "Task", "Output tokens (assumed)", "Est. seconds"],
                [[r["model"], r["task"], r["output_tokens"], r["est_seconds"]] for r in rep["genai_estimates"]])
+    L += ["", f"Shipped double-check: one CLIP encoder pass per crop, about {1000 / CLIP_REFERENCE['fps']:.0f} ms at "
+          f"the reference {CLIP_REFERENCE['fps']} FPS (estimate until Stage II compiles CLIP to a HEF and measures it)."]
     return "\n".join(L) + "\n"
 
 
@@ -272,7 +276,8 @@ def main() -> None:
         "hailo_reference": {**href, "source": HAILO_SOURCE},
         "ugen300_capacity": capacity_table(float(href["fps_batch1"]), float(href["fps_batch8"]), a.cameras, a.fps),
         "mixed_load": mixed_load(float(href["fps_batch8"]), a.cameras, stream_fps, a.ov_cameras, every_n),
-        "genai_reference": {"source": GENAI_SOURCE, "models": GENAI_REFERENCE, "vision": YOLO_WORLD_REFERENCE},
+        "genai_reference": {"source": GENAI_SOURCE, "models": GENAI_REFERENCE, "vision": YOLO_WORLD_REFERENCE,
+                            "double_check": CLIP_REFERENCE},
         "genai_estimates": genai_estimates(),
         "labels": {"pc": "measured on PC", "ugen300_capacity": "estimate from Hailo reference",
                    "mixed_load": "estimate from Hailo reference", "genai_reference": "Hailo reference",

@@ -41,7 +41,8 @@ Source: Hailo Model Zoo (GenAI / vision), Hailo-10H. Not measured by us; the PC 
 |---|---|---|---|
 | Whisper-Small | speech-to-text for spoken rules | 10.61 tokens/s | - |
 | Qwen2.5-1.5B-Instruct | rule parsing, daily safety report | 7.35 tokens/s | 0.37 s |
-| Qwen2-VL-2B-Instruct | VLM double-check of alerts | 7.04 tokens/s | 1.02 s |
+| Qwen2-VL-2B-Instruct | optional VLM backend for the double-check (not the default) | 7.04 tokens/s | 1.02 s |
+| CLIP ViT-B/32 image encoder | alert double-check (shipped; 512->2 yes/no head on the host) | 81.5 FPS | - |
 | yolo_world_v2s | open-vocabulary objects (forklift, ...) | 46.6 FPS | - |
 
 Rough latency per task on the UGen300 (estimate = TTFT + output tokens / tokens per s; prompt/image encoding beyond the published TTFT is not modelled):
@@ -50,5 +51,7 @@ Rough latency per task on the UGen300 (estimate = TTFT + output tokens / tokens 
 |---|---|---|---|
 | Whisper-Small | transcribe a ~5 s spoken rule | 25 | 2.4 |
 | Qwen2.5-1.5B-Instruct | spoken rule -> rule JSON | 80 | 11.3 |
-| Qwen2-VL-2B-Instruct | verify one alert (short yes/no + reason) | 16 | 3.3 |
+| Qwen2-VL-2B-Instruct | optional VLM backend: verify one alert (short yes/no + reason) | 16 | 3.3 |
 | Qwen2.5-1.5B-Instruct | daily safety report | 350 | 48.0 |
+
+Shipped double-check: one CLIP encoder pass per crop, about 12 ms at the reference 81.5 FPS (estimate until Stage II compiles CLIP to a HEF and measures it).

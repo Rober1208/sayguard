@@ -1,0 +1,2913 @@
+{
+ "about": "The speech is SYNTHETIC: Microsoft neural voices through edge-tts (two Taiwan Mandarin voices, two US English voices), each sentence in both voices of its language, once clean and once mixed with synthetic site noise (pink noise, engine hum, random impacts) at 10 dB SNR.  It measures what the speech step adds to the typed results; it is not a test with real officers on a real site.",
+ "llm": "qwen2.5:1.5b",
+ "asr": "@work/models/hf/whisper-small",
+ "voices": {
+  "zh": [
+   "zh-TW-HsiaoChenNeural",
+   "zh-TW-HsiaoYuNeural"
+  ],
+  "en": [
+   "en-US-AriaNeural",
+   "en-US-GuyNeural"
+  ]
+ },
+ "noise_snr_db": 10.0,
+ "sets": {
+  "hard-hat held-out": {
+   "sentences": 20,
+   "typed_correct": 19,
+   "typed_accuracy": 0.95,
+   "spoken_clean": {
+    "recordings": 40,
+    "correct": 37,
+    "accuracy": 0.925,
+    "mean_cer": 0.039
+   },
+   "spoken_noisy": {
+    "recordings": 40,
+    "correct": 36,
+    "accuracy": 0.9,
+    "mean_cer": 0.045
+   },
+   "rows": [
+    {
+     "text": "倉庫同時超過四個人就通知我",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "倉庫同時超過四個人就通知我。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 8611
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "倉庫同時超過四個人就通知我。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 349
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "倉庫同時超過四個人就通知我。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 335
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "倉庫同時超過四個人就通知我。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 349
+      }
+     ]
+    },
+    {
+     "text": "工作坊裡沒戴安全帽的人要馬上提醒",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "工作坊裡沒戴安全帽的人要馬上提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 357
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "工作方裡沒戴安全帽的人要馬上提醒。",
+       "ok": false,
+       "wrong_fields": [
+        "scope"
+       ],
+       "asr_ms": 351
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "工作坊裡沒帶安全帽的人要馬上提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 348
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "工作坊裡沒帶安全帽的人要馬上提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 345
+      }
+     ]
+    },
+    {
+     "text": "下班後辦公室不能有人",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "下班後辦公室不能有人。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 280
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "下班後辦公室不能有人。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 270
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "下班後辦公室不能有人。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 277
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "下班後辦公室不能有人。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 277
+      }
+     ]
+    },
+    {
+     "text": "如果有人離挖土機兩公尺以內就警告",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "如果有人離挖土機兩公尺以內就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 368
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "如果有人離挖土機兩公尺以內就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 358
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "如果有人離挖土機兩公尺以內就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 356
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "如果有人離挖土機兩公尺以內就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 363
+      }
+     ]
+    },
+    {
+     "text": "B區看到梯子要通知",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "B區看到梯子要通知。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 273
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "B區看到梯子要通知。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 297
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "B區看到梯子要通知。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 275
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "B區看到梯子要通知。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 292
+      }
+     ]
+    },
+    {
+     "text": "入口晚上十一點到早上五點不准有人進入",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "入口晚上11點到早上5點不準有人進入。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 354
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "入口晚上11點到早上5點不準有人進入。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 360
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "入口晚上11點到早上5點不準有人進入。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 353
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "入口晚上11點到早上5點不準有人進入。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 360
+      }
+     ]
+    },
+    {
+     "text": "5號攝影機有人沒戴安全帽超過十秒就警告",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "5號攝影機有人沒戴安全帽超過10秒就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 404
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "5號攝影機有人沒戴安全帽超過10秒就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 423
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "5號攝影機有人沒戴安全帽超過10秒就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 402
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "5號攝影機有人沒戴安全帽 超過10秒就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 430
+      }
+     ]
+    },
+    {
+     "text": "Notify me when anyone enters the office after 7 pm",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Notify me when anyone enters the office after 7 p.m.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 323
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Notify me when anyone enters the office after 7pm.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 311
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Notify me when anyone enters the office after 7pm.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 299
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Notify me when anyone enters the office after 7pm.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 313
+      }
+     ]
+    },
+    {
+     "text": "Warn me if there is a forklift in Zone B",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Warn me if there is a forklift in Zone B.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 326
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Warn me if there is a forklift in Zone B.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 325
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Warn me if there is a forklift in Zone B.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 322
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Warning if there is a forklift in Zone B.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 316
+      }
+     ]
+    },
+    {
+     "text": "Alert if more than six workers are on the scaffold",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Alert if more than six workers are on the scaffold.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 289
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Alert if more than six workers are on the scaffold.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 302
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Alert if more than six workers are on the scaffold.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 295
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Alert if more than six workers are on the scaffold.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 305
+      }
+     ]
+    },
+    {
+     "text": "If someone stands within one metre of the excavator, alert immediately",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "If someone stands within one metre of the excavator, alert immediately.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 334
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "If someone stands within one metre of the excavator, alert immediately.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 345
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "If someone stands within one metre of the excavator, alert immediately.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 335
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "If someone stands within one metre of the excavator, alert immediately.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 339
+      }
+     ]
+    },
+    {
+     "text": "Tell me when people at the loading dock are not wearing hard hats",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Tell me when people at the Loading Dock are not wearing hard hats.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 346
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Tell me when people at the Loading Dock are not wearing hard hats.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 346
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Tell me when people at the Loading Dock are not wearing hard hats.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 346
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Tell me when people at the Loading Dock are not wearing hard hats.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 347
+      }
+     ]
+    },
+    {
+     "text": "在焊接區看到有人沒戴安全帽就通知",
+     "lang": "zh",
+     "typed_ok": false,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "在漢街區看到有人沒戴安全帽就通知。",
+       "ok": false,
+       "wrong_fields": [
+        "scope"
+       ],
+       "asr_ms": 356
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "在漢街區看到有人沒戴安全帽就通知。",
+       "ok": false,
+       "wrong_fields": [
+        "scope"
+       ],
+       "asr_ms": 371
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "在漢街區看到有人沒戴安全帽就通知。",
+       "ok": false,
+       "wrong_fields": [
+        "scope"
+       ],
+       "asr_ms": 354
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "在漢街區看到有人沒戴安全帽就通知。",
+       "ok": false,
+       "wrong_fields": [
+        "scope"
+       ],
+       "asr_ms": 357
+      }
+     ]
+    },
+    {
+     "text": "Zone A: alert me if a truck is within 5 metres of a worker",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Zone A, alert me if a truck is within 5 metres of a worker.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 340
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Zone A, alert me if a truck is within 5 metres of a worker.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 363
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Zone A, alert me if a truck is within 5 metres of a worker.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 353
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Zone A, alert me if a truck is within five metres of a worker.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 355
+      }
+     ]
+    },
+    {
+     "text": "大門口超過兩個人逗留就提醒",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "大門口超過兩個人逗留就提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 326
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "大門口超過兩個人逗留就提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 337
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "大門口超過兩個人逗留就提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 323
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "大門口超過兩個人逗留就提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 335
+      }
+     ]
+    },
+    {
+     "text": "Alert me if anyone is in the warehouse between 10 pm and 6 am",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Alert me if anyone is in the warehouse between 10pm and 6am.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 342
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Alert me if anyone is in the warehouse between 10pm and 6am.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 352
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Alert me if anyone is in the warehouse between 10pm and 6am.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 333
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Alert me if anyone is in the warehouse between 10pm and 6am.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 348
+      }
+     ]
+    },
+    {
+     "text": "A區有人超過三十秒沒戴安全帽就警告",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "A區有人超過30秒沒帶安全帽就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 343
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "A區有人超過 30 秒沒帶安全帽就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 367
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "A區有人超過 30 秒沒帶安全帽就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 359
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "A區有人超過 30 秒沒帶安全帽就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 363
+      }
+     ]
+    },
+    {
+     "text": "Let me know if smoke appears in the workshop",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Let me know if Smoke appears in the workshop.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 277
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Let me know if smoke appears in the workshop.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 289
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Let me know if Smoke appears in the Workshop.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 278
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Let me know if smoke appears in the workshop.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 305
+      }
+     ]
+    },
+    {
+     "text": "如果B區人數多於5人請提醒",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "如果比區人數多於五人請提醒。",
+       "ok": false,
+       "wrong_fields": [
+        "scope"
+       ],
+       "asr_ms": 309
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "如果比區人數多於五人請提醒。",
+       "ok": false,
+       "wrong_fields": [
+        "scope"
+       ],
+       "asr_ms": 322
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "如果B區人數多於五人,請提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 320
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "如果B區人數多於五人,請提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 337
+      }
+     ]
+    },
+    {
+     "text": "Raise an alarm when a ladder shows up at the site gate",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Raise an alarm when a ladder shows up at the site gate.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 311
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Raise an alarm when a ladder shows up at the site gate.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 325
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Raise an alarm when a ladder shows up at the Site Gate.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 310
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Raise an alarm when a ladder shows up at the site gate.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 324
+      }
+     ]
+    }
+   ]
+  },
+  "warehouse held-out v1": {
+   "sentences": 25,
+   "typed_correct": 25,
+   "typed_accuracy": 1.0,
+   "spoken_clean": {
+    "recordings": 50,
+    "correct": 43,
+    "accuracy": 0.86,
+    "mean_cer": 0.055
+   },
+   "spoken_noisy": {
+    "recordings": 50,
+    "correct": 43,
+    "accuracy": 0.86,
+    "mean_cer": 0.06
+   },
+   "rows": [
+    {
+     "text": "Anybody on the loading dock between 1 pm and 3 pm should trigger an alert.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Anybody on the loading dock between 1pm and 3pm should trigger an alert.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 901
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Anybody on the loading dock between 1pm and 3pm should trigger an alert.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 358
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Anybody on the loading dock between 1pm and 3pm should trigger an alert.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 345
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Anybody on the loading dock between 1pm and 3pm should trigger an alert.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 361
+      }
+     ]
+    },
+    {
+     "text": "有人在7號走道停留超過八秒就跟我說",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "有人在七號走道停留超過八秒就跟我說。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 351
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "有人在七號走道停留超過八秒就跟我說",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 345
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "有人在七號走道停留超過八秒就跟我說。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 349
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "有人在七號走道停留超過八秒就跟我說。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 359
+      }
+     ]
+    },
+    {
+     "text": "Between 22:00 and 05:30, flag anyone anywhere in the warehouse.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Between 2200 hours and 530, flag anyone anywhere in the warehouse.",
+       "ok": false,
+       "wrong_fields": [
+        "time_window"
+       ],
+       "asr_ms": 339
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Between 2200 hours and 530, like anyone anywhere in the warehouse.",
+       "ok": false,
+       "wrong_fields": [
+        "time_window"
+       ],
+       "asr_ms": 365
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Between 2200 hours and 530, flag anyone anywhere in the warehouse.",
+       "ok": false,
+       "wrong_fields": [
+        "time_window"
+       ],
+       "asr_ms": 340
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Between 2200 hours and 530, like anyone anywhere in the warehouse.",
+       "ok": false,
+       "wrong_fields": [
+        "time_window"
+       ],
+       "asr_ms": 348
+      }
+     ]
+    },
+    {
+     "text": "凌晨一點以後貨架區不准有人",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "凌晨一點以後貨架區不準有人。",
+       "ok": false,
+       "wrong_fields": [
+        "type"
+       ],
+       "asr_ms": 355
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "凌晨一點以後貨架區不準有人。",
+       "ok": false,
+       "wrong_fields": [
+        "type"
+       ],
+       "asr_ms": 358
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "凌晨一點以後貨架區不準有人。",
+       "ok": false,
+       "wrong_fields": [
+        "type"
+       ],
+       "asr_ms": 358
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "凌晨一點以後貨架區不準有人。",
+       "ok": false,
+       "wrong_fields": [
+        "type"
+       ],
+       "asr_ms": 372
+      }
+     ]
+    },
+    {
+     "text": "Raise an alarm if a worker remains on the open floor longer than one minute.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Raise an alarm if a worker remains on the open floor longer than one minute.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 348
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Raise an alarm if a worker remains on the open floor longer than one minute.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 362
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Raise an alarm if a worker remains on the open floor longer than one minute.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 346
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Raise an alarm if a worker remains on the open floor longer than one minute.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 359
+      }
+     ]
+    },
+    {
+     "text": "碼頭區如果有人逗留兩分鐘以上，通報一下",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "碼頭區如果有人逗留兩分鐘以上,通報一下。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 361
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "碼頭區如果有人逗留兩分鐘以上,通報一下。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 370
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "碼頭區如果有人逗留兩分鐘以上,通報一下。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 358
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "碼頭區如果有人逗留兩分鐘以上,通報一下。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 368
+      }
+     ]
+    },
+    {
+     "text": "開放作業區從14:00到16:00之間有人進入就提醒",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "開放作業區從14點到16點之間有人進入就提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 397
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "開放作業區從14點到16點之間有人進入就提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 399
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "開放作業區從14點到16點之間,有人進入就提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 417
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "開放作業區從14點到16點之間有人進入就提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 420
+      }
+     ]
+    },
+    {
+     "text": "Alert when there are more than 4 people in aisle 7.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Alert when there are more than four people in Aisle 7.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 323
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Alert when there are more than four people in Aisle 7.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 334
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Alert when there are more than four people in Aisle 7.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 325
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Alert when there are more than four people in Aisle 7.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 339
+      }
+     ]
+    },
+    {
+     "text": "If 5 or more people gather on the loading dock, warn me.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "If five or more people gather on the loading dock, warn me.",
+       "ok": false,
+       "wrong_fields": [
+        "type",
+        "threshold"
+       ],
+       "asr_ms": 324
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "If five or more people gather on the loading dock, warn me.",
+       "ok": false,
+       "wrong_fields": [
+        "type",
+        "threshold"
+       ],
+       "asr_ms": 321
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "If five or more people gather on the loading dock, warn me.",
+       "ok": false,
+       "wrong_fields": [
+        "type",
+        "threshold"
+       ],
+       "asr_ms": 319
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "If 5 or more people gather on the loading dock, warn me.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 339
+      }
+     ]
+    },
+    {
+     "text": "貨架區裡如果同時有超過兩個人，就發警告",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "貨架區裡如果同時有超過兩個人,就發警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 399
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "貨架區裡如果同時有超過兩個人,就發警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 408
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "貨架區裡如果同時有超過兩個人,就發警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 392
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "貨架區裡如果同時有超過兩個人,就發警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 409
+      }
+     ]
+    },
+    {
+     "text": "整個倉庫人數一旦超過二十，立刻通知我",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "整個倉庫人數一旦超過 20,立刻通知我。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 405
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "整個倉庫人數一旦超過 20 立刻通知我。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 417
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "整個倉庫人數一旦超過 20,立刻通知我。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 408
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "整個倉庫人數一旦超過 20,立刻通知我。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 420
+      }
+     ]
+    },
+    {
+     "text": "If there are over 3 people in the rack area or aisle seven, sound the alarm.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "If there are over three people in the Rack area or Aisle 7, sound the alarm.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 406
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "If there are over three people in the Rack area or Aisle 7, sound the alarm.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 421
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "If there are over three people in the Rack area or Aisle 7, sound the alarm.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 406
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "If there are over three people in the Rack area or Aisle 7, sound the alarm.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 418
+      }
+     ]
+    },
+    {
+     "text": "Notify me when the open floor has more than 8 people at once.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Notify me when the open floor has more than eight people at once.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 341
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Notify me when the open floor has more than eight people at once.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 349
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Notify me when the open floor has more than 8 people at once.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 335
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Notify me when the open floor has more than 8 people at once.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 350
+      }
+     ]
+    },
+    {
+     "text": "貨架區要是有叉車進去，跟我回報一聲",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "貨架區要是有插車進去,跟我回報一聲。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 391
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "貨架區要是有插車進去,跟我回報一聲。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 408
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "貨架區要是有插車進去,跟我回報一聲。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 393
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "貨架區鑰匙有插車進去,跟我回報一聲。",
+       "ok": false,
+       "wrong_fields": [
+        "object"
+       ],
+       "asr_ms": 427
+      }
+     ]
+    },
+    {
+     "text": "Notify me if a pallet truck is in aisle seven.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Notify me if a pallet truck is an Aisle 7.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 333
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Notify me if a pallet truck is an Aisle 7.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 348
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Notify me if a pallet truck is in Aisle 7.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 338
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Notify me if a pallet truck is in Aisle 7.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 335
+      }
+     ]
+    },
+    {
+     "text": "搬運機器人跑到開放作業區要提醒",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "搬運機器人跑到開放作業區要提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 360
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "搬運機器員跑到開放作業區要提醒。",
+       "ok": false,
+       "wrong_fields": [
+        "type",
+        "object"
+       ],
+       "asr_ms": 369
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "班運機器人跑到開放作業區要提醒。",
+       "ok": false,
+       "wrong_fields": [
+        "object"
+       ],
+       "asr_ms": 351
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "搬運機器人跑到開放作業區要提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 376
+      }
+     ]
+    },
+    {
+     "text": "Alert me when a humanoid robot enters the dock.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Alert me when a humanoid robot enters the dock.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 288
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Alert me when a humanoid robot enters the dock.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 291
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Alert me when a humanoid robot enters the dock.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 287
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Alert me when a humanoid robot enters the dock.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 288
+      }
+     ]
+    },
+    {
+     "text": "倉庫裡任何地方出現搬運車都要通知",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "倉庫裡任何地方出現搬運車都要通知。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 377
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "倉庫裡任何地方出現搬運車都要通知。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 388
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "倉庫裡任何地方出現搬運車都要通知。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 381
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "倉庫裡任何地方出現搬運車都要通知。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 407
+      }
+     ]
+    },
+    {
+     "text": "碼頭區有油壓車就跟我講",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "碼頭區有油壓車就跟我講。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 299
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "碼頭區有油壓車就跟我講。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 298
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "碼頭區有油壓車就跟我講。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 301
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "碼頭區有油壓車就跟我講。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 300
+      }
+     ]
+    },
+    {
+     "text": "Warn if anyone comes within 4 metres of a forklift in aisle seven.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Warn if anyone comes within 4 metres of a forklift in Aisle 7.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 379
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Warn if anyone comes within 4 metres of a forklift in Aisle 7.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 395
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Warn if anyone comes within 4 metres of a forklift in Aisle 7.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 378
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Warn if anyone comes within 4 metres of a forklift in Aisle 7.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 394
+      }
+     ]
+    },
+    {
+     "text": "AMR旁邊兩公尺內有人就警報",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "AMR旁邊兩公尺內有人就警報。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 336
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "AMR旁邊兩公尺內有人就警報。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 348
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "AMR旁邊兩公尺內有人就警報。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 339
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "AMR旁邊兩公尺內有人就警報。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 349
+      }
+     ]
+    },
+    {
+     "text": "Alert when a person is closer than 1 metre to the humanoid robot on the open floor.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Alert when a person is closer than one metre to the humanoid robot on the open floor.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 383
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Alert when a person is closer than one metre to the humanoid robot on the open floor.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 397
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Alert when a person is closer than 1 meter to the humanoid robot on the open floor.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 383
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Alert when a person is closer than one meter to the humanoid robot on the open floor.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 391
+      }
+     ]
+    },
+    {
+     "text": "七號走道有人跟托板車距離小於三公尺就警告",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "七號走道有人跟拖板車距離小於三公尺就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 427
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "七號走道有人跟拖板車距離小於三公尺就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 452
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "七號走道有人跟拖板車距離小於三公尺,就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 444
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "七號走道有人跟拖板車距離小於三公尺,就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 451
+      }
+     ]
+    },
+    {
+     "text": "Sound the alarm if someone is within 2.5 metres of a transporter at the dock.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Sound the alarm if someone is within 2.5 metres of a transporter at the dock.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 383
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Sound the alarm if someone is within 2.5 metres of a transporter at the dock.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 380
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Sound the alarm if someone is within 2.5 metres of a transporter at the dock.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 390
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Sound the alarm if someone is within 2.5 metres of a transporter at the dock.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 387
+      }
+     ]
+    },
+    {
+     "text": "倉庫任何地方，堆高機周圍六公尺內有人都要警報",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "倉庫任何地方,堆高機周圍六公尺內有人都要警報。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 469
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "倉庫任何地方,堆高機周圍六公尺內有人都要警報。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 468
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "倉庫任何地方,堆高機周圍六公尺內有人都要警報。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 466
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "倉庫任何地方、堆高機周圍六公尺內有人都要警報。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 479
+      }
+     ]
+    }
+   ]
+  },
+  "warehouse held-out v2": {
+   "sentences": 25,
+   "typed_correct": 22,
+   "typed_accuracy": 0.88,
+   "spoken_clean": {
+    "recordings": 50,
+    "correct": 38,
+    "accuracy": 0.76,
+    "mean_cer": 0.052
+   },
+   "spoken_noisy": {
+    "recordings": 50,
+    "correct": 37,
+    "accuracy": 0.74,
+    "mean_cer": 0.054
+   },
+   "rows": [
+    {
+     "text": "Ping me if anyone walks into the rack area between 06:00 and 08:00.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Ping me if anyone walks into the Rack area between 6 o'clock and 8 o'clock.",
+       "ok": false,
+       "wrong_fields": [
+        "time_window"
+       ],
+       "asr_ms": 932
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Hang me if anyone walks into the Rack area between 6 o'clock and 8 o'clock.",
+       "ok": false,
+       "wrong_fields": [
+        "time_window"
+       ],
+       "asr_ms": 414
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Pingney if anyone walks into the Rack area between 6 o'clock and 8 o'clock.",
+       "ok": false,
+       "wrong_fields": [
+        "time_window"
+       ],
+       "asr_ms": 404
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Pingney if anyone walks into the Rack area between 6 o'clock and 8 o'clock.",
+       "ok": false,
+       "wrong_fields": [
+        "time_window"
+       ],
+       "asr_ms": 402
+      }
+     ]
+    },
+    {
+     "text": "開放作業區有人待了半分鐘都還沒離開的話，就跟我說",
+     "lang": "zh",
+     "typed_ok": false,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "開放作業區有人待了半分鐘都還沒離開的話,就跟我說。",
+       "ok": false,
+       "wrong_fields": [
+        "min_duration_s"
+       ],
+       "asr_ms": 401
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "開放作業區有人待了半分鐘都還沒離開的話就跟我說",
+       "ok": false,
+       "wrong_fields": [
+        "min_duration_s"
+       ],
+       "asr_ms": 379
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "開放作業區有人待了半分鐘都還沒離開的話,就跟我說。",
+       "ok": false,
+       "wrong_fields": [
+        "min_duration_s"
+       ],
+       "asr_ms": 409
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "開放作業區有人待了半分鐘都還沒離開的話就跟我說。",
+       "ok": false,
+       "wrong_fields": [
+        "min_duration_s"
+       ],
+       "asr_ms": 393
+      }
+     ]
+    },
+    {
+     "text": "From 7 pm to 11 pm, alert me if someone lingers at the dock for more than 10 seconds.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "From 7pm to 11pm, alert me if someone lingers at the dock for more than 10 seconds.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 413
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "From 7pm to 11pm, alert me if someone lingers at the dock for more than 10 seconds.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 443
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "From 7pm to 11pm, alert me if someone lingers at the dock for more than 10 seconds.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 414
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "From 7pm to 11pm, alert me if someone lingers at the dock for more than 10 seconds.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 430
+      }
+     ]
+    },
+    {
+     "text": "晚上八點以後，倉庫裡只要看到人就通報我",
+     "lang": "zh",
+     "typed_ok": false,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "晚上八點以後,倉庫裡只要看到人就通報我。",
+       "ok": false,
+       "wrong_fields": [
+        "type",
+        "threshold"
+       ],
+       "asr_ms": 393
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "晚上八點以後,倉庫裡只要看到人就通報我。",
+       "ok": false,
+       "wrong_fields": [
+        "type",
+        "threshold"
+       ],
+       "asr_ms": 404
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "晚上八點以後,倉庫裡只要看到人就通報我。",
+       "ok": false,
+       "wrong_fields": [
+        "type",
+        "threshold"
+       ],
+       "asr_ms": 391
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "晚上八點以後,倉庫裡只要看到人就通報我。",
+       "ok": false,
+       "wrong_fields": [
+        "type",
+        "threshold"
+       ],
+       "asr_ms": 411
+      }
+     ]
+    },
+    {
+     "text": "If someone has been in aisle 7 for 45 seconds or longer, flag it.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "If someone has been in Aisle 7 for 45 seconds or longer, flag it.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 372
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "If someone has been in Aisle 7 for 45 seconds or longer, flag it.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 369
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "If someone has been in Aisle 7 for 45 seconds or longer, flag it.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 372
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "If someone has been in Aisle 7 for 45 seconds or longer, flag it.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 370
+      }
+     ]
+    },
+    {
+     "text": "七號走道早上七點半到九點要管制，這段時間裡看到有人就跟我講",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "七號走道早上7點半到9點要管制,這段時間裡看到有人就跟我講。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 464
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "七號走道早上七點半到九點要管制,這段時間裡看到有人就跟我講。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 477
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "七號走道早上七點半到九點要管制,這段時間裡看到有人就跟我講。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 459
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "七號走道早上七點半到九點要管制,這段時間裡看到有人就跟我講。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 482
+      }
+     ]
+    },
+    {
+     "text": "碼頭區的人數只要大於十，就發警報",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "碼頭區的人數只要大於10,就發警報。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 358
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "碼頭區的人數只要大於10,就發警報。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 366
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "碼頭區的人數只要大於10,就發警報。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 359
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "碼頭區的人數只要大於10,就發警報。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 382
+      }
+     ]
+    },
+    {
+     "text": "Warn me if the headcount on the open floor goes above 12.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Warn me if the head count on the open floor goes above 12.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 341
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Warn me if the head count on the open floor goes above 12.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 334
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Warn me if the headcount on the open floor goes above 12.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 339
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Warn me if the headcount on the open floor goes above 12.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 331
+      }
+     ]
+    },
+    {
+     "text": "Aisle seven shouldn't have six or more people at once; alert me if it does.",
+     "lang": "en",
+     "typed_ok": false,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Aisle 7 shouldn't have six or more people at once, alert me if it does.",
+       "ok": false,
+       "wrong_fields": [
+        "threshold"
+       ],
+       "asr_ms": 398
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Aisle 7 shouldn't have six or more people at once. Alert me if it does.",
+       "ok": false,
+       "wrong_fields": [
+        "threshold"
+       ],
+       "asr_ms": 404
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Aisle 7 shouldn't have six or more people at once, alert me if it does.",
+       "ok": false,
+       "wrong_fields": [
+        "threshold"
+       ],
+       "asr_ms": 396
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Aisle 7 shouldn't have 6 or more people at once, alert me if it does.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 406
+      }
+     ]
+    },
+    {
+     "text": "貨架區那邊人太多不安全，多於四個人就警告我",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "貨架區那邊人太多不安全,多於四個人就警告我。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 422
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "貨架區那邊人太多過安全,多於四個人就警告我。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 432
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "貨架區那邊人太多不安全,多於四個人就警告我。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 414
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "貨架區那邊人太多不安全,多於四個人就警告我。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 433
+      }
+     ]
+    },
+    {
+     "text": "Let me know if total occupancy in the warehouse exceeds 40.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Let me know if total occupancy in the warehouse exceeds 40.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 315
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Let me know if total occupancy in the warehouse exceeds 40.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 323
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Let me know if total occupancy in the warehouse exceeds 40.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 316
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Let me know if total occupancy in the warehouse exceeds 40.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 328
+      }
+     ]
+    },
+    {
+     "text": "七號走道很窄，同時超過一個人就要提醒",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "七號走道橫寨,同時超過一個人就要提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 395
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "七號走道橫寨,同時超過一個人就要提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 417
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "七號走道很窄,同時超過一個人就要提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 380
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "七號走道很窄,同時超過一個人就要提醒。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 391
+      }
+     ]
+    },
+    {
+     "text": "Forklifts are banned from the open floor; report it if one shows up there.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Forklifts are banned from the open floor, reported if one shows up there.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 365
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Forklifts are banned from the open floor, reported if one shows up there.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 375
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Forklifts are banned from the open floor, reported if one shows up there.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 358
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Forklifts are banned from the open floor, reported if one shows up there.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 360
+      }
+     ]
+    },
+    {
+     "text": "人形機器人如果跑進七號走道，馬上回報",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "人形機器人如果跑近七號走道,馬上回報。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 376
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "人行機器員如果跑近七號走道,馬上回報。",
+       "ok": false,
+       "wrong_fields": [
+        "type",
+        "object",
+        "threshold"
+       ],
+       "asr_ms": 381
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "人行機器人如果跑進七號走道,馬上回報。",
+       "ok": false,
+       "wrong_fields": [
+        "object"
+       ],
+       "asr_ms": 372
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "人行機器人如果跑進七號走道,馬上回報。",
+       "ok": false,
+       "wrong_fields": [
+        "object"
+       ],
+       "asr_ms": 378
+      }
+     ]
+    },
+    {
+     "text": "Flag it if a pallet jack shows up in the rack area.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Flag it if a pallet jack shows up in the rack area.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 328
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Flag it if a pallet jack shows up in the rack area.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 325
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Flag it if a pallet jack shows up in the rack area.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 318
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Fly get if a pallet jack shows up in the Rack area.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 330
+      }
+     ]
+    },
+    {
+     "text": "碼頭那邊有搬運車進來的話提醒我一下",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "碼頭那邊有搬運車進來的話提醒我一下。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 376
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "碼頭那邊有搬運車進來的話提醒我一下。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 383
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "碼頭那邊有搬運車進來的話提醒我一下。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 371
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "碼頭那邊有搬運車進來的話提醒我一下。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 393
+      }
+     ]
+    },
+    {
+     "text": "Report any mobile robot seen anywhere in the warehouse.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Report any mobile robot seen anywhere in the warehouse.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 275
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Report any mobile robots seen anywhere in the warehouse.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 289
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Report any mobile robots seen anywhere in the warehouse.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 277
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Report any mobile robots seen anywhere in the warehouse.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 287
+      }
+     ]
+    },
+    {
+     "text": "開放作業區出現托板車，跟我說一聲",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "開放作業區出現拖板車,跟我說一聲。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 356
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "開放作業區出現脫板車,跟我說一聲。",
+       "ok": false,
+       "wrong_fields": [
+        "object"
+       ],
+       "asr_ms": 372
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "開放作業區出現拖板車,跟我說一聲。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 363
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "開放作業區出現脫板車,跟我說一聲。",
+       "ok": false,
+       "wrong_fields": [
+        "object"
+       ],
+       "asr_ms": 368
+      }
+     ]
+    },
+    {
+     "text": "Sound an alert when a worker is less than 3 m from an AMR in the rack area.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Sound and alert when a worker is less than 3 m from an AMR in the rack area.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 399
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Sound and alert when a worker is less than 3M from an AMR in the Rack area.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 411
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Sound and alert when a worker is less than 3 m from an AMR in the rack area.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 393
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Sound and alert when a worker is less than 3M from an AMR in the rack area.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 393
+      }
+     ]
+    },
+    {
+     "text": "開放作業區有人走到堆高機一點五公尺以內就警報",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "開放作業區有人走道堆高機 1.5公尺以內就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 436
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "開放作業區有人走到堆高機1.5公尺以內就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 453
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "開放作業區有人走道堆高機 1.5公尺以內就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 450
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "開放作業區有人走到堆高機1.5公尺以內就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 457
+      }
+     ]
+    },
+    {
+     "text": "If a person comes within 5 metres of a humanoid robot anywhere in the warehouse, alert me.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "If a person comes within 5 metres of a humanoid robot anywhere in the warehouse, alert me.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 396
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "If a person comes within 5 metres of a humanoid robot anywhere in the warehouse, alert me.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 408
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "If a person comes within 5 metres of a humanoid robot anywhere in the warehouse, alert me.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 391
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "If a person comes within 5 metres of a humanoid robot anywhere in the warehouse, alert me.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 391
+      }
+     ]
+    },
+    {
+     "text": "搬運機器人在碼頭區的時候，有人進到它四公尺內就警告",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "單運機器人在碼頭區的時候,有人進到他四公尺內就警告。",
+       "ok": false,
+       "wrong_fields": [
+        "object"
+       ],
+       "asr_ms": 455
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "單運機器人在碼頭區的時候,有人進到他四公尺內就警告。",
+       "ok": false,
+       "wrong_fields": [
+        "object"
+       ],
+       "asr_ms": 462
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "搬運機器人在碼頭區的時候,有人進到它四公尺內就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 462
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "搬運機器人在碼頭區的時候,有人進到他四公尺內就警告。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 476
+      }
+     ]
+    },
+    {
+     "text": "In aisle 7, any worker closer than two metres to a transporter needs an alert.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "In Aisle 7, any worker closer than 2 metres to a transporter needs an alert.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 399
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "In Aisle 7, any worker closer than 2 metres to a transporter needs an alert.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 394
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "In Aisle 7, any worker closer than 2 metres to a transporter needs an alert.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 394
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "In Aisle 7, any worker closer than 2 metres to a transporter needs an alert.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 396
+      }
+     ]
+    },
+    {
+     "text": "油壓車一公尺之內不准有人，一有人就警報",
+     "lang": "zh",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "clean",
+       "heard": "有壓車一公尺之內不準有人,一有人就警報。",
+       "ok": false,
+       "wrong_fields": [
+        "type",
+        "object",
+        "threshold"
+       ],
+       "asr_ms": 387
+      },
+      {
+       "voice": "zh-TW-HsiaoChenNeural",
+       "condition": "noisy",
+       "heard": "有壓車一公尺之內不準有人,一有人就警報。",
+       "ok": false,
+       "wrong_fields": [
+        "type",
+        "object",
+        "threshold"
+       ],
+       "asr_ms": 392
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "clean",
+       "heard": "由鴨車一公尺之內不準有人,一有人就警報。",
+       "ok": false,
+       "wrong_fields": [
+        "type",
+        "object",
+        "threshold"
+       ],
+       "asr_ms": 415
+      },
+      {
+       "voice": "zh-TW-HsiaoYuNeural",
+       "condition": "noisy",
+       "heard": "油壓車一公尺之內不準有人,一有人就警報。",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 391
+      }
+     ]
+    },
+    {
+     "text": "Nobody should be within ten metres of a forklift; warn me if someone is.",
+     "lang": "en",
+     "typed_ok": true,
+     "spoken": [
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "clean",
+       "heard": "Nobody should be within 10 metres of a forklift. Warn me if someone is.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 389
+      },
+      {
+       "voice": "en-US-AriaNeural",
+       "condition": "noisy",
+       "heard": "Nobody should be within 10 metres of a forklift. Warn me if someone is.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 384
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "clean",
+       "heard": "Nobody should be within 10 metres of a forklift, warn me if someone is.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 369
+      },
+      {
+       "voice": "en-US-GuyNeural",
+       "condition": "noisy",
+       "heard": "Nobody should be within 10 metres of a forklift, warn me if someone is.",
+       "ok": true,
+       "wrong_fields": [],
+       "asr_ms": 398
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

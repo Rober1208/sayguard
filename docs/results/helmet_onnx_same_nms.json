@@ -1,0 +1,24 @@
+{
+ "model": "helmet",
+ "variant": "default",
+ "input_hw": [
+  640,
+  640
+ ],
+ "images": 2001,
+ "instances": 5517,
+ "split": "/content/work/datasets/helmet/images/test",
+ "nms": {
+  "score_th": 0.2,
+  "iou_th": 0.7,
+  "max_per_class": 100
+ },
+ "onnx": "/content/work/models/helmet_yolov8s.onnx",
+ "onnx_float": {
+  "mAP50-95": 0.5662,
+  "mAP50": 0.8927,
+  "helmet_mAP50": 0.9035,
+  "head_mAP50": 0.8819,
+  "seconds": 218.2
+ }
+}

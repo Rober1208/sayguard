@@ -146,7 +146,8 @@ def emulate(har: str, batch: int) -> None:
     q = probe(feats[("quantized", "train")], y["train"], feats[("quantized", "val")], y["val"])
     res["int8_probe_on_int8_features"] = score(q[2], feats[("quantized", "test")], y["test"])
     res["note"] = ("Model Zoo clip_vit_b_32_image_encoder + its model script; 64 site crops as calibration; "
-                   "bit-exact INT8 emulation (SDK_QUANTIZED). Same crops and probe recipe as scripts/eval_yesno.py.")
+                   "quantized INT8 emulation (SDK_QUANTIZED: models the chip's INT8 arithmetic, not the "
+                   "SDK_BIT_EXACT mode). Same crops and probe recipe as scripts/eval_yesno.py.")
     for out in (WORK / "results", ROOT / "docs" / "results"):
         out.mkdir(parents=True, exist_ok=True)
         (out / "clip_probe_int8.json").write_text(json.dumps(res, indent=1), encoding="utf-8")

@@ -23,5 +23,5 @@
   "false_alarm_filter_rate": 0.968,
   "violation_confirm_rate": 0.939
  },
- "note": "Model Zoo clip_vit_b_32_image_encoder + its model script; 64 site crops as calibration; bit-exact INT8 emulation (SDK_QUANTIZED). Same crops and probe recipe as scripts/eval_yesno.py."
+ "note": "Model Zoo clip_vit_b_32_image_encoder + its model script; 64 site crops as calibration; quantized INT8 emulation (SDK_QUANTIZED: models the chip's INT8 arithmetic, not the SDK_BIT_EXACT mode). Same crops and probe recipe as scripts/eval_yesno.py."
 }

@@ -23,7 +23,7 @@ detector:
   backend: ultralytics            # ultralytics (PC prototype) | hailo (Stage II, UGen300)
   name: "YOLOv8s-site"
   weights: "@work/models/site_yolov8s.pt"      # scripts/train_detector.py --data @work/datasets/site/data.yaml
-  hef: "@work/models/site_yolov8s.hef"         # compile like hailo/build_helmet.py; not built yet
+  hef: "@work/models/site_yolov8s.hef"         # built by hailo/build_site.py (960x960, 3 contexts)
   labels: [person, forklift, pallet_truck, transporter, mobile_robot, humanoid_robot]   # class order, for the hailo backend
   imgsz: 960
   conf: 0.25

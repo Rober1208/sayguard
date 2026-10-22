@@ -1,0 +1,50 @@
+{
+ "model": "site",
+ "variant": "_r544",
+ "input_hw": [
+  544,
+  960
+ ],
+ "images": 200,
+ "instances": 4206,
+ "split": "/content/work/datasets/site_v3/images/val",
+ "nms": {
+  "score_th": 0.2,
+  "iou_th": 0.7,
+  "max_per_class": 100
+ },
+ "onnx": "/content/work/models/site_yolov8s_r544.onnx",
+ "onnx_float": {
+  "mAP50-95": 0.8333,
+  "mAP50": 0.9475,
+  "person_mAP50": 0.96,
+  "forklift_mAP50": 1.0,
+  "transporter_mAP50": 0.9391,
+  "mobile_robot_mAP50": 0.8788,
+  "humanoid_robot_mAP50": 0.9598,
+  "seconds": 34.0
+ },
+ "har": "/content/build/site_r544_optimized.har",
+ "fp_optimized": {
+  "mAP50-95": 0.8333,
+  "mAP50": 0.9475,
+  "person_mAP50": 0.96,
+  "forklift_mAP50": 1.0,
+  "transporter_mAP50": 0.9391,
+  "mobile_robot_mAP50": 0.8788,
+  "humanoid_robot_mAP50": 0.9598,
+  "seconds": 19.1
+ },
+ "quantized": {
+  "mAP50-95": 0.8313,
+  "mAP50": 0.9512,
+  "person_mAP50": 0.9599,
+  "forklift_mAP50": 1.0,
+  "transporter_mAP50": 0.9483,
+  "mobile_robot_mAP50": 0.8882,
+  "humanoid_robot_mAP50": 0.9597,
+  "seconds": 51.4
+ },
+ "mAP50_drop_vs_onnx": -0.0037,
+ "mAP50_drop_vs_fp": -0.0037
+}

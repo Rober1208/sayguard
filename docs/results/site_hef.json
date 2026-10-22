@@ -1,0 +1,31 @@
+{
+ "what": "Warehouse detector (YOLOv8s, 6 classes) compiled to Hailo-10H HEFs; not run on hardware",
+ "toolchain": "Hailo Dataflow Compiler 5.4.0, hw_arch hailo10h, on a Colab T4 VM (8 vCPU, 50 GB RAM)",
+ "recipe": "hailo/build_site.py: optimization level 1, 512 calibration frames (site_v3 training split, seed 0), activation clipping 0.01-99.99, performance_param(compiler_optimization_level=max), NMS by HailoRT on the host (score 0.2, IoU 0.7, 100 per class)",
+ "single_context": "failed at both sizes: 96 Layer-Controllers max (80)",
+ "accuracy": "site_same_nms.json, site_r544_same_nms.json (INT8 in the emulator)",
+ "builds": {
+  "960x960": {
+   "input": "960x960 (square, as the PC prototype runs)",
+   "hef": "site_perf.hef",
+   "hef_mb": 17.22,
+   "contexts": 3,
+   "gops_per_frame": 64.01,
+   "gmacs_per_frame": 32.06,
+   "weights_m": 11.13,
+   "profiler_fps": "N/A (multi-context: no runtime data without a device)",
+   "compile_minutes": 109.0
+  },
+  "544x960": {
+   "input": "544x960 (the cameras' 16:9 shape)",
+   "hef": "site_r544_perf.hef",
+   "hef_mb": 18.08,
+   "contexts": 4,
+   "gops_per_frame": 36.27,
+   "gmacs_per_frame": 18.17,
+   "weights_m": 11.13,
+   "profiler_fps": "N/A (multi-context: no runtime data without a device)",
+   "compile_minutes": 112.0
+  }
+ }
+}

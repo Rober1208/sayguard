@@ -3,7 +3,8 @@ INT8 quantization costs: the same held-out test split, the same COCO evaluator, 
 emulator contexts:
 
   fp_optimized - the Hailo graph after optimization, float math (no quantization)
-  quantized    - bit-exact emulation of the INT8 model the Hailo-10H runs
+  quantized    - the INT8 model in the compiler's quantized emulator, which models the chip's
+                 INT8 arithmetic (SDK_QUANTIZED; not the DFC's SDK_BIT_EXACT mode)
 
 Run inside the DFC venv (WSL):
     python hailo/eval_int8.py --har ~/hailo/build/helmet_optimized.har [--probe] [--limit N]

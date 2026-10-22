@@ -1,0 +1,50 @@
+{
+ "model": "site",
+ "variant": "default",
+ "input_hw": [
+  960,
+  960
+ ],
+ "images": 200,
+ "instances": 4206,
+ "split": "/content/work/datasets/site_v3/images/val",
+ "nms": {
+  "score_th": 0.2,
+  "iou_th": 0.7,
+  "max_per_class": 100
+ },
+ "onnx": "/content/work/models/site_yolov8s.onnx",
+ "onnx_float": {
+  "mAP50-95": 0.8393,
+  "mAP50": 0.9474,
+  "person_mAP50": 0.9599,
+  "forklift_mAP50": 1.0,
+  "transporter_mAP50": 0.9389,
+  "mobile_robot_mAP50": 0.8784,
+  "humanoid_robot_mAP50": 0.9599,
+  "seconds": 54.8
+ },
+ "har": "/content/build/site_optimized.har",
+ "fp_optimized": {
+  "mAP50-95": 0.8393,
+  "mAP50": 0.9474,
+  "person_mAP50": 0.9599,
+  "forklift_mAP50": 1.0,
+  "transporter_mAP50": 0.9389,
+  "mobile_robot_mAP50": 0.8784,
+  "humanoid_robot_mAP50": 0.9599,
+  "seconds": 21.4
+ },
+ "quantized": {
+  "mAP50-95": 0.8367,
+  "mAP50": 0.9472,
+  "person_mAP50": 0.9588,
+  "forklift_mAP50": 1.0,
+  "transporter_mAP50": 0.9389,
+  "mobile_robot_mAP50": 0.8785,
+  "humanoid_robot_mAP50": 0.9597,
+  "seconds": 64.3
+ },
+ "mAP50_drop_vs_onnx": 0.0002,
+ "mAP50_drop_vs_fp": 0.0002
+}
